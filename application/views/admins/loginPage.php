@@ -13,7 +13,9 @@
         <link href="<?= site_url("assets/css/custom01.css") ?>" rel="stylesheet">
         <style>
             body{
-                background-image: url("<?= site_url("library/images/hotel_background01.jpg") ?>"); 
+                background-image: url("<?= site_url("library/images/hotel_background01.jpg") ?>");
+                background-repeat : no-repeat;
+                background-size: 100% ;
             }
         </style>
     </head>

@@ -7,6 +7,7 @@ class Hotels extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->helper('url');
+        $this->load->helper('commonmisc_helper');
         $this->load->model('hotel');
         $u1 = $this->session->userdata('logged_id');
         if (!isset($u1)) {
@@ -15,16 +16,18 @@ class Hotels extends CI_Controller {
     }
 
     public function index() {
-        $this->load->view('templates/head01', ['pageTitle' => "aabcd"]);
-        $this->load->view('hotels/hIndex');
-        $this->load->view('templates/footer02');
+    
     }
 
     public function hotels() {
         
          $loggedId = $this->session->userdata('logged_id');
         $loggedDisplay = $this->session->userdata('logged_display');
-        $this->load->view('hotels/hotels',['loggedDisplay'=>$loggedDisplay]);
+        $this->load->view('hotels/hotels',[
+            'loggedDisplay' => $loggedDisplay,
+            'timeSlotOptions' => timeSlotOptions(),
+            'hotelTypeSlotOptions' => hotelTypeSlotOptions()
+            ]);
     }
 
     public function ajaxAllHotelsDataTable() {
@@ -37,6 +40,7 @@ class Hotels extends CI_Controller {
         foreach ($hotels as $k => $hotel) {
             $rows[] = [
                 "DT_RowId" => "row_".$hotel['hotel_id'],
+                "hotel_id" => $hotel['hotel_id'],
                 'hotel_name' => $hotel['hotel_name'],
                 'hotel_type' => $hotel['hotel_name'],
                 'hotel_address' => $hotel['hotel_address'],
@@ -63,5 +67,8 @@ class Hotels extends CI_Controller {
         $where = ['hotel_id'=>$this->input->post('hotel_id')];
         $hotel = $this->hotel->deleteHotel($where);
         return json_encode(['true']);
+    }
+    public function ajaxHotelSubmit(){
+      print_r($this->input->post());  
     }
 }
