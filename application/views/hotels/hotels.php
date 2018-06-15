@@ -248,11 +248,12 @@
                 $.ajax({
                     type: "POST",
                     url: "<?= site_url('index.php/hotels/ajaxHotelSubmit') ?>",
-                    data: {hotelData: $("#hotelDetailEdit").serialize()},
+                    data: $("#hotelDetailEdit").serialize(),
                     success: function (result) {
                         console.log($("#hotel_name").val());
                         $("#hotelDetailEdit")[0].reset();
                         hotelDetails.modal("hide");
+                        refreshTable();
                     }
                 });
             });

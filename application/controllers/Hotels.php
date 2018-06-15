@@ -69,6 +69,9 @@ class Hotels extends CI_Controller {
         return json_encode(['true']);
     }
     public function ajaxHotelSubmit(){
-      print_r($this->input->post());  
+      $post = $this->input->post(); 
+      if(isset($post['hotel_id'])&& !empty($post['hotel_id'])){
+        $this->hotel->putHotel($post);
+      }
     }
 }

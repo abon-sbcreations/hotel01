@@ -24,23 +24,23 @@ class Hotel extends CI_Model {
             'hotel_gst_number' => $hotel['hotel_gst_number'],
             'hotel_check_in_time' => $hotel['hotel_check_in_time'],
             'hotel_check_out_time' => $hotel['hotel_check_out_time'],
-            'hotel_has_restaurant' => $hotel['hotel_has_restaurant'],
-            'hotel_has_bar' => $hotel['hotel_has_bar'],
-            'hotel_reg_date' => $hotel['hotel_reg_date'],
+            'hotel_has_resturant' => $hotel['hotel_has_resturant'],
+            'hotel_has_bar' => $hotel['hotel_has_bar']
+            //'hotel_reg_date' => $hotel['hotel_reg_date'],
         ]);
     }
 
     public function putHotel($hotel) {
-        $this->db->update(['hotel_name' => $hotel['hotel_name'],
+        $this->db->update($this->_hotel_master, ['hotel_name' => $hotel['hotel_name'],
             'hotel_type' => $hotel['hotel_type'],
             'hotel_address' => $hotel['hotel_address'],
             'hotel_reg_number' => $hotel['hotel_reg_number'],
             'hotel_gst_number' => $hotel['hotel_gst_number'],
             'hotel_check_in_time' => $hotel['hotel_check_in_time'],
             'hotel_check_out_time' => $hotel['hotel_check_out_time'],
-            'hotel_has_restaurant' => $hotel['hotel_has_restaurant'],
-            'hotel_has_bar' => $hotel['hotel_has_bar'],
-            'hotel_reg_date' => $hotel['hotel_reg_date'],
+            'hotel_has_resturant' => $hotel['hotel_has_resturant'],
+            'hotel_has_bar' => $hotel['hotel_has_bar']
+            //'hotel_reg_date' => $hotel['hotel_reg_date'],
                 ], ['hotel_id' => $hotel['hotel_id']]);
     }
 
