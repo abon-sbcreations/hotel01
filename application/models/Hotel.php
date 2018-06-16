@@ -24,7 +24,7 @@ class Hotel extends CI_Model {
             'hotel_gst_number' => $hotel['hotel_gst_number'],
             'hotel_check_in_time' => $hotel['hotel_check_in_time'],
             'hotel_check_out_time' => $hotel['hotel_check_out_time'],
-            'hotel_has_resturant' => $hotel['hotel_has_resturant'],
+            'hotel_has_restaurant' => $hotel['hotel_has_restaurant'],
             'hotel_has_bar' => $hotel['hotel_has_bar']
             //'hotel_reg_date' => $hotel['hotel_reg_date'],
         ]);
@@ -38,7 +38,7 @@ class Hotel extends CI_Model {
             'hotel_gst_number' => $hotel['hotel_gst_number'],
             'hotel_check_in_time' => $hotel['hotel_check_in_time'],
             'hotel_check_out_time' => $hotel['hotel_check_out_time'],
-            'hotel_has_resturant' => $hotel['hotel_has_resturant'],
+            'hotel_has_restaurant' => $hotel['hotel_has_restaurant'],
             'hotel_has_bar' => $hotel['hotel_has_bar']
             //'hotel_reg_date' => $hotel['hotel_reg_date'],
                 ], ['hotel_id' => $hotel['hotel_id']]);
@@ -46,6 +46,40 @@ class Hotel extends CI_Model {
 
     public function deleteHotel($where) {
         $this->db->delete($this->_hotel_master, $where);
+    }
+    public function uniqueGstNo($arr){
+         $this->db->select('hotel_id,hotel_gst_number');
+         $this->db->from($this->_hotel_master);
+         if($arr['hotel_id']==0){
+             $this->db->where(['hotel_gst_number'=>$arr['hotel_gst_number']]);
+         }else{
+             $this->db->where(['hotel_gst_number'=>$arr['hotel_gst_number'],
+                    'hotel_id'=>$arr['hotel_id']]);
+         }
+         $query = $this->db->get();
+         $result = $query->result();
+         if($arr['hotel_id']==0){
+            return count($result) > 0 ? 1 : 0; 
+         }else{
+             return count($result) == 1 ? 0 : 1;
+         }
+    }
+    public function uniqueRegNo($arr){
+        $this->db->select('hotel_id,hotel_reg_number');
+         $this->db->from($this->_hotel_master);
+         if($arr['hotel_id']==0){
+             $this->db->where(['hotel_reg_number'=>$arr['hotel_reg_number']]);
+         }else{
+             $this->db->where(['hotel_reg_number'=>$arr['hotel_reg_number'],
+                    'hotel_id'=>$arr['hotel_id']]);
+         }
+         $query = $this->db->get();
+         $result = $query->result();
+         if($arr['hotel_id']==0){
+            return count($result) > 0 ? 1 : 0; 
+         }else{
+             return count($result) == 1 ? 0 : 1;
+         }
     }
 
 }

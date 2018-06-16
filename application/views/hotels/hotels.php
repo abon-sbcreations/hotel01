@@ -17,7 +17,10 @@
             #modalDialog{
                 width:90%;
             }
+            body{
+                background-color:#ccc;
 
+            }
         </style>
     </head>
 
@@ -49,7 +52,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-11">
-                    <h1>Hotels List</h1>
+                    <div class="h1">Hotels List<button onclick="addHotel()" class="btn btn-warning">Add Hotel</button></div>
                     <table id="hotels_list" class="table table-bordered table-striped table-hover">
                         <thead>
                             <tr>
@@ -81,7 +84,7 @@
                             <div class="row">
                                 <div class="form-group col-md-4 mb-3">
                                     <label for="hotel_name">Name</label>
-                                    <input type="hidden" name="hotel_id" id="hotel_id" class="form-control">
+                                    <input type="hidden" name="hotel_id" id="hotel_id" value="0" class="form-control">
                                     <input type="text" name="hotel_name" id="hotel_name" class="form-control">
                                 </div>
                                 <div class="form-group col-md-4 mb-3">
@@ -118,11 +121,11 @@
                                     <label for="hotel_has_resturant">Resturant</label>
                                     <div class="d-block my-3">
                                         <div class="custom-control custom-radio">
-                                            <input id="yesResturant" name="hotel_has_resturant" value="Y" type="radio" class="custom-control-input" checked="">
+                                            <input id="yesResturant" name="hotel_has_restaurant" value="Y" type="radio" class="custom-control-input" checked="">
                                             <label class="custom-control-label" for="yesResturant">Yes</label>
                                         </div>
                                         <div class="custom-control custom-radio">
-                                            <input id="noResturant" name="hotel_has_resturant" value="N" type="radio" class="custom-control-input" >
+                                            <input id="noResturant" name="hotel_has_restaurant" value="N" type="radio" class="custom-control-input" >
                                             <label class="custom-control-label" for="noResturant">No</label>
                                         </div>
                                     </div>
@@ -155,8 +158,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>
 
@@ -167,96 +169,141 @@
         <script src="<?= site_url("library/js/jquery.validate.min.js") ?>" type="text/javascript"></script>
         <script src="<?= site_url("library/js/datatables.min.js") ?>" type="text/javascript"></script>
         <script type="text/javascript">
-            var dataTableHotel = "<?= site_url("index.php/hotels/ajaxAllHotelsDataTable") ?>";
-            var hotelDetails = $("#hotelDetails");
-            $(document).ready(function () {
-                var table1 = $('#hotels_list').DataTable({
-                    "ajax": {
-                        url: dataTableHotel,
-                        type: 'GET'
-                    },
-                    "aoColumns": [
-                        {mData: 'hotel_name'},
-                        {mData: 'hotel_type'},
-                        {mData: 'hotel_reg_number'},
-                        {mData: 'hotel_has_restaurant', sWidth: "40px"},
-                        {mData: 'hotel_has_bar', sWidth: "40px"},
-                        {mData: "hotel_id", bSortable: false, sWidth: "80px",
-                            mRender: function (data, type, full) {
-                                var editBtn = "<button class=\"btn btn-info btn-xs\" onclick=\"editHotel(" + data + ")\">Edit</button>";
-                                var delBtn = "<button class=\"btn btn-danger btn-xs\" onclick=\"deleteHotel(" + data + ")\">Delete</button>";
-                                return editBtn + "&nbsp;&nbsp;&nbsp;&nbsp;" + delBtn;
+                        var dataTableHotel = "<?= site_url("index.php/hotels/ajaxAllHotelsDataTable") ?>";
+                        var hotelDetails = $("#hotelDetails");
+                        $(document).ready(function () {
+                            var table1 = $('#hotels_list').DataTable({
+                                "ajax": {
+                                    url: dataTableHotel,
+                                    type: 'GET'
+                                },
+                                "aoColumns": [
+                                    {mData: 'hotel_name'},
+                                    {mData: 'hotel_type'},
+                                    {mData: 'hotel_reg_number'},
+                                    {mData: 'hotel_has_restaurant', sWidth: "40px"},
+                                    {mData: 'hotel_has_bar', sWidth: "40px"},
+                                    {mData: "hotel_id", bSortable: false, sWidth: "80px",
+                                        mRender: function (data, type, full) {
+                                            var editBtn = "<button class=\"btn btn-info btn-xs\" onclick=\"editHotel(" + data + ")\">Edit</button>";
+                                            var delBtn = "<button class=\"btn btn-danger btn-xs\" onclick=\"deleteHotel(" + data + ")\">Delete</button>";
+                                            return editBtn + "&nbsp;&nbsp;&nbsp;&nbsp;" + delBtn;
+                                        }
+                                    }
+                                ]
+                            });
+                        });
+                        function addHotel() {
+                            $("#hotelDetails .modal-title").html("");
+                            $("#hotelDetailEdit")[0].reset();
+                            hotelDetails.modal("show");
+                        }
+                        function editHotel(hotel_id) {
+                            $.ajax({
+                                type: "POST",
+                                url: "<?= site_url('index.php/hotels/ajaxHotelDetails') ?>",
+                                data: {hotel_id: hotel_id},
+                                success: function (result) {
+                                    var data = $.parseJSON(result);
+                                    $("#hotelDetails .modal-title").html("<span>" + data['hotel_name'] + "</span>");
+                                    $("input[name*='hotel_name']").val(data['hotel_name']);
+                                    $("input[name*='hotel_id']").val(data['hotel_id']);
+                                    $("input[name*='hotel_reg_number']").val(data['hotel_reg_number']);
+                                    $("input[name*='hotel_gst_number']").val(data['hotel_gst_number']);
+                                    $("select[name*='hotel_type'] option[value='" + data['hotel_type'] + "']").attr('selected', 'selected');
+                                    $("select[name*='hotel_check_in_time'] option[value='" + data['hotel_check_in_time'] + "']").attr('selected', 'selected');
+                                    $("select[name*='hotel_check_out_time'] option[value='" + data['hotel_check_out_time'] + "']").attr('selected', 'selected');
+                                    var has_bar = data['hotel_has_bar'] === 'Y' ? 0 : 1;
+                                    $("input:radio[name=hotel_has_bar]:nth(" + has_bar + ")").attr('checked', true);
+                                    var has_resturant = data['hotel_has_restaurant'] === 'Y' ? 0 : 1;
+                                    $("input:radio[name=hotel_has_restaurant]:nth(" + has_resturant + ")").attr('checked', true);
+                                    $("#hotel_address").html(data['hotel_address']);
+                                    hotelDetails.modal("show");
+                                }
+                            });
+                        }
+                        function refreshTable() {
+                            $.getJSON(dataTableHotel, null, function (json) {
+                                table = $('#hotels_list').dataTable();
+                                oSettings = table.fnSettings();
+                                table.fnClearTable(this);
+                                for (var i = 0; i < json['data'].length; i++) {
+                                    table.oApi._fnAddData(oSettings, json['data'][i]);
+                                }
+                                oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
+                                table.fnDraw();
+                            });
+                        }
+                        function deleteHotel(hotel_id) {
+                            var r = confirm("You Sure to delete the Hotel?");
+                            if (r == true) {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "<?= site_url('index.php/hotels/ajaxHotelDelete') ?>",
+                                    data: {hotel_id: hotel_id},
+                                    success: function (result) {
+                                        hotelDetails.modal("hide");
+                                        refreshTable();
+                                    }
+                                });
+                            } else {
+                                hotelDetails.modal("hide");
                             }
                         }
-                    ]
-                });
-            });
-            function editHotel(hotel_id) {
-                $.ajax({
-                    type: "POST",
-                    url: "<?= site_url('index.php/hotels/ajaxHotelDetails') ?>",
-                    data: {hotel_id: hotel_id},
-                    success: function (result) {
-                        var data = $.parseJSON(result);
-                        $("#hotelDetails .modal-title").html("<span>" + data['hotel_name'] + "</span>");
-                        $("input[name*='hotel_name']").val(data['hotel_name']);
-                        $("input[name*='hotel_id']").val(data['hotel_id']);
-                        $("input[name*='hotel_reg_number']").val(data['hotel_reg_number']);
-                        $("input[name*='hotel_gst_number']").val(data['hotel_gst_number']);
-                        $("select[name*='hotel_type'] option[value='" + data['hotel_type'] + "']").attr('selected', 'selected');
-                        $("select[name*='hotel_check_in_time'] option[value='" + data['hotel_check_in_time'] + "']").attr('selected', 'selected');
-                        $("select[name*='hotel_check_out_time'] option[value='" + data['hotel_check_out_time'] + "']").attr('selected', 'selected');
-                        $("input[name=hotel_has_bar][val=Y]").prop("checked", 'true');
-                        var has_bar = data['hotel_has_bar'] === 'Y' ? 0 : 1;
-                        $("input:radio[name=hotel_has_bar]:nth(" + has_bar + ")").attr('checked', true);
-                        var has_resturant = data['hotel_has_restaurant'] === 'Y' ? 0 : 1;
-                        $("input:radio[name=hotel_has_restaurant]:nth(" + has_bar + ")").attr('checked', true);
-                        $("#hotel_address").html(data['hotel_address']);
-                        hotelDetails.modal("show");
-                    }
-                });
-            }
-            function refreshTable() {
-                $.getJSON(dataTableHotel, null, function (json) {
-                    table = $('#hotels_list').dataTable();
-                    oSettings = table.fnSettings();
-                    table.fnClearTable(this);
-                    for (var i = 0; i < json['data'].length; i++) {
-                        table.oApi._fnAddData(oSettings, json['data'][i]);
-                    }
-                    oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
-                    table.fnDraw();
-                });
-            }
-            function deleteHotel(hotel_id) {
-                var r = confirm("You Sure to delete the Hotel?");
-                if (r == true) {
-                    $.ajax({
-                        type: "POST",
-                        url: "<?= site_url('index.php/hotels/ajaxHotelDelete') ?>",
-                        data: {hotel_id: hotel_id},
-                        success: function (result) {
-                            hotelDetails.modal("hide");
-                            refreshTable();
-                        }
-                    });
-                } else {
-                    hotelDetails.modal("hide");
-                }
-            }
-            $("#submitBtn").on('click', function () {
-                $.ajax({
-                    type: "POST",
-                    url: "<?= site_url('index.php/hotels/ajaxHotelSubmit') ?>",
-                    data: $("#hotelDetailEdit").serialize(),
-                    success: function (result) {
-                        console.log($("#hotel_name").val());
-                        $("#hotelDetailEdit")[0].reset();
-                        hotelDetails.modal("hide");
-                        refreshTable();
-                    }
-                });
-            });
+                        $("#submitBtn").on("click", function () {
+                            $("#hotelDetailEdit").submit();
+                        });
+                        $("#hotelDetailEdit").submit(function (e) {
+                            var common_alert = "";
+                            var hotel_name = $.trim($("input[name*='hotel_name']").val());
+                            var reg_no = $.trim($("input[name*='hotel_reg_number']").val());
+                            var gst_no = $.trim($("input[name*='hotel_gst_number']").val());
+                            var hotel_id = $.trim($("input[name*='hotel_id']").val());
+                            if (hotel_name == '') {
+                                common_alert = '\n Please enter hotel_name';
+                            }
+                            if (reg_no == '' && gst_no == '') {
+                                common_alert = common_alert + "\n enter proper gst no and registration number";
+                            } else if (reg_no == '') {
+                                common_alert = common_alert + "\n enter proper registration number";
+                            } else if (gst_no == '') {
+                                common_alert = common_alert + "\n enter proper registration number";
+                            } else {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "<?= site_url('index.php/hotels/ajaxNoUnique') ?>",
+                                    data: {hotel_id: hotel_id,
+                                        hotel_reg_number: reg_no, hotel_gst_number: gst_no},
+                                    success: function (result) {
+                                        result = JSON.parse(result)
+                                                ;
+                                        if (result['regStatus'] == 0) {
+                                            common_alert = common_alert + "\n Registration no is taken";
+                                        }
+                                        if (result['gstStatus'] == 0) {
+                                            common_alert = common_alert + "\n GST No is taken";
+                                        }
+                                    }
+                                });
+                            }
+                            if ($.trim(common_alert) != '') {
+                                alert(common_alert);
+                                $("#hotelDetailEdit")[0].reset();
+                                hotelDetails.modal("hide");
+                            } else {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "<?= site_url('index.php/hotels/ajaxHotelSubmit') ?>",
+                                    data: $("#hotelDetailEdit").serialize(),
+                                    success: function (result) {
+                                        $("#hotelDetailEdit")[0].reset();
+                                        hotelDetails.modal("hide");
+                                        refreshTable();
+                                    }
+                                });
+                            }
+                            e.preventDefault();
+                        });
         </script>
     </body>
 </html>

@@ -45,6 +45,7 @@ class Hotels extends CI_Controller {
                 'hotel_type' => $hotel['hotel_name'],
                 'hotel_address' => $hotel['hotel_address'],
                 'hotel_reg_number' => $hotel['hotel_reg_number'],
+                'hotel_gst_number' => $hotel['hotel_gst_number'],
                 'hotel_has_restaurant' => $hotel['hotel_has_restaurant'] == 'Y' ? "Yes" : "No",
                 'hotel_has_bar' => $hotel['hotel_has_bar'] == 'Y' ? "Yes" : "No",
             ];
@@ -72,6 +73,34 @@ class Hotels extends CI_Controller {
       $post = $this->input->post(); 
       if(isset($post['hotel_id'])&& !empty($post['hotel_id'])){
         $this->hotel->putHotel($post);
+      }else{
+        $this->hotel->postHotel($post);
       }
     }
-}
+    public function ajaxNoUnique(){
+        //hotel_id hotel_reg_number  hotel_gst_number
+        $gstStatus = -1;        $regStatus = -1;
+        $unqGst = $this->hotel->uniqueGstNo([
+            'hotel_id'=>$this->input->post('hotel_id'),
+            'hotel_gst_number'=>$this->input->post('hotel_gst_number')]);
+        $unqReg = $this->hotel->uniqueRegNo([
+            'hotel_id'=>$this->input->post('hotel_id'),
+            'hotel_reg_number'=>$this->input->post('hotel_reg_number')]);
+        if($unqGst == 1){
+            $unqGst = "GST No is taken";
+            $gstStatus = 0;
+        }else{
+            $unqGst = "GST No is unique";
+            $gstStatus = 1;
+        }
+        if($unqReg ==1){
+            $unqReg = "Registration no is taken";
+            $regStatus = 0;
+        }else{
+           $unqReg = "Registration No is unique";
+            $regStatus = 1; 
+        }
+        echo json_encode(['regStatus'=>$regStatus,'gstStatus'=>$gstStatus,
+            'unqGst'=>$unqGst,'unqReg'=>$unqReg]);
+    }
+}  
