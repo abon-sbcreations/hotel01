@@ -3,8 +3,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Amenities extends CI_Controller {
-
-    public function __construct($param) {
+    public function __construct() {
         parent::__construct();
         $this->load->helper('url');
         $this->load->helper('commonmisc_helper');
@@ -22,7 +21,7 @@ class Amenities extends CI_Controller {
             'timeSlotOptions' => timeSlotOptions()
         ]);
     }
-    public function ajaxAllAmenityDataTable() {
+    public function ajaxAllAmenitiesMasterDataTable() {
         // Datatables Variables
         $draw = intval($this->input->get("draw"));
         $start = intval($this->input->get("start"));
@@ -33,7 +32,7 @@ class Amenities extends CI_Controller {
             $rows[] = [
                 "DT_RowId" => "row_" . $amenity['amenity_id'],
                 "amenity_id" => $amenity['amenity_id'],
-                'amenity_type' => $amenity['amenity_type']
+                'amenity_name' => $amenity['amenity_name']
             ];
         }
         echo json_encode([
@@ -43,24 +42,25 @@ class Amenities extends CI_Controller {
             "data" => $rows
         ]);
     }
-    public function ajaxAmenityDetails() {
+    public function ajaxAmenityMasterDetails() {
         $params = [
             'where' => ['amenity_id' => $this->input->post('amenity_id')]
-        ];
-        $aminity = $this->Amenity->getAmenities($params);
+        ];       
+        $aminity = $this->Amenity->getAminity($params);
         echo json_encode($aminity[0]);
     }
-    public function ajaxAmenityDelete() {
-        $where = ['amenity_id' => $this->input->post('amenity_id')];
-        $aminity = $this->Amenity->deleteAmenity($where);
-        return json_encode(['true']);
-    }
-    public function ajaxAmenitySubmit() {
+    public function ajaxAmenityMasterSubmit(){
         $post = $this->input->post();
         if (isset($post['amenity_id']) && !empty($post['amenity_id'])) {
             $this->Amenity->putAmenity($post);
         } else {
             $this->Amenity->postAmenity($post);
         }
+    }
+    public function ajaxAmenityMasterDelete() {
+        $where = ['amenity_id' => $this->input->post('amenity_id')];
+        $aminity = $this->Amenity->deleteAmenity($where);
+        
+        return json_encode(['true']);
     }
 }

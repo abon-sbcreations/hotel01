@@ -48,7 +48,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-11">
-                    <div class="h1">Amenities List<button onclick="addAmenities()" class="btn btn-warning">Add Amenities</button></div>
+                    <div class="h1">Amenities List<button onclick="addAmenity()" class="btn btn-warning">Add Amenity</button></div>
                     <table id="room_list" class="table table-bordered table-striped table-hover">
                         <thead>
                             <tr>
@@ -103,8 +103,8 @@
         <script src="<?= site_url("library/js/jquery.validate.min.js") ?>" type="text/javascript"></script>
         <script src="<?= site_url("library/js/datatables.min.js") ?>" type="text/javascript"></script>
         <script type="text/javascript">
-                        var dataTableRoom = "<?= site_url("index.php/rooms/ajaxAllRoomMasterDataTable") ?>";
-                        var roomDetails = $("#roomDetails");
+                        var dataTableRoom = "<?= site_url("index.php/amenities/ajaxAllAmenitiesMasterDataTable") ?>";
+                        var amenityDetails = $("#amenityDetails");
                         $(document).ready(function () {
                             var table1 = $('#room_list').DataTable({
                                 "ajax": {
@@ -112,34 +112,34 @@
                                     type : 'GET'
                                 },
                                 "aoColumns": [
-                                    {mData: 'room_type'},
-                                    {mData: "room_master_id", bSortable: false, sWidth: "80px",
+                                    {mData: 'amenity_name'},
+                                    {mData: "amenity_id", bSortable: false, sWidth: "80px",
                                         mRender: function (data, type, full) {
-                                            var editBtn = "<button class=\"btn btn-info btn-xs\" onclick=\"editRoom(" + data + ")\">Edit</button>";
-                                            var delBtn = "<button class=\"btn btn-danger btn-xs\" onclick=\"deleteRoom(" + data + ")\">Delete</button>";
+                                            var editBtn = "<button class=\"btn btn-info btn-xs\" onclick=\"editAmenity(" + data + ")\">Edit</button>";
+                                            var delBtn = "<button class=\"btn btn-danger btn-xs\" onclick=\"deleteAmenity(" + data + ")\">Delete</button>";
                                             return editBtn + "&nbsp;&nbsp;&nbsp;&nbsp;" + delBtn;
                                         }
                                     }
                                 ]
                             });
                         });
-                        function addRoomType() {
-                            $("#roomDetails .modal-title").html("");
-                            $("#roomDetailEdit")[0].reset();
-                            roomDetails.modal("show");
+                        function addAmenity() {
+                            $("#amenityDetails .modal-title").html("");
+                            $("#amenityDetailEdit")[0].reset();
+                            amenityDetails.modal("show");
                         }
-                        function editRoom(room_master_id) {
-                            console.log(room_master_id);
+                        function editAmenity(amenity_id) {
+                            console.log(amenity_id);
                             $.ajax({
                                 type: "POST",
-                                url: "<?= site_url('index.php/rooms/ajaxRoomMasterDetails') ?>",
-                                data: {room_master_id: room_master_id},
+                                url: "<?= site_url('index.php/amenities/ajaxAmenityMasterDetails') ?>",
+                                data: {amenity_id: amenity_id},
                                 success: function (result) {
                                     var data = $.parseJSON(result);
-                                    $("input[name*='room_type']").val(data['room_type']);
-                                    $("#room_type_Desc").html(data['room_type_Desc']);
-                                    $("input[name*='room_master_id']").val(data['room_master_id']);
-                                    roomDetails.modal("show");
+                                    $("input[name*='amenity_name']").val(data['amenity_name']);
+                                    $("#amenity_desc").html(data['amenity_desc']);
+                                    $("input[name*='amenity_id']").val(data['amenity_id']);
+                                    amenityDetails.modal("show");
                                 }
                             });
                         }
@@ -155,44 +155,44 @@
                                 table.fnDraw();
                             });
                         }
-                        function deleteRoom(room_master_id) {
-                            var r = confirm("You Sure to delete the Room Type?");
+                        function deleteAmenity(amenity_id) {
+                            var r = confirm("You Sure to delete the Amenity?");
                             if (r == true) {
                                 $.ajax({
                                     type: "POST",
-                                    url: "<?= site_url('index.php/rooms/ajaxRoomMasterDelete') ?>",
-                                    data: { room_master_id : room_master_id },
+                                    url: "<?= site_url('index.php/amenities/ajaxAmenityMasterDelete') ?>",
+                                    data: { amenity_id : amenity_id },
                                     success: function (result) {
-                                        roomDetails.modal("hide");
+                                        amenityDetails.modal("hide");
                                         refreshTable();
                                     }
                                 });
                             } else {
-                                roomDetails.modal("hide");
+                                amenityDetails.modal("hide");
                             }
                         }
                         $("#submitBtn").on("click", function () {
-                            $("#roomDetailEdit").submit();
+                            $("#amenityDetailEdit").submit();
                         });
-                        $("#roomDetailEdit").submit(function (e) {
+                        $("#amenityDetailEdit").submit(function (e) {
                             var common_alert = "";
-                            var room_type = $.trim($("input[name*='room_type']").val());
-                            var room_master_id = $.trim($("input[name*='room_master_id']").val());
-                            if (room_type == '') {
-                                common_alert = '\n Please enter room type';
+                            var amenity_name = $.trim($("input[name*='amenity_name']").val());
+                            var amenity_id = $.trim($("input[name*='amenity_id']").val());
+                            if (amenity_name == '') {
+                                common_alert = '\n Please enter amenity name';
                             }
                             if ($.trim(common_alert) != '') {
                                 alert(common_alert);
-                                $("#roomDetailEdit")[0].reset();
-                                roomDetails.modal("hide");
+                                $("#amenityDetailEdit")[0].reset();
+                                amenityDetails.modal("hide");
                             } else {
                                 $.ajax({
                                     type: "POST",
-                                    url: "<?= site_url('index.php/rooms/ajaxRoomMasterSubmit') ?>",
-                                    data: $("#roomDetailEdit").serialize(),
+                                    url: "<?= site_url('index.php/amenities/ajaxAmenityMasterSubmit') ?>",
+                                    data: $("#amenityDetailEdit").serialize(),
                                     success: function (result) {
-                                        $("#roomDetailEdit")[0].reset();
-                                        roomDetails.modal("hide");
+                                        $("#amenityDetailEdit")[0].reset();
+                                        amenityDetails.modal("hide");
                                         refreshTable();
                                     }
                                 });
