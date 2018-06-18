@@ -14,15 +14,9 @@ class Hotels extends CI_Controller {
             redirect('/index.php/admins', 'refresh');
         }
     }
-
-    public function index() {
-    
-    }
-
     public function hotels() {
-        
          $loggedId = $this->session->userdata('logged_id');
-        $loggedDisplay = $this->session->userdata('logged_display');
+        $loggedDisplay = $this->session->userdata('logged_display'); //users full name.
         $this->load->view('hotels/hotels',[
             'loggedDisplay' => $loggedDisplay,
             'timeSlotOptions' => timeSlotOptions(),

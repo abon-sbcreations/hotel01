@@ -27,3 +27,14 @@ function hotelTypeSlotOptions() {
     }
     return $list;
 }
+
+function roomTypeOptions() {
+    $list = "<option value=\"\">Choose...</option>";
+    $types = [
+        "none"=>"none AC",        "ac"=>"AC",
+        "delux"=>"Delux",        "corporate"=>"Corporate"];
+    foreach ($types as $key=>$typ){
+        $list .= "<option value=\"{$key}\">{$typ}</option>";
+    }
+    return $list;
+}

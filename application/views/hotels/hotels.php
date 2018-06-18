@@ -146,7 +146,7 @@
                             </div>
                             <div class="row">
                                 <div class="form-group  col-md-8">
-                                    <label for="comment">Comment:</label>
+                                    <label for="hotel_address">Hotel Address:</label>
                                     <textarea name="hotel_address" class="form-control" rows="5" cols="" id="hotel_address"></textarea>
                                 </div>
                             </div>
