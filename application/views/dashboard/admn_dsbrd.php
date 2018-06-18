@@ -53,6 +53,7 @@
             <li><a href="<?=site_url('index.php/hotels/hotels')?>">Hotels</a></li>
             <li><a href="<?=site_url('index.php/rooms/master')?>">Room's Master</a></li>
             <li><a href="<?=site_url('index.php/Amenities/amenity_list')?>">Amenity Master</a></li>
+            <li><a href="<?=site_url('index.php/room_items/master')?>">Room Items Master</a></li>
            </ul>
           <ul class="nav nav-sidebar"></ul>
           <ul class="nav nav-sidebar">
