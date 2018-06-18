@@ -30,11 +30,14 @@ function hotelTypeSlotOptions() {
 
 function roomTypeOptions() {
     $list = "<option value=\"\">Choose...</option>";
-    $types = [
-        "none"=>"none AC",        "ac"=>"AC",
-        "delux"=>"Delux",        "corporate"=>"Corporate"];
-    foreach ($types as $key=>$typ){
-        $list .= "<option value=\"{$key}\">{$typ}</option>";
+    $ci =& get_instance();
+    $ci->load->database();
+    $ci->db->from("tbl_room_master");
+    $ci->db->select("room_master_id,room_type");
+    $query = $ci->db->get();
+    $result = $query->result_array();    
+    foreach ($result as $key=>$typ){
+        $list .= "<option value=\"{$typ['room_master_id']}\">{$typ['room_type']}</option>";
     }
     return $list;
 }

@@ -19,8 +19,7 @@ class RoomMaster extends CI_Model {
     public function putRoomMaster($master) {
         $this->db->update($this->_room_master, ['room_type' => $master['room_type'],
             'room_type_Desc' => $master['room_type_Desc'],
-            'room_type_status' => $master['room_type_status']
-                ], ['room_master_id' => $hotel['room_master_id']]);
+                ], ['room_master_id' => $master['room_master_id']]);
     }
     public function deleteRoomMaster($where) {
         $this->db->delete($this->_room_master, $where);

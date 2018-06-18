@@ -48,11 +48,11 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-11">
-                    <div class="h1">Room's Master Type List<button onclick="addRoomType()" class="btn btn-warning">Add Room Type</button></div>
+                    <div class="h1">Amenities List<button onclick="addAmenities()" class="btn btn-warning">Add Amenities</button></div>
                     <table id="room_list" class="table table-bordered table-striped table-hover">
                         <thead>
                             <tr>
-                                <th>Room Type</th>       
+                                <th>Amenity Name</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -62,7 +62,7 @@
                 </div>
             </div>
         </div>
-        <div id="roomDetails" class="modal  fade" role="dialog">
+        <div id="amenityDetails" class="modal  fade" role="dialog">
             <div id="modalDialog" class="modal-dialog  modal-lg">
                 <!-- Modal content-->
                 <div class="modal-content ">
@@ -71,18 +71,18 @@
                         <h4 class="modal-title"></h4>
                     </div>
                     <div class="modal-body">
-                        <form method="post" name="roomDetailEdit" id="roomDetailEdit" >
+                        <form method="post" name="amenityDetailEdit" id="amenityDetailEdit" >
                             <div class="row">
                                 <div class="form-group col-md-4 mb-3">
-                                    <label for="room_type">Type</label>
-                                    <input type="hidden" name="room_master_id" id="room_master_id" value="0" class="form-control">
-                                    <input type="text" name="room_type" id="room_type" class="form-control">
+                                    <label for="amenity_name">Name</label>
+                                    <input type="hidden" name="amenity_id" id="amenity_id" value="0" class="form-control">
+                                    <input type="text" name="amenity_name" id="amenity_name" class="form-control">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group  col-md-8">
-                                    <label for="room_type_Desc">Room Type Desc:</label>
-                                    <textarea name="room_type_Desc" class="form-control" rows="5" cols="" id="room_type_Desc"></textarea>
+                                    <label for="amenity_desc">Amenity Desc:</label>
+                                    <textarea name="amenity_desc" class="form-control" rows="5" cols="" id="amenity_desc"></textarea>
                                 </div>
                             </div>
                             <div class="row">
