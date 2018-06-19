@@ -59,6 +59,5 @@ class Rooms extends CI_Controller{
       }else{
         $this->RoomMaster->postRoomMaster($post);
       }
-    }
-    
+    }    
 }

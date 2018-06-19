@@ -48,11 +48,13 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-11">
-                    <div class="h1">Room's Item Master List<button onclick="addRoomType()" class="btn btn-warning">Add Room Type</button></div>
-                    <table id="room_list" class="table table-bordered table-striped table-hover">
+                    <div class="h1">Room's Item Master List<button onclick="addRoomItem()" class="btn btn-warning">Add Room Item</button></div>
+                    <table id="roomItem_list" class="table table-bordered table-striped table-hover">
                         <thead>
                             <tr>
-                                <th>Room Item</th>       
+                                <th>Room Item</th>   
+                                 <th>Room Category</th> 
+                                 <th>Room Sub - Category</th> 
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -62,7 +64,7 @@
                 </div>
             </div>
         </div>
-        <div id="roomDetails" class="modal  fade" role="dialog">
+        <div id="roomItemDetails" class="modal  fade" role="dialog">
             <div id="modalDialog" class="modal-dialog  modal-lg">
                 <!-- Modal content-->
                 <div class="modal-content ">
@@ -71,18 +73,22 @@
                         <h4 class="modal-title"></h4>
                     </div>
                     <div class="modal-body">
-                        <form method="post" name="roomDetailEdit" id="roomDetailEdit" >
+                        <form method="post" name="roomItemEdit" id="roomItemEdit" >
                             <div class="row">
                                 <div class="form-group col-md-4 mb-3">
-                                    <label for="room_type">Type</label>
-                                    <input type="hidden" name="room_master_id" id="room_master_id" value="0" class="form-control">
-                                    <input type="text" name="room_type" id="room_type" class="form-control">
+                                    <label for="room_item_name">Name</label>
+                                    <input type="hidden" name="room_item_id" id="room_item_id" value="0" class="form-control">
+                                    <input type="text" name="room_item_name" id="room_item_name" class="form-control">
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group  col-md-8">
-                                    <label for="room_type_Desc">Room Type Desc:</label>
-                                    <textarea name="room_type_Desc" class="form-control" rows="5" cols="" id="room_type_Desc"></textarea>
+                                <div class="form-group  col-md-3">
+                                    <label for="room_item_cat">Room Item Category:</label>
+                                    <select id="room_item_cat" name="room_item_cat"></select>
+                                </div>
+                                <div class="form-group  col-md-3">
+                                    <label for="room_item_cat">Item Sub Category:</label>
+                                    <select id="room_item_subcat" name="room_item_subcat"></select>
                                 </div>
                             </div>
                             <div class="row">
@@ -103,49 +109,56 @@
         <script src="<?= site_url("library/js/jquery.validate.min.js") ?>" type="text/javascript"></script>
         <script src="<?= site_url("library/js/datatables.min.js") ?>" type="text/javascript"></script>
         <script type="text/javascript">
-                        var dataTableRoom = "<?= site_url("index.php/rooms/ajaxAllRoomMasterDataTable") ?>";
-                        var roomDetails = $("#roomDetails");
-                        $(document).ready(function () {
-                            var table1 = $('#room_list').DataTable({
+                        var dataItemTable = "<?= site_url("index.php/room_items/ajaxAllRoomItemMasterDataTable") ?>";
+                        var roomItemDetails = $("#roomItemDetails");
+                       // var itemCategory;   var itemSubCategory;
+                        $(document).ready(function () {                           
+                             itemCategory = "<?= addslashes(json_encode($itemCategory['category']))?>";
+                             itemSubCategory = "<?= addslashes(json_encode($itemCategory['sub_category']))?>";
+                            var table1 = $('#roomItem_list').DataTable({
                                 "ajax": {
-                                    url : dataTableRoom,
+                                    url : dataItemTable,
                                     type : 'GET'
                                 },
                                 "aoColumns": [
-                                    {mData: 'room_type'},
-                                    {mData: "room_master_id", bSortable: false, sWidth: "80px",
+                                    {mData: 'room_item_name'},
+                                    {mData: 'room_item_cat'},
+                                    {mData: 'room_item_subcat'},
+                                    {mData: "room_item_id", bSortable: false, sWidth: "80px",
                                         mRender: function (data, type, full) {
-                                            var editBtn = "<button class=\"btn btn-info btn-xs\" onclick=\"editRoom(" + data + ")\">Edit</button>";
-                                            var delBtn = "<button class=\"btn btn-danger btn-xs\" onclick=\"deleteRoom(" + data + ")\">Delete</button>";
+                                            var editBtn = "<button class=\"btn btn-info btn-xs\" onclick=\"editRoomItem(" + data + ")\">Edit</button>";
+                                            var delBtn = "<button class=\"btn btn-danger btn-xs\" onclick=\"deleteRoomItem(" + data + ")\">Delete</button>";
                                             return editBtn + "&nbsp;&nbsp;&nbsp;&nbsp;" + delBtn;
                                         }
                                     }
                                 ]
                             });
                         });
-                        function addRoomType() {
-                            $("#roomDetails .modal-title").html("");
-                            $("#roomDetailEdit")[0].reset();
-                            roomDetails.modal("show");
+                        function addRoomItem() {
+                            $("#roomItemDetails .modal-title").html("");
+                            $("#roomItemEdit")[0].reset();
+                            popCategory();
+                            popSubCategory();
+                            roomItemDetails.modal("show");
                         }
-                        function editRoom(room_master_id) {
-                            console.log(room_master_id);
+                        function editRoomItem(room_item_id) {
                             $.ajax({
                                 type: "POST",
-                                url: "<?= site_url('index.php/rooms/ajaxRoomMasterDetails') ?>",
-                                data: {room_master_id: room_master_id},
+                                url: "<?= site_url('index.php/room_items/ajaxRoomItemMasterDetails') ?>",
+                                data: {room_item_id: room_item_id},
                                 success: function (result) {
-                                    var data = $.parseJSON(result);
-                                    $("input[name*='room_type']").val(data['room_type']);
-                                    $("#room_type_Desc").html(data['room_type_Desc']);
-                                    $("input[name*='room_master_id']").val(data['room_master_id']);
-                                    roomDetails.modal("show");
+                                    var data = $.parseJSON(result); 
+                                    $("input[name*='room_item_name']").val(data['room_item_name']);
+                                    popCategory(data['room_item_cat']);
+                                    popSubCategory(data['room_item_cat'],data['room_item_subcat']);
+                                    roomItemDetails.modal("show");
+                                    
                                 }
                             });
                         }
                         function refreshTable() {
-                            $.getJSON(dataTableRoom, null, function (json) {
-                                table = $('#room_list').dataTable();
+                            $.getJSON(dataItemTable, null, function (json) {
+                                table = $("#roomItem_list").dataTable();
                                 oSettings = table.fnSettings();
                                 table.fnClearTable(this);
                                 for (var i = 0; i < json['data'].length; i++) {
@@ -155,49 +168,72 @@
                                 table.fnDraw();
                             });
                         }
-                        function deleteRoom(room_master_id) {
+                        function deleteRoomItem (room_item_id) {
                             var r = confirm("You Sure to delete the Room Type?");
                             if (r == true) {
                                 $.ajax({
                                     type: "POST",
-                                    url: "<?= site_url('index.php/rooms/ajaxRoomMasterDelete') ?>",
-                                    data: { room_master_id : room_master_id },
+                                    url: "<?= site_url('index.php/room_items/ajaxRoomItemMasterDelete') ?>",
+                                    data: { room_item_id : room_item_id },
                                     success: function (result) {
-                                        roomDetails.modal("hide");
+                                        roomItemDetails.modal("hide");
                                         refreshTable();
                                     }
                                 });
                             } else {
-                                roomDetails.modal("hide");
+                                roomItemDetails.modal("hide");
                             }
                         }
                         $("#submitBtn").on("click", function () {
-                            $("#roomDetailEdit").submit();
+                            $("#roomItemEdit").submit();
                         });
-                        $("#roomDetailEdit").submit(function (e) {
+                        $("#roomItemEdit").submit(function (e) {
                             var common_alert = "";
-                            var room_type = $.trim($("input[name*='room_type']").val());
-                            var room_master_id = $.trim($("input[name*='room_master_id']").val());
-                            if (room_type == '') {
-                                common_alert = '\n Please enter room type';
+                            var item_name = $.trim($("input[name*='room_item_name']").val());
+                           if (item_name == '') {
+                                common_alert = '\n Please enter item name';
                             }
                             if ($.trim(common_alert) != '') {
                                 alert(common_alert);
                                 $("#roomDetailEdit")[0].reset();
-                                roomDetails.modal("hide");
+                                roomItemDetails.modal("hide");
                             } else {
                                 $.ajax({
                                     type: "POST",
-                                    url: "<?= site_url('index.php/rooms/ajaxRoomMasterSubmit') ?>",
-                                    data: $("#roomDetailEdit").serialize(),
+                                    url: "<?= site_url('index.php/room_items/ajaxRoomItemsMasterSubmit') ?>",
+                                    data: $("#roomItemEdit").serialize(),
                                     success: function (result) {
-                                        $("#roomDetailEdit")[0].reset();
-                                        roomDetails.modal("hide");
+                                        $("#roomItemEdit")[0].reset();
+                                        roomItemDetails.modal("hide");
                                         refreshTable();
                                     }
                                 });
                             }
                             e.preventDefault();
+                        });
+                        function popCategory(id=""){
+                            var category = $.parseJSON(itemCategory);
+                            var option = "<option value=\"\">Choose...</option>";
+                            $.each(category,function(key,row){
+                                var select = id==key ? "selected='selected'" : "";
+                               option = option + "<option "+select+" value=\""+key+"\">"+row+"</option>"; 
+                            });
+                            $("#room_item_cat").html(option);
+                        }
+                        function popSubCategory(id = "",opt=""){
+                            var subCategory = $.parseJSON(itemSubCategory);
+                            var option = "<option value=\"\">Choose...</option>";
+                            if(id !== ""){                                
+                                $.each(subCategory[id],function(key,row){
+                                   var select = opt==key ? "selected='selected'" : "";
+                                   option = option + "<option "+select+" value=\""+key+"\">"+row+"</option>"; 
+                                });                                
+                            }
+                            $("#room_item_subcat").html(option);
+                        }
+                        $("#room_item_cat").on("change",function(){
+                             var valueSelected = this.value;
+                             popSubCategory(valueSelected);
                         });
         </script>
     </body>
