@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.0
+-- version 4.8.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 18, 2018 at 10:33 AM
--- Server version: 10.1.31-MariaDB
--- PHP Version: 5.6.35
+-- Generation Time: Jun 20, 2018 at 07:46 AM
+-- Server version: 10.1.33-MariaDB
+-- PHP Version: 7.2.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -50,6 +50,17 @@ CREATE TABLE `room_item_master` (
   `room_item_name` varchar(128) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `room_item_master`
+--
+
+INSERT INTO `room_item_master` (`room_item_id`, `room_item_cat`, `room_item_subcat`, `room_item_name`) VALUES
+(1, 'c2', 'c24', 'item01'),
+(3, 'c2', 'c21', 'item03'),
+(4, 'c2', 'c22', 'item04'),
+(7, 'c2', 'c24', 'item04'),
+(14, 'c3', 'c33', 'item001');
+
 -- --------------------------------------------------------
 
 --
@@ -74,9 +85,7 @@ INSERT INTO `tbl_amenities_master` (`amenity_id`, `amenity_name`, `amenity_desc`
 (5, 'facility05', 'facility 05'),
 (6, 'facility06', 'facility 06'),
 (7, 'facility07', 'facility 07'),
-(8, 'facility08', 'facility 08'),
-(9, 'facility09', 'facility 09'),
-(10, 'facility10', 'facility 10');
+(8, 'facility0-8', 'facility 08');
 
 -- --------------------------------------------------------
 
@@ -111,7 +120,7 @@ INSERT INTO `tbl_hotel_master` (`hotel_id`, `hotel_name`, `hotel_type`, `hotel_a
 (16, 'hotel06', '3*', 'hotel address6', '6', '6', '10:00', '22:00', 'Y', 'N', '2018-06-01 00:00:00'),
 (17, 'hotel07', '4*', 'hotel address7', '7', '7', '10:00', '22:00', 'N', 'Y', '2018-06-01 00:00:00'),
 (18, 'hotel08', '1*', 'hotel address8', '8', '8', '10:00', '22:00', 'N', 'Y', '2018-06-01 00:00:00'),
-(20, 'hotel05111', '1*', 'hotel address5', '511', '511', '10:00', '22:00', NULL, 'Y', NULL),
+(20, 'hotel0511', '1*', 'hotel address5', '511', '511', '10:00', '22:00', 'N', 'Y', NULL),
 (21, 'ewqfqf', '4*', 'e21e12e12e122e12e', '1234', '1234', '10:00', '15:00', 'Y', 'Y', NULL);
 
 -- --------------------------------------------------------
@@ -150,7 +159,7 @@ INSERT INTO `tbl_room_master` (`room_master_id`, `room_type`, `room_type_Desc`, 
 (1, 'none', 'Basic Room', 'Y'),
 (2, 'ac', 'AC Room', 'Y'),
 (3, 'delux', 'Delux Room', 'Y'),
-(4, 'corporate', 'Corporate Room', 'Y');
+(4, 'corporate1', 'Corporate Room', 'Y');
 
 -- --------------------------------------------------------
 
@@ -256,13 +265,13 @@ ALTER TABLE `hotel_room_item`
 -- AUTO_INCREMENT for table `room_item_master`
 --
 ALTER TABLE `room_item_master`
-  MODIFY `room_item_id` int(4) NOT NULL AUTO_INCREMENT;
+  MODIFY `room_item_id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `tbl_amenities_master`
 --
 ALTER TABLE `tbl_amenities_master`
-  MODIFY `amenity_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `amenity_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tbl_hotel_master`
@@ -280,7 +289,7 @@ ALTER TABLE `tbl_hotel_room_detail`
 -- AUTO_INCREMENT for table `tbl_room_master`
 --
 ALTER TABLE `tbl_room_master`
-  MODIFY `room_master_id` int(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `room_master_id` int(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tbl_super_admin`

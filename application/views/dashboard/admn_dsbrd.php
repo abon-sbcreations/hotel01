@@ -50,6 +50,7 @@
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
+            <li><a href="<?=site_url('index.php/companies')?>">Companies List</a></li>
             <li><a href="<?=site_url('index.php/hotels/hotels')?>">Hotels</a></li>
             <li><a href="<?=site_url('index.php/rooms/master')?>">Room's Master</a></li>
             <li><a href="<?=site_url('index.php/Amenities/amenity_list')?>">Amenity Master</a></li>
