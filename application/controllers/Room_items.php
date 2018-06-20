@@ -61,7 +61,7 @@ class Room_items extends CI_Controller {
     }
     public function ajaxRoomItemsMasterSubmit(){
       $post = $this->input->post(); 
-      if(isset($post['room_master_id'])&& !empty($post['room_master_id'])){
+      if(isset($post['room_item_id'])&& !empty($post['room_item_id'])){
         $this->RoomItemMaster->putItemMaster($post);
       }else{
         $this->RoomItemMaster->postItemMaster($post);

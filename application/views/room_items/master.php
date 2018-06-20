@@ -149,6 +149,7 @@
                                 success: function (result) {
                                     var data = $.parseJSON(result); 
                                     $("input[name*='room_item_name']").val(data['room_item_name']);
+                                    $("input[name*='room_item_id']").val(data['room_item_id']);
                                     popCategory(data['room_item_cat']);
                                     popSubCategory(data['room_item_cat'],data['room_item_subcat']);
                                     roomItemDetails.modal("show");
