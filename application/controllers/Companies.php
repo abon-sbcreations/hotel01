@@ -1,27 +1,32 @@
 <?php
+
 defined('BASEPATH') OR exit('No direct script access allowed');
+
 class Companies extends CI_Controller {
+
     public function __construct() {
         parent::__construct();
         $this->load->helper('form', 'security');
         $this->load->helper('commonmisc_helper');
-        $this->load->library('form_validation','session');
+        $this->load->library('form_validation', 'session');
         $this->load->model('Company');
         $u1 = $this->session->userdata('logged_id');
         if (!isset($u1)) {
             redirect('/index.php/admins', 'refresh');
         }
     }
+
     public function index() {
         $loggedId = $this->session->userdata('logged_id');
-        $loggedDisplay = $this->session->userdata('logged_display'); 
+        $loggedDisplay = $this->session->userdata('logged_display');
         $this->load->view('companies/company_list', [
             'loggedDisplay' => $loggedDisplay,
             'timeSlotOptions' => timeSlotOptions()
         ]);
     }
-    public function ajaxAllCompaniesMasterDataTable(){
-         // Datatables Variables
+
+    public function ajaxAllCompaniesMasterDataTable() {
+        // Datatables Variables
         $draw = intval($this->input->get("draw"));
         $start = intval($this->input->get("start"));
         $length = intval($this->input->get("length"));
@@ -42,19 +47,22 @@ class Companies extends CI_Controller {
             "data" => $rows
         ]);
     }
-    public function ajaxCompanyMasterDetails(){
-         $params = [
+
+    public function ajaxCompanyMasterDetails() {
+        $params = [
             'where' => ['comp_id' => $this->input->post('comp_id')]
-        ];       
+        ];
         $company = $this->Company->getCompany($params);
         echo json_encode($company[0]);
     }
-    public function ajaxCompanyMasterDelete(){
+
+    public function ajaxCompanyMasterDelete() {
         $where = ['comp_id' => $this->input->post('comp_id')];
-        $comp = $this->Company->deleteCompany($where);        
+        $comp = $this->Company->deleteCompany($where);
         return json_encode(['true']);
     }
-    public function ajaxCompaniesMasterSubmit(){
+
+    public function ajaxCompaniesMasterSubmit() {
         $post = $this->input->post();
         if (isset($post['comp_id']) && !empty($post['comp_id'])) {
             $this->Company->putCompany($post);
@@ -62,4 +70,5 @@ class Companies extends CI_Controller {
             $this->Company->postCompany($post);
         }
     }
+
 }

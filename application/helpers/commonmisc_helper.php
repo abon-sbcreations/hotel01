@@ -49,10 +49,39 @@ function roomTypeOptions() {
     $ci->db->select("room_master_id,room_type");
     $query = $ci->db->get();
     $result = $query->result_array();
+    $rooms = [];
     foreach ($result as $key => $typ) {
-        $list .= "<option value=\"{$typ['room_master_id']}\">{$typ['room_type']}</option>";
+        $rooms[$typ['room_master_id']] = $typ['room_type'];
     }
-    return $list;
+    return $rooms;
+}
+function hotelOptions(){
+     $list = "<option value=\"\">Choose...</option>";
+    $ci = & get_instance();
+    $ci->load->database();
+    $ci->db->from("tbl_hotel_master");
+    $ci->db->select("hotel_id,hotel_name");
+    $query = $ci->db->get();
+    $result = $query->result_array();
+    $hotels = [];
+    foreach ($result as $key => $htl) {
+        $hotels[$htl['hotel_id']] = $htl['hotel_name'];
+    }
+    return $hotels;
+}
+function amenityOptions(){
+     $list = "<option value=\"\">Choose...</option>";
+    $ci = & get_instance();
+    $ci->load->database();
+    $ci->db->from("tbl_amenities_master");
+    $ci->db->select("amenity_id,amenity_name");
+    $query = $ci->db->get();
+    $result = $query->result_array();
+    $amenities = [];
+    foreach ($result as $key => $amt) {
+        $amenities[$amt['amenity_id']] = $amt['amenity_name'];
+    }
+    return $amenities;
 }
 
 function roomItemCategories() {
