@@ -50,13 +50,16 @@ function roomTypeOptions() {
     $query = $ci->db->get();
     $result = $query->result_array();
     $rooms = [];
-    foreach ($result as $key => $typ) {
-        $rooms[$typ['room_master_id']] = $typ['room_type'];
+    if (!empty($result)) {
+        foreach ($result as $key => $typ) {
+            $rooms[$typ['room_master_id']] = $typ['room_type'];
+        }
     }
     return $rooms;
 }
-function hotelOptions(){
-     $list = "<option value=\"\">Choose...</option>";
+
+function hotelOptions() {
+    $list = "<option value=\"\">Choose...</option>";
     $ci = & get_instance();
     $ci->load->database();
     $ci->db->from("tbl_hotel_master");
@@ -64,13 +67,16 @@ function hotelOptions(){
     $query = $ci->db->get();
     $result = $query->result_array();
     $hotels = [];
-    foreach ($result as $key => $htl) {
-        $hotels[$htl['hotel_id']] = $htl['hotel_name'];
+    if (!empty($result)) {
+        foreach ($result as $key => $htl) {
+            $hotels[$htl['hotel_id']] = $htl['hotel_name'];
+        }
     }
     return $hotels;
 }
-function amenityOptions(){
-     $list = "<option value=\"\">Choose...</option>";
+
+function amenityOptions() {
+    $list = "<option value=\"\">Choose...</option>";
     $ci = & get_instance();
     $ci->load->database();
     $ci->db->from("tbl_amenities_master");
@@ -78,8 +84,10 @@ function amenityOptions(){
     $query = $ci->db->get();
     $result = $query->result_array();
     $amenities = [];
-    foreach ($result as $key => $amt) {
-        $amenities[$amt['amenity_id']] = $amt['amenity_name'];
+    if (!empty($result)) {
+        foreach ($result as $key => $amt) {
+            $amenities[$amt['amenity_id']] = $amt['amenity_name'];
+        }
     }
     return $amenities;
 }
@@ -99,7 +107,7 @@ function roomItemCategories() {
             "c31" => "sub cat 31", "c32" => "sub cat 32",
             "c33" => "sub cat 13", "c34" => "sub cat 34"
         ]
-    ];    
+    ];
     $itemCategory['sub_category'] = $types;
     return $itemCategory;
 }

@@ -23,25 +23,35 @@ class Hotel_room extends CI_Model {
     }
 
     public function postHotelRoom($hotel) {
-            $this->db->insert($this->_hotel_room_detail, ['hotel_id' => $hotel['hotel_id'],
+            $this->db->insert($this->_hotel_room_detail, [
+            'hotel_id' => $hotel['hotel_id'],
             'hotel_room_type' => $hotel['hotel_room_type'],
             'hotel_room_rent' => $hotel['hotel_room_rent'],
             'hotel_room_desc' => $hotel['hotel_room_desc'],
-            'hotel_room_amenities' => '',
-                //$hotel['hotel_room_amenities'],
+            'hotel_room_amenities' => $this->amenitiesList($hotel['amenity']),
         ]);
     }
 
     public function putHotelRoom($hotel) {
-        $this->db->update($this->_hotel_room_detail, ['hotel_id' => $hotel['hotel_id'],
+        echo $this->amenitiesList($hotel['amenity']);
+        $this->db->update($this->_hotel_room_detail, [
+            'hotel_id' => $hotel['hotel_id'],
             'hotel_room_type' => $hotel['hotel_room_type'],
             'hotel_room_rent' => $hotel['hotel_room_rent'],
             'hotel_room_desc' => $hotel['hotel_room_desc'],
-            'hotel_room_amenities' => '',
-            //$hotel['hotel_room_amenities'],
+            'hotel_room_amenities' => $this->amenitiesList($hotel['amenity']),
         ], ['hotel_room_master_id' => $hotel['hotel_room_master_id']]);
     }
     public function deleteHotelRoom($where) {
         $this->db->delete($this->_hotel_room_detail, $where);
+    }
+    private function amenitiesList($arr){
+        $list = "";
+        if(!empty($arr)){
+            foreach ($arr as $key=>$val){
+                $list .= "{$key},";
+            }
+        }        
+        return rtrim($list,',');
     }
 }
