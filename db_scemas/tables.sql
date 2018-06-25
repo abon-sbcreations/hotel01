@@ -89,9 +89,60 @@ CREATE TABLE IF NOT EXISTS hotel_bar_master(
     hotel_id INT,
     menu_cat VARCHAR(128),
     item_name VARCHAR(128), 
-    menu_type ENUM ("Veg","Non-Veg"),
+    menu_type ENUM ("veg","non_veg"),
     item_img VARCHAR(128),
     item_desc TEXT,
     item_price DECIMAL(6,2),
     item_available ENUM ("Yes","No")
+);
+
+CREATE TABLE IF NOT EXISTS hotel_bar_served(
+    bar_service_id int,
+    hotel_id INT,
+    customer_id INT,
+    served_place ENUM("Room","DinningHall","Poolside"),
+    served_place_detail VARCHAR(64),
+    served_on varchar(16),
+    served_item TEXT,
+    isPaid ENUM("Yes","No")
+);
+
+CREATE TABLE IF NOT EXISTS hotel_resturant_served(
+resturant_service_id int,
+    hotel_id INT,
+    customer_id INT,
+    served_place ENUM("Room","DinningHall","Poolside"),
+    served_place_detail VARCHAR(64),
+    served_on varchar(16),
+    served_item TEXT,
+    isPaid ENUM("Yes","No")
+);
+
+CREATE TABLE IF NOT EXISTS customer_master(
+    cust_id INT AUTO_INCREMENT PRIMARY KEY,
+    hotel_id int,
+    cust_name VARCHAR(128),
+    cust_phone varchar(11),
+    cust_email VARCHAR(128),
+    cust_address TEXT,
+    cust_status ENUM("Member","Guest"),
+    membership_type int,
+    membership_num VARCHAR(32),
+    membership_issue_date varchar(64)
+);
+
+CREATE TABLE IF NOT EXISTS customer_doc_master(
+    cust_doc_id INT AUTO_INCREMENT PRIMARY KEY,
+    cust_id int,
+    doc_type ENUM("Aadhar","Voter","Pan","Passport","Driving"),
+    doc_number VARCHAR(32)
+);
+
+CREATE TABLE IF NOT EXISTS hotel_membership_master(
+    membership_id INT AUTO_INCREMENT PRIMARY KEY,
+    hotel_id int,
+    membership_card VARCHAR(32),
+    membership_card_value DECIMAL(8,2),
+    membership_validity tinyint(2),
+    membership_amenity VARCHAR(255)
 );
