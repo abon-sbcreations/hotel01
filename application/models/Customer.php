@@ -2,8 +2,7 @@
 
 class Customer extends CI_Model {
     private $_customer_master = "customer_master";
-    private $_tbl_hotel_master = "tbl_hotel_master";
-    
+    private $_tbl_hotel_master = "tbl_hotel_master";    
     public function getCustomer($params) {
         $this->db->select("cm.cust_id,cm.hotel_id,thm.hotel_name,cm.cust_name,cm.cust_phone,cm.cust_email,"
                 ."cm.cust_status,cm.membership_type,cm.membership_num,cm.membership_issue_date");
@@ -16,7 +15,6 @@ class Customer extends CI_Model {
         $query = $this->db->get();
         return $query->result_array();
     }
-
     public function postCustomer($customer) {
         $this->db->insert($this->_customer_master, [
             'cust_id'=>$customer['cust_id'],'hotel_id'=>$customer['hotel_id'],
@@ -34,7 +32,6 @@ class Customer extends CI_Model {
             'membership_issue_date'=>$customer['membership_issue_date']], 
                 ['cust_id'=>$customer['cust_id']]);
     }
-
     public function deleteCustomer($where) {
         $this->db->delete($this->_customer_master, $where);
     }

@@ -91,6 +91,23 @@ function amenityOptions() {
     }
     return $amenities;
 }
+function membershipOptions() {
+    $list = "<option value=\"\">Choose...</option>";
+    $ci = & get_instance();
+    $ci->load->database();
+    $ci->db->from("hotel_membership_master");
+    $ci->db->select("membership_id,hotel_id,membership_card");
+    $query = $ci->db->get();
+    $result = $query->result_array();
+    $memberList = [];
+    if (!empty($result)){
+        foreach ($result as $key => $member) {
+            $memberList[$member['hotel_id']][$member['membership_id']] = $member['membership_card'];
+        }
+    }
+    print_r($memberList);
+    return $memberList;
+}
 
 function roomItemCategories() {
     $types = [

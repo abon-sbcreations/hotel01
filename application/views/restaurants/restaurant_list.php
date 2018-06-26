@@ -48,11 +48,16 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-11">
-                    <div class="h1">Restaurants List<button onclick="addRestaurant()" class="btn btn-warning">Add Restaurant</button></div>
-                    <table id="room_list" class="table table-bordered table-striped table-hover">
+                    <div class="h1">Restaurants Menu List<button onclick="addRestaurant()" class="btn btn-warning">Add Food Item</button></div>
+                    <table id="restaurant_list" class="table table-bordered table-striped table-hover">
                         <thead>
                             <tr>
-                                <th>Restaurant Name</th>
+                                <th>Item</th>
+                                <th>Session</th>
+                                <th>Type</th>
+                                <th>Price</th>
+                                <th>Available</th>
+                                <th>Hotel</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -62,7 +67,7 @@
                 </div>
             </div>
         </div>
-        <div id="restaurantDetails" class="modal  fade" role="dialog">
+        <div id="restaurantDetails" class="modal fade" role="dialog">
             <div id="modalDialog" class="modal-dialog  modal-lg">
                 <!-- Modal content-->
                 <div class="modal-content ">
@@ -71,18 +76,42 @@
                         <h4 class="modal-title"></h4>
                     </div>
                     <div class="modal-body">
-                        <form method="post" name="restaurantDetailEdit" id="restaurantsDetailEdit" >
+                        <form method="post" name="restaurantDetailEdit" id="restaurantDetailEdit" >
                             <div class="row">
                                 <div class="form-group col-md-4 mb-3">
-                                    <label for="restaurant_name">Name</label>
-                                    <input type="hidden" name="restaurant_id" id="restaurant_id" value="0" class="form-control">
-                                    <input type="text" name="restaurant_name" id="restaurant_name" class="form-control">
+                                    <label for="hotel_id">Hotel Name</label>
+                                    <input type="hidden" name="menu_id" id="menu_id" value="0" class="form-control">
+                                    <!--span id="htlnamemsg"></span-->
+                                    <select class="custom-select d-block w-100" id="hotel_id" name="hotel_id"></select>
+                                </div>
+                                <div class="form-group col-md-4 mb-3">
+                                    <label for="item_name">Name</label>
+
+                                    <input type="text" name="item_name" id="item_name" class="form-control">
+                                </div>
+                                <div class="form-group col-md-4 mb-3">
+                                    <label for="item_price">Price</label>
+                                    <input type="text" name="item_price" id="item_price" class="form-control">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-4 mb-3">
+                                    <label for="menu_session">Session</label>
+                                    <select class="custom-select d-block w-100" id="menu_session" name="menu_session"></select>
+                                </div>
+                                <div class="form-group col-md-4 mb-3">
+                                    <label for="menu_type">Type</label>
+                                    <select class="custom-select d-block w-100" id="menu_type" name="menu_type"></select>
+                                </div>
+                                <div class="form-group col-md-4 mb-3">
+                                    <label for="item_available">Available</label>
+                                    <select class="custom-select d-block w-100" id="item_available" name="item_available"></select>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group  col-md-8">
-                                    <label for="restaurant_desc">Restaurant Desc:</label>
-                                    <textarea name="restaurant_desc" class="form-control" rows="5" cols="" id="restaurant_desc"></textarea>
+                                    <label for="item_desc">Item Description:</label>
+                                    <textarea name="item_desc" class="form-control" rows="5" cols="" id="item_desc"></textarea>
                                 </div>
                             </div>
                             <div class="row">
@@ -103,17 +132,30 @@
         <script src="<?= site_url("library/js/jquery.validate.min.js") ?>" type="text/javascript"></script>
         <script src="<?= site_url("library/js/datatables.min.js") ?>" type="text/javascript"></script>
         <script type="text/javascript">
-                        var dataTableRoom = "<?= site_url("index.php/restaurants/ajaxAllRestaurantMasterDataTable") ?>";
+                        var dataTableRestaurant = "<?= site_url("index.php/restaurants/ajaxAllRestaurantMasterDataTable") ?>";
                         var restaurantDetails = $("#restaurantDetails");
+                        var hotelList;
+                        var sessionList;
+                        var typeList;
+                        var isAvailable;
                         $(document).ready(function () {
-                            var table1 = $('#room_list').DataTable({
+                            hotelList = "<?= addslashes(json_encode($hotelOptions)) ?>";
+                            sessionList = "<?= addslashes(json_encode($sessionOption)) ?>";
+                            typeList = "<?= addslashes(json_encode($menuTypeOption)) ?>";
+                            isAvailable = "<?= addslashes(json_encode($availableOption)) ?>";
+                            var table1 = $('#restaurant_list').DataTable({
                                 "ajax": {
-                                    url : dataTableRoom,
-                                    type : 'GET'
+                                    url: dataTableRestaurant,
+                                    type: 'GET'
                                 },
                                 "aoColumns": [
-                                    {mData: 'restaurant_name'},
-                                    {mData: "restaurant_id", bSortable: false, sWidth: "80px",
+                                    {mData: 'item_name'},
+                                    {mData: 'menu_session'},
+                                    {mData: 'menu_type'},
+                                    {mData: 'item_price'},
+                                    {mData: 'item_available'},
+                                    {mData: 'hotel_name'},
+                                    {mData: "menu_id", bSortable: false, sWidth: "80px",
                                         mRender: function (data, type, full) {
                                             var editBtn = "<button class=\"btn btn-info btn-xs\" onclick=\"editRestaurant(" + data + ")\">Edit</button>";
                                             var delBtn = "<button class=\"btn btn-danger btn-xs\" onclick=\"deleteRestaurant(" + data + ")\">Delete</button>";
@@ -124,35 +166,39 @@
                             });
                         });
                         function addRestaurant() {
-                            $("#restaurantDetails .modal-title").html("");
                             $("#restaurantDetailEdit")[0].reset();
-							 
+                            $("#restaurantDetailEdit input:not(#submitBtn)").val("");
+                            $("#restaurantDetailEdit textarea").html("");
+                            popOptions(hotelList, "#hotel_id");
+                            popOptions(sessionList, "#menu_session");
+                            popOptions(typeList, "#menu_type");
+                            popOptions(typeList, "#menu_type");
+                            popOptions(isAvailable, "#item_available");                            
                             restaurantDetails.modal("show");
                         }
-                        function editRestaurant(restaurant_id) {
-                            console.log(restaurant_id);
+                        function editRestaurant(menu_id) {
+                            console.log(menu_id);
                             $.ajax({
                                 type: "POST",
                                 url: "<?= site_url('index.php/restaurants/ajaxRestaurantMasterDetails') ?>",
-                                data: {restaurant_id: restaurant_id},
+                                data: {menu_id: menu_id},
                                 success: function (result) {
                                     var data = $.parseJSON(result);
-                                    $("input[name*='hotel_id']").val(data['hotel_id']);
-                                    $("#menu_session").html(data['menu_session']);
-									 $("#menu_type").html(data['menu_type']);
-									  $("#item_name").html(data['item_name']);
-									   $("#item_img").html(data['item_img']);
-									    $("#item_desc").html(data['item_desc']);
-										  $("#item_price").html(data['item_price']);
-										   $("#item_available").html(data['item_available']);
-										   $("input[name*='menu_id']").val(data['menu_id']);
+                                    popOptions(hotelList, "#hotel_id", data['hotel_id']);
+                                    popOptions(sessionList, "#menu_session", data['menu_session']);
+                                    popOptions(typeList, "#menu_type", data['menu_type']);
+                                    popOptions(isAvailable, "#item_available", data['item_available']);
+                                    $("input[name*='menu_id']").val(data['menu_id']);
+                                    $("input[name*='item_name']").val(data['item_name']);
+                                    $("input[name*='item_price']").val(data['item_price']);
+                                    $("#item_desc").html(data['item_desc']);
                                     restaurantDetails.modal("show");
                                 }
                             });
                         }
                         function refreshTable() {
-                            $.getJSON(dataTableRoom, null, function (json) {
-                                table = $('#room_list').dataTable();
+                            $.getJSON(dataTableRestaurant, null, function (json) {
+                                table = $('#restaurant_list').dataTable();
                                 oSettings = table.fnSettings();
                                 table.fnClearTable(this);
                                 for (var i = 0; i < json['data'].length; i++) {
@@ -162,13 +208,13 @@
                                 table.fnDraw();
                             });
                         }
-                        function deleteRestaurant(restaurant_id) {
-                            var r = confirm("You Sure to delete the Amenity?");
+                        function deleteRestaurant(menu_id) {
+                            var r = confirm("You Sure to delete the Menu Item ?");
                             if (r == true) {
                                 $.ajax({
                                     type: "POST",
                                     url: "<?= site_url('index.php/restaurants/ajaxRestaurantMasterDelete') ?>",
-                                    data: { restaurant_id : restaurant_id },
+                                    data: {menu_id: menu_id},
                                     success: function (result) {
                                         restaurantDetails.modal("hide");
                                         refreshTable();
@@ -179,36 +225,40 @@
                             }
                         }
                         $("#submitBtn").on("click", function () {
+                            //if($('#item_name').val()==""){
+                            //     $('#htlnamemsg').html("Please Enter Hotel Name");
+                            // }else{
                             $("#restaurantDetailEdit").submit();
+                            //  } 
                         });
+                        function popOptions(options, dom_id, sel_id = "") {
+                            var optionsList = $.parseJSON(options);
+                            var option = "<option value=\"\">Choose...</option>";
+                            $.each(optionsList, function (key, row) {
+                                var select = sel_id == key ? "selected='selected'" : "";
+                                option = option + "<option " + select + " value=\"" + key + "\">" + row + "</option>";
+                            });
+                            $(dom_id).html(option);
+                        }
                         $("#restaurantDetailEdit").submit(function (e) {
-                            var common_alert = "";
-                            var hotel_id = $.trim($("input[name*='hotel_id']").val());
-                            var menu_id = $.trim($("input[name*='menu_id']").val());
-                            if (hotel_id == '') {
-                                common_alert = '\n Please enter amenity name';
-                            }
-                            if ($.trim(common_alert) != '') {
-                                alert(common_alert);
-                                $("#restaurantDetailEdit")[0].reset();
-                                restaurantDetails.modal("hide");
-                            } else {
-                                $.ajax({
-                                    type: "POST",
-                                    url: "<?= site_url('index.php/restaurants/ajaxRestaurantMasterSubmit') ?>",
-                                    data: $("#restaurantDetailEdit").serialize(),
-                                    success: function (result) {
-                                        $("#restaurantDetailEdit")[0].reset();
-                                        restaurantDetails.modal("hide");
-                                        refreshTable();
-                                    }
-                                });
-                            }
+                            $.ajax({
+                                type: "POST",
+                                url: "<?= site_url('index.php/restaurants/ajaxRestaurantMasterSubmit') ?>",
+                                data: $("#restaurantDetailEdit").serialize(),
+                                success: function (result) {
+                                    $("#restaurantDetailEdit")[0].reset();
+                                    restaurantDetails.modal("hide");
+                                    refreshTable();
+                                }
+                            });
                             e.preventDefault();
                         });
         </script>
     </body>
 </html>
+
+
+
 
 
 

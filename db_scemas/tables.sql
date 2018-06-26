@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS hotel_bar_master(
     menu_cat VARCHAR(128),
     item_name VARCHAR(128), 
     menu_type ENUM ("veg","non_veg"),
-    item_img VARCHAR(128),
+   /* item_img VARCHAR(128),*/
     item_desc TEXT,
     item_price DECIMAL(6,2),
     item_available ENUM ("Yes","No")

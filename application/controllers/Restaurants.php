@@ -20,7 +20,11 @@ class Restaurants extends CI_Controller {
         $loggedDisplay = $this->session->userdata('logged_display'); //users full name.
         $this->load->view('restaurants/restaurant_list', [
             'loggedDisplay' => $loggedDisplay,
-            'timeSlotOptions' => timeSlotOptions()
+            'timeSlotOptions' => timeSlotOptions(),
+            'hotelOptions' =>hotelOptions(),
+            'sessionOption' => $this->getSession(),
+            'menuTypeOption' => $this->getMenuType(),
+            'availableOption' => $this->getItemAvailable()
         ]);
     }
 
@@ -35,13 +39,14 @@ class Restaurants extends CI_Controller {
             $rows[] = [
                 "DT_RowId" => "row_" . $restaurant['menu_id'],
                 "menu_id" => $restaurant['menu_id'],
+                "hotel_id" => $restaurant['hotel_id'],
+                "hotel_name" => $restaurant['hotel_name'],                
                 "menu_session" => $restaurant['menu_session'],
                 "menu_type" => $restaurant['menu_type'],
                 "item_name" => $restaurant['item_name'],
-                "item_img" => $restaurant['item_img'],
                 "item_desc" => $restaurant['item_desc'],
                 "item_price" => $restaurant['item_price'],
-                "item_available" => $restaurant['item_available']
+                "item_available" => $restaurant['item_available'] == "Y" ? "Yes" : "No"
             ];
         }
         echo json_encode([
@@ -75,5 +80,27 @@ class Restaurants extends CI_Controller {
             $this->Restaurant->postRestaurant($post);
         }
     }
+    private function getSession(){
+        return [
+            'Lunch' => 'Lunch',
+            'Dinner' => 'Dinner',
+            'Breakfast' => 'Breakfast'
+        ];
+    }
+    private function getMenuType(){
+        return [
+            'Veg' => 'Veg',
+            'Non-Veg' => 'Non-Veg'
+        ];
+    }
+    private function getItemAvailable(){
+        return [
+            'Y' => 'Yes',
+            'N' => 'No'
+        ];
+    }
+    
 
 }
+
+

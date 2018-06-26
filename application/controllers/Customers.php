@@ -15,17 +15,15 @@ class Customers extends CI_Controller {
             redirect('/index.php/admins', 'refresh');
         }
     }
-
     public function index() {
         $loggedId = $this->session->userdata('logged_id');
         $loggedDisplay = $this->session->userdata('logged_display');
         $this->load->view('customers/customers_list', [
             'loggedDisplay' => $loggedDisplay,
             'hotelOptions' =>hotelOptions(),
-            
+            'membershipOptions' => membershipOptions()
         ]);
     }
-
     public function ajaxAllCustomersMasterDataTable() {
         // Datatables Variables
         $draw = intval($this->input->get("draw"));
