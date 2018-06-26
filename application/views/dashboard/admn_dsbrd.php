@@ -56,7 +56,9 @@
             <li><a href="<?=site_url('index.php/room_items/master')?>">Room Items Master</a></li>
             <li><a href="<?=site_url('index.php/hotel_items/master')?>">Hotel Items Master</a></li>
             <li><a href="<?=site_url('index.php/restaurants/restaurant_list')?>">Restaurant Master</a></li>
-           </ul>
+            <li><a href="<?=site_url('index.php/customers')?>">Customers</a></li>
+              <li><a href="<?=site_url('index.php/membership_masters/master')?>">Memberships</a></li>
+          </ul>
           <ul class="nav nav-sidebar"></ul>
           <ul class="nav nav-sidebar">
             <li><a href="">Nav item again</a></li>

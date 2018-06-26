@@ -1,9 +1,7 @@
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
-
 class Membership_masters extends CI_Controller {
-
     public function __construct() {
         parent::__construct();
         $this->load->helper('form', 'security');
@@ -16,7 +14,6 @@ class Membership_masters extends CI_Controller {
             redirect('/index.php/admins', 'refresh');
         }
     }
-
     public function master() {
         $loggedId = $this->session->userdata('logged_id');
         $loggedDisplay = $this->session->userdata('logged_display');
@@ -26,7 +23,6 @@ class Membership_masters extends CI_Controller {
             'amenityOptions' => amenityOptions()
         ]);
     }
-
     public function ajaxAllMembershipDataTable() {
         // Datatables Variables
         $draw = intval($this->input->get("draw"));
@@ -62,7 +58,6 @@ class Membership_masters extends CI_Controller {
             "data" => $rows
         ]);
     }
-
     public function ajaxMembershipDetails() {
         $params = [
             'where' => ['membership_id' => $this->input->post('membership_id')]
@@ -70,13 +65,11 @@ class Membership_masters extends CI_Controller {
         $room = $this->Membership_master->getMembershipMasters($params);
         echo json_encode($room[0]);
     }
-
     public function ajaxMembershipMasterDelete() {
         $where = ['membership_id' => $this->input->post('membership_id')];
-        $comp = $this->Membership_master->deleteMembershipMasters($where);
+        $comp = $this->Membership_master->deleteMembership($where);
         return json_encode(['true']);
     }
-
     public function ajaxMembershipMasterSubmit() {
         $post = $this->input->post();
         if (isset($post['membership_id']) && !empty($post['membership_id'])) {
@@ -84,6 +77,5 @@ class Membership_masters extends CI_Controller {
         } else {
             $this->Membership_master->postMembershipMaster($post);
         }
-    }
-    
+    }    
 }

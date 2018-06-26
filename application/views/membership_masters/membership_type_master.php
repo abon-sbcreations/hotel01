@@ -149,6 +149,9 @@
                         function addMembership() {
                             $("#membershipDetails .modal-title").html("");
                             $("#membershipDetailEdit")[0].reset();
+                            $("#membershipDetails .modal-title").html("");
+                            $("#membershipDetailEdit input:not(#submitBtn)").val("");
+                            $("#membershipDetailEdit option").removeAttr("selected");
                             popOptions(hotelList,"#hotel_id");
                             popAmenities();
                             membershipDetails.modal("show");
@@ -172,8 +175,8 @@
                             });
                         }
                         function refreshTable() {
-                            $.getJSON(dataTableRoomType, null, function (json) {
-                                table = $('#roomType_list').dataTable();
+                            $.getJSON(dataTableMembership, null, function (json) {
+                                table = $('#membership_list').dataTable();
                                 oSettings = table.fnSettings();
                                 table.fnClearTable(this);
                                 for (var i = 0; i < json['data'].length; i++) {
