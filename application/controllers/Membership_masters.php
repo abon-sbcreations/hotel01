@@ -1,0 +1,89 @@
+<?php
+
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Membership_masters extends CI_Controller {
+
+    public function __construct() {
+        parent::__construct();
+        $this->load->helper('form', 'security');
+        $this->load->helper('commonmisc_helper');
+        $this->load->library('form_validation', 'session');
+        $this->load->model('Membership_master');
+        $this->load->model('Amenity');
+        $u1 = $this->session->userdata('logged_id');
+        if (!isset($u1)) {
+            redirect('/index.php/admins', 'refresh');
+        }
+    }
+
+    public function master() {
+        $loggedId = $this->session->userdata('logged_id');
+        $loggedDisplay = $this->session->userdata('logged_display');
+        $this->load->view('membership_masters/membership_type_master', [
+            'loggedDisplay' => $loggedDisplay,
+            'hotelOptions' =>hotelOptions(),
+            'amenityOptions' => amenityOptions()
+        ]);
+    }
+
+    public function ajaxAllMembershipDataTable() {
+        // Datatables Variables
+        $draw = intval($this->input->get("draw"));
+        $start = intval($this->input->get("start"));
+        $length = intval($this->input->get("length"));
+        $memberships = $this->Membership_master->getMembershipMasters([]);        
+        $rows = [];
+        foreach ($memberships as $k => $membership) {
+            $amenityList = explode(",",trim($membership['membership_amenity'],","));
+            $amenityDbList = $this->Amenity->getAminity(['where_in'=>[
+                'attr'=>'amenity_id',
+                'list' =>$amenityList
+            ]]);
+            $amtList = "<ul>";
+            foreach ($amenityDbList as $key=>$amt){
+                $amtList .= "<li>{$amt['amenity_name']}</li>";
+            }
+            $amtList .= "</ul>";
+            $rows[] = [
+                "DT_RowId" => "row_" . $membership['membership_id'],
+                "membership_id" => $membership['membership_id'],
+                'hotel_name' => $membership['hotel_name'],
+                'membership_card' => $membership['membership_card'],
+                'membership_card_value' => $membership['membership_card_value'],
+                'membership_validity' => $membership['membership_validity'],
+                'membership_amenity' => $amtList
+            ];
+        }
+        echo json_encode([
+            "draw" => $draw,
+            "recordsTotal" => count($memberships),
+            "recordsFiltered" => count($memberships),
+            "data" => $rows
+        ]);
+    }
+
+    public function ajaxMembershipDetails() {
+        $params = [
+            'where' => ['membership_id' => $this->input->post('membership_id')]
+        ];
+        $room = $this->Membership_master->getMembershipMasters($params);
+        echo json_encode($room[0]);
+    }
+
+    public function ajaxMembershipMasterDelete() {
+        $where = ['membership_id' => $this->input->post('membership_id')];
+        $comp = $this->Membership_master->deleteMembershipMasters($where);
+        return json_encode(['true']);
+    }
+
+    public function ajaxMembershipMasterSubmit() {
+        $post = $this->input->post();
+        if (isset($post['membership_id']) && !empty($post['membership_id'])) {
+            $this->Membership_master->putMembershipMaster($post);
+        } else {
+            $this->Membership_master->postMembershipMaster($post);
+        }
+    }
+    
+}
