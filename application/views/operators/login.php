@@ -8,12 +8,12 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <link rel="icon" href="<?= site_url("library/images/hotel-flat-icon-vector.jpg") ?>">
-        <title>Signin Template for Bootstrap</title>
+        <title>Operator Login</title>
         <link href="<?= site_url("library/css/bootstrap.min.css") ?>" rel="stylesheet" type="text/css"/>
         <link href="<?= site_url("assets/css/custom01.css") ?>" rel="stylesheet">
         <style>
             body{
-                background-image: url("<?= site_url("library/images/hotel_background01.jpg") ?>");
+                background-image: url("<?= site_url("library/images/hotel_background02.jpg") ?>");
                 background-repeat : no-repeat;
                 background-size: 100% ;
             }
@@ -21,20 +21,23 @@
     </head>
     <body>
         <div class="container">
-            <?= form_open('index.php/admins', ['name' => 'loginForm', 'method' => 'post', 'class' => 'form-signin', 'id' => 'loginForm']); ?>
+            <?= form_open('index.php/authenticate', ['name' => 'loginForm', 'method' => 'post', 'class' => 'form-signin',
+                'id' => 'loginForm']); ?>
             <h2 class="form-signin-heading">Please sign in</h2>
             <div class="form-group">
                 <?= form_label('User Name', 'uname', ['class' => 'sr-only', 'id' => '']); ?>
-                <?= form_input(['name' => 'uname', 'placeholder' => "User Name", 'class' => 'form-control', 'id' => 'uname']); ?>
+                <?= form_input(['name' => 'uname', 'placeholder' => "User Name", 'class' => 'form-control','autocomplete' => "off" ,
+                    'id' => 'uname']); ?>
                 <?= form_error('uname'); ?>
             </div>
             <div class="form-group">
                 <?= form_label('Password', 'password', ['class' => 'sr-only', 'id' => '']); ?>
-                <?= form_password(['name' => 'password', 'placeholder' => "Password", 'class' => 'form-control', 'id' => 'password']); ?>
+                <?= form_password(['name' => 'password', 'placeholder' => "Password", 'class' => 'form-control','autocomplete' => "off" ,
+                    'id' => 'password']); ?>
                 <?= form_error('password'); ?>
             </div>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-        <?=form_close()?>
+        <?= form_close() ?>
     </div> 
     <script src="<?= site_url("library/js/jquery.min.js") ?>" type="text/javascript"></script>
     <script src="<?= site_url("library/js/bootstrap.min.js") ?>" type="text/javascript"></script>
@@ -48,14 +51,14 @@
                     password: {
                         required: "true",
                         remote: {
-                            url: "<?= site_url('index.php/admins/ajaxCheckUnamePass') ?>",
+                            url: "<?= site_url('index.php/operators/ajaxCheckOperator') ?>",
                             type: "post",
                             delay: 150,
                             data: {
-                                uname: function () {
+                                uname: function() {
                                     return $("#uname").val();
                                 },
-                                password: function () {
+                                password: function() {
                                     return $("#password").val();
                                 }
                             }

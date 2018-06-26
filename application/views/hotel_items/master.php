@@ -48,13 +48,14 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-11">
-                    <div class="h1">Room's Item Master List<button onclick="addRoomItem()" class="btn btn-warning">Add Room Item</button></div>
+                    <div class="h1">Hotel's Item Master List<button onclick="addHotelItem()" class="btn btn-warning">Add Room Item</button></div>
                     <table id="roomItem_list" class="table table-bordered table-striped table-hover">
                         <thead>
                             <tr>
-                                <th>Room Item</th>   
-                                 <th>Room Category</th> 
-                                 <th>Room Sub - Category</th> 
+                                <th>Hotel</th>   
+                                 <th>Item Name</th> 
+                                 <th>Category</th> 
+                                 <th>Sub - Category</th> 
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -64,7 +65,7 @@
                 </div>
             </div>
         </div>
-        <div id="roomItemDetails" class="modal  fade" role="dialog">
+        <div id="hotelItemDetails" class="modal  fade" role="dialog">
             <div id="modalDialog" class="modal-dialog  modal-lg">
                 <!-- Modal content-->
                 <div class="modal-content ">
@@ -73,22 +74,26 @@
                         <h4 class="modal-title"></h4>
                     </div>
                     <div class="modal-body">
-                        <form method="post" name="roomItemEdit" id="roomItemEdit" >
+                        <form method="post" name="hotelItemEdit" id="hotelItemEdit" >
                             <div class="row">
                                 <div class="form-group col-md-4 mb-3">
-                                    <label for="room_item_name">Name</label>
-                                    <input type="hidden" name="room_item_id" id="room_item_id" value="0" class="form-control">
-                                    <input type="text" name="room_item_name" id="room_item_name" class="form-control">
+                                    <label for="hotel_id">Hotel</label>
+                                    <input type="hidden" name="item_id" id="item_id" value="0" class="form-control">
+                                    <select id="hotel_id" name="hotel_id"></select>
+                                </div>
+                                <div class="form-group  col-md-3">
+                                    <label for="item_name">Item Name</label>
+                                    <select id="item_name" name="item_name"></select>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group  col-md-3">
-                                    <label for="room_item_cat">Room Item Category:</label>
-                                    <select id="room_item_cat" name="room_item_cat"></select>
+                                    <label for="item_cat">Item Category:</label>
+                                    <select id="item_cat" name="item_cat"></select>
                                 </div>
                                 <div class="form-group  col-md-3">
-                                    <label for="room_item_cat">Item Sub Category:</label>
-                                    <select id="room_item_subcat" name="room_item_subcat"></select>
+                                    <label for="item_subcat">Item Sub Category:</label>
+                                    <select id="item_subcat" name="item_subcat"></select>
                                 </div>
                             </div>
                             <div class="row">
@@ -109,32 +114,33 @@
         <script src="<?= site_url("library/js/jquery.validate.min.js") ?>" type="text/javascript"></script>
         <script src="<?= site_url("library/js/datatables.min.js") ?>" type="text/javascript"></script>
         <script type="text/javascript">
-                        var dataItemTable = "<?= site_url("index.php/room_items/ajaxAllRoomItemMasterDataTable") ?>";
-                        var roomItemDetails = $("#roomItemDetails");
-                       // var itemCategory;   var itemSubCategory;
+                        var dataItemTable = "<?= site_url("index.php/hotel_items/ajaxAllHotelItemMasterDataTable") ?>";
+                        var hotelItemDetails = $("#hotelItemDetails");
+                        var itemCategory;   var itemSubCategory;
                         $(document).ready(function () {                           
                              itemCategory = "<?= addslashes(json_encode($itemCategory['category']))?>";
                              itemSubCategory = "<?= addslashes(json_encode($itemCategory['sub_category']))?>";
-                            var table1 = $('#roomItem_list').DataTable({
+                            var table1 = $('#hotelItem_list').DataTable({
                                 "ajax": {
                                     url : dataItemTable,
                                     type : 'GET'
                                 },
                                 "aoColumns": [
-                                    {mData: 'room_item_name'},
-                                    {mData: 'room_item_cat'},
-                                    {mData: 'room_item_subcat'},
-                                    {mData: "room_item_id", bSortable: false, sWidth: "80px",
+                                    {mData: 'hotel_name'},
+                                    {mData: 'item_name'},
+                                    {mData: 'item_cat'},
+                                    {mData: 'item_subcat'},
+                                    {mData: "item_id", bSortable: false, sWidth: "80px",
                                         mRender: function (data, type, full) {
-                                            var editBtn = "<button class=\"btn btn-info btn-xs\" onclick=\"editRoomItem(" + data + ")\">Edit</button>";
-                                            var delBtn = "<button class=\"btn btn-danger btn-xs\" onclick=\"deleteRoomItem(" + data + ")\">Delete</button>";
+                                            var editBtn = "<button class=\"btn btn-info btn-xs\" onclick=\"editHotelItem(" + data + ")\">Edit</button>";
+                                            var delBtn = "<button class=\"btn btn-danger btn-xs\" onclick=\"deleteHotelItem(" + data + ")\">Delete</button>";
                                             return editBtn + "&nbsp;&nbsp;&nbsp;&nbsp;" + delBtn;
                                         }
                                     }
                                 ]
                             });
                         });
-                        function addRoomItem() {
+                        function addHotelItem() {
                             $("#roomItemDetails .modal-title").html("");
                             $("#roomItemEdit input:not(#submitBtn)").val("");
                             $("#roomItemEdit option").removeAttr("selected");
@@ -143,7 +149,7 @@
                             popSubCategory();
                             roomItemDetails.modal("show");
                         }
-                        function editRoomItem(room_item_id) {
+                        function editHotelItem(room_item_id) {
                             $.ajax({
                                 type: "POST",
                                 url: "<?= site_url('index.php/room_items/ajaxRoomItemMasterDetails') ?>",
@@ -171,7 +177,7 @@
                                 table.fnDraw();
                             });
                         }
-                        function deleteRoomItem (room_item_id) {
+                        function deleteHotelItem (room_item_id) {
                             var r = confirm("You Sure to delete the Room Type?");
                             if (r == true) {
                                 $.ajax({

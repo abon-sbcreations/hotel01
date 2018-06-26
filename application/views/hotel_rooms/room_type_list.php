@@ -148,6 +148,8 @@
                         });
                         function addHotelRoomType() {
                             $("#roomTypeDetails .modal-title").html("");
+                            $("#roomTypeDetailEdit input:not(#submitBtn)").val("");
+                            $("#roomTypeDetailEdit textarea").html("");
                             $("#roomTypeDetailEdit")[0].reset();
                             popOptions(roomTypeList,"#hotel_room_type");
                             popOptions(hotelList,"#hotel_id");

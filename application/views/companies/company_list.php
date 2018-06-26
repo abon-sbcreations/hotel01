@@ -131,6 +131,8 @@
                         });
                         function addCompany() {
                             $("#companyDetails .modal-title").html("");
+                            $("#companyDetailEdit input:not(#submitBtn)").val("");
+                            $("#companyDetailEdit textarea").html("");
                             $("#companyDetailEdit")[0].reset();
                             companyDetails.modal("show");
                         }

@@ -125,6 +125,8 @@
                         });
                         function addRoomType() {
                             $("#roomDetails .modal-title").html("");
+                            $("#roomDetailEdit input:not(#submitBtn)").val("");
+                            $("#roomDetailEdit textarea").html("");
                             $("#roomDetailEdit")[0].reset();
                             roomDetails.modal("show");
                         }

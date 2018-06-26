@@ -4,6 +4,7 @@ comp_name varchar(128),
 comp_reg_no varchar(32),
 comp_address TEXT
 );
+
 CREATE TABLE IF NOT EXISTS tbl_hotel_master (
     hotel_id INT AUTO_INCREMENT PRIMARY KEY,
     comp_id int, 
@@ -39,11 +40,15 @@ CREATE TABLE IF NOT EXISTS tbl_hotel_room_detail (
     hotel_room_amenities VARCHAR(255)
 );
 
-CREATE TABLE IF NOT EXISTS room_item_master (
-    room_item_id int AUTO_INCREMENT PRIMARY KEY,
-    room_item_cat VARCHAR(128),
-    room_item_subcat VARCHAR(128),
-    room_item_name VARCHAR(128)
+CREATE TABLE IF NOT EXISTS hotel_item_master (
+    item_id INT AUTO_INCREMENT PRIMARY KEY,
+    hotel_id INT 4,
+    item_cat VARCHAR(128),
+    item_subcat VARCHAR(128),
+    item_img VARCHAR(128),
+    item_name VARCHAR (128),
+    item_attr VARCHAR (128),
+    item_desc TEXT
 );
 
 CREATE TABLE IF NOT EXISTS hotel_room_item (

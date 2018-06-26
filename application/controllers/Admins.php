@@ -50,9 +50,8 @@ class Admins extends CI_Controller {
 
     public function ajaxCheckUnamePass(){
         if($this->input->post()){
-           
-            //[password] => wdqwdqwd
-    //[uname] => asdadd
+           // [password] => wdqwdqwd,
+           // [uname] => asdadd
             echo $this->Admin->checkAdmin($this->input->post());
         }
     }

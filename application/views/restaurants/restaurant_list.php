@@ -8,7 +8,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <link rel="icon" href="<?= site_url("library/images/hotel-flat-icon-vector.jpg") ?>">
-        <title>Room's Master List</title>
+        <title>Restaurant's Master List</title>
         <link href="<?= site_url("library/css/bootstrap.min.css") ?>" rel="stylesheet" type="text/css"/>
         <link href="<?= site_url("library/css/datatables.min.css") ?>" rel="stylesheet" type="text/css"/>
         <link href="<?= site_url("assets/css/custom02.css") ?>" rel="stylesheet">
@@ -48,11 +48,11 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-11">
-                    <div class="h1">Amenities List<button onclick="addAmenity()" class="btn btn-warning">Add Amenity</button></div>
+                    <div class="h1">Restaurants List<button onclick="addRestaurant()" class="btn btn-warning">Add Restaurant</button></div>
                     <table id="room_list" class="table table-bordered table-striped table-hover">
                         <thead>
                             <tr>
-                                <th>Amenity Name</th>
+                                <th>Restaurant Name</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -62,7 +62,7 @@
                 </div>
             </div>
         </div>
-        <div id="amenityDetails" class="modal  fade" role="dialog">
+        <div id="restaurantDetails" class="modal  fade" role="dialog">
             <div id="modalDialog" class="modal-dialog  modal-lg">
                 <!-- Modal content-->
                 <div class="modal-content ">
@@ -71,18 +71,18 @@
                         <h4 class="modal-title"></h4>
                     </div>
                     <div class="modal-body">
-                        <form method="post" name="amenityDetailEdit" id="amenityDetailEdit" >
+                        <form method="post" name="restaurantDetailEdit" id="restaurantsDetailEdit" >
                             <div class="row">
                                 <div class="form-group col-md-4 mb-3">
-                                    <label for="amenity_name">Name</label>
-                                    <input type="hidden" name="amenity_id" id="amenity_id" value="0" class="form-control">
-                                    <input type="text" name="amenity_name" id="amenity_name" class="form-control">
+                                    <label for="restaurant_name">Name</label>
+                                    <input type="hidden" name="restaurant_id" id="restaurant_id" value="0" class="form-control">
+                                    <input type="text" name="restaurant_name" id="restaurant_name" class="form-control">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group  col-md-8">
-                                    <label for="amenity_desc">Amenity Desc:</label>
-                                    <textarea name="amenity_desc" class="form-control" rows="5" cols="" id="amenity_desc"></textarea>
+                                    <label for="restaurant_desc">Restaurant Desc:</label>
+                                    <textarea name="restaurant_desc" class="form-control" rows="5" cols="" id="restaurant_desc"></textarea>
                                 </div>
                             </div>
                             <div class="row">
@@ -103,8 +103,8 @@
         <script src="<?= site_url("library/js/jquery.validate.min.js") ?>" type="text/javascript"></script>
         <script src="<?= site_url("library/js/datatables.min.js") ?>" type="text/javascript"></script>
         <script type="text/javascript">
-                        var dataTableRoom = "<?= site_url("index.php/amenities/ajaxAllAmenitiesMasterDataTable") ?>";
-                        var amenityDetails = $("#amenityDetails");
+                        var dataTableRoom = "<?= site_url("index.php/restaurants/ajaxAllRestaurantMasterDataTable") ?>";
+                        var restaurantDetails = $("#restaurantDetails");
                         $(document).ready(function () {
                             var table1 = $('#room_list').DataTable({
                                 "ajax": {
@@ -112,36 +112,41 @@
                                     type : 'GET'
                                 },
                                 "aoColumns": [
-                                    {mData: 'amenity_name'},
-                                    {mData: "amenity_id", bSortable: false, sWidth: "80px",
+                                    {mData: 'restaurant_name'},
+                                    {mData: "restaurant_id", bSortable: false, sWidth: "80px",
                                         mRender: function (data, type, full) {
-                                            var editBtn = "<button class=\"btn btn-info btn-xs\" onclick=\"editAmenity(" + data + ")\">Edit</button>";
-                                            var delBtn = "<button class=\"btn btn-danger btn-xs\" onclick=\"deleteAmenity(" + data + ")\">Delete</button>";
+                                            var editBtn = "<button class=\"btn btn-info btn-xs\" onclick=\"editRestaurant(" + data + ")\">Edit</button>";
+                                            var delBtn = "<button class=\"btn btn-danger btn-xs\" onclick=\"deleteRestaurant(" + data + ")\">Delete</button>";
                                             return editBtn + "&nbsp;&nbsp;&nbsp;&nbsp;" + delBtn;
                                         }
                                     }
                                 ]
                             });
                         });
-                        function addAmenity() {
-                            $("#amenityDetails .modal-title").html("");
-                            $("#amenityDetailEdit input:not(#submitBtn)").val("");
-                            $("#amenityDetailEdit textarea").html("");
-                            $("#amenityDetailEdit")[0].reset();
-                            amenityDetails.modal("show");
+                        function addRestaurant() {
+                            $("#restaurantDetails .modal-title").html("");
+                            $("#restaurantDetailEdit")[0].reset();
+							 
+                            restaurantDetails.modal("show");
                         }
-                        function editAmenity(amenity_id) {
-                            console.log(amenity_id);
+                        function editRestaurant(restaurant_id) {
+                            console.log(restaurant_id);
                             $.ajax({
                                 type: "POST",
-                                url: "<?= site_url('index.php/amenities/ajaxAmenityMasterDetails') ?>",
-                                data: {amenity_id: amenity_id},
+                                url: "<?= site_url('index.php/restaurants/ajaxRestaurantMasterDetails') ?>",
+                                data: {restaurant_id: restaurant_id},
                                 success: function (result) {
                                     var data = $.parseJSON(result);
-                                    $("input[name*='amenity_name']").val(data['amenity_name']);
-                                    $("#amenity_desc").html(data['amenity_desc']);
-                                    $("input[name*='amenity_id']").val(data['amenity_id']);
-                                    amenityDetails.modal("show");
+                                    $("input[name*='hotel_id']").val(data['hotel_id']);
+                                    $("#menu_session").html(data['menu_session']);
+									 $("#menu_type").html(data['menu_type']);
+									  $("#item_name").html(data['item_name']);
+									   $("#item_img").html(data['item_img']);
+									    $("#item_desc").html(data['item_desc']);
+										  $("#item_price").html(data['item_price']);
+										   $("#item_available").html(data['item_available']);
+										   $("input[name*='menu_id']").val(data['menu_id']);
+                                    restaurantDetails.modal("show");
                                 }
                             });
                         }
@@ -157,44 +162,44 @@
                                 table.fnDraw();
                             });
                         }
-                        function deleteAmenity(amenity_id) {
+                        function deleteRestaurant(restaurant_id) {
                             var r = confirm("You Sure to delete the Amenity?");
                             if (r == true) {
                                 $.ajax({
                                     type: "POST",
-                                    url: "<?= site_url('index.php/amenities/ajaxAmenityMasterDelete') ?>",
-                                    data: { amenity_id : amenity_id },
+                                    url: "<?= site_url('index.php/restaurants/ajaxRestaurantMasterDelete') ?>",
+                                    data: { restaurant_id : restaurant_id },
                                     success: function (result) {
-                                        amenityDetails.modal("hide");
+                                        restaurantDetails.modal("hide");
                                         refreshTable();
                                     }
                                 });
                             } else {
-                                amenityDetails.modal("hide");
+                                restaurantDetails.modal("hide");
                             }
                         }
                         $("#submitBtn").on("click", function () {
-                            $("#amenityDetailEdit").submit();
+                            $("#restaurantDetailEdit").submit();
                         });
-                        $("#amenityDetailEdit").submit(function (e) {
+                        $("#restaurantDetailEdit").submit(function (e) {
                             var common_alert = "";
-                            var amenity_name = $.trim($("input[name*='amenity_name']").val());
-                            var amenity_id = $.trim($("input[name*='amenity_id']").val());
-                            if (amenity_name == '') {
+                            var hotel_id = $.trim($("input[name*='hotel_id']").val());
+                            var menu_id = $.trim($("input[name*='menu_id']").val());
+                            if (hotel_id == '') {
                                 common_alert = '\n Please enter amenity name';
                             }
                             if ($.trim(common_alert) != '') {
                                 alert(common_alert);
-                                $("#amenityDetailEdit")[0].reset();
-                                amenityDetails.modal("hide");
+                                $("#restaurantDetailEdit")[0].reset();
+                                restaurantDetails.modal("hide");
                             } else {
                                 $.ajax({
                                     type: "POST",
-                                    url: "<?= site_url('index.php/amenities/ajaxAmenityMasterSubmit') ?>",
-                                    data: $("#amenityDetailEdit").serialize(),
+                                    url: "<?= site_url('index.php/restaurants/ajaxRestaurantMasterSubmit') ?>",
+                                    data: $("#restaurantDetailEdit").serialize(),
                                     success: function (result) {
-                                        $("#amenityDetailEdit")[0].reset();
-                                        amenityDetails.modal("hide");
+                                        $("#restaurantDetailEdit")[0].reset();
+                                        restaurantDetails.modal("hide");
                                         refreshTable();
                                     }
                                 });
@@ -204,3 +209,7 @@
         </script>
     </body>
 </html>
+
+
+
+

@@ -195,8 +195,17 @@
                         });
                         function addHotel() {
                             $("#hotelDetails .modal-title").html("");
-                            $("#hotelDetailEdit")[0].reset();
+                             $("#hotelDetailEdit")[0].reset();      
+                            $("#hotelDetailEdit option").removeAttr("selected");
+                            $("#hotelDetailEdit input:not(#submitBtn)").val("");
+                            $("#hotelDetailEdit textarea").html("");
+                            $("#yesResturant").attr("checked='checked'");
+                            $('input:radio[name=hotel_has_restaurant]')[0].checked = true;
+                            $('input:radio[name=hotel_has_bar]')[0].checked = true;
                             hotelDetails.modal("show");
+                        }
+                        function clearForm(){
+                            
                         }
                         function editHotel(hotel_id) {
                             $.ajax({
