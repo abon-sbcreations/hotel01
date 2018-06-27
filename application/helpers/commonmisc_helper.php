@@ -127,3 +127,29 @@ function roomItemCategories() {
     $itemCategory['sub_category'] = $types;
     return $itemCategory;
 }
+
+function getSession(){
+        return [
+            'Lunch' => 'Lunch',
+            'Dinner' => 'Dinner',
+            'Breakfast' => 'Breakfast'
+        ];
+    }
+ function getMenuType(){
+        return [
+            'Veg' => 'Veg',
+            'Non-Veg' => 'Non-Veg'
+        ];
+    }
+function getItemAvailable(){
+        return [
+            'Y' => 'Yes',
+            'N' => 'No'
+        ];
+    }
+function getStatus(){
+        return [
+            'Active' => 'Active',
+            'Inactive' => 'Inactive'
+        ];
+    }

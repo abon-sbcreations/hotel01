@@ -22,9 +22,9 @@ class Restaurants extends CI_Controller {
             'loggedDisplay' => $loggedDisplay,
             'timeSlotOptions' => timeSlotOptions(),
             'hotelOptions' =>hotelOptions(),
-            'sessionOption' => $this->getSession(),
-            'menuTypeOption' => $this->getMenuType(),
-            'availableOption' => $this->getItemAvailable()
+            'sessionOption' => getSession(),
+            'menuTypeOption' => getMenuType(),
+            'availableOption' => getItemAvailable()
         ]);
     }
 
@@ -80,25 +80,7 @@ class Restaurants extends CI_Controller {
             $this->Restaurant->postRestaurant($post);
         }
     }
-    private function getSession(){
-        return [
-            'Lunch' => 'Lunch',
-            'Dinner' => 'Dinner',
-            'Breakfast' => 'Breakfast'
-        ];
-    }
-    private function getMenuType(){
-        return [
-            'Veg' => 'Veg',
-            'Non-Veg' => 'Non-Veg'
-        ];
-    }
-    private function getItemAvailable(){
-        return [
-            'Y' => 'Yes',
-            'N' => 'No'
-        ];
-    }
+    
     
 
 }

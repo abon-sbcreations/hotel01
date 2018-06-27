@@ -1,11 +1,11 @@
-CREATE TABLE IF NOT EXISTS tbl_company_master (
+CREATE TABLE IF NOT EXISTS tbl_company_master ( /**/
 comp_id int AUTO_INCREMENT PRIMARY KEY,
 comp_name varchar(128),
 comp_reg_no varchar(32),
 comp_address TEXT
 );
 
-CREATE TABLE IF NOT EXISTS tbl_hotel_master (
+CREATE TABLE IF NOT EXISTS tbl_hotel_master ( /**/
     hotel_id INT AUTO_INCREMENT PRIMARY KEY,
     comp_id int, 
     hotel_name VARCHAR(64),
@@ -19,19 +19,19 @@ CREATE TABLE IF NOT EXISTS tbl_hotel_master (
     hotel_has_bar ENUM("Y","N"),
     hotel_reg_date datetime
 );
-CREATE TABLE IF NOT EXISTS tbl_room_master (
+CREATE TABLE IF NOT EXISTS tbl_room_master (  /**/
     room_master_id INT AUTO_INCREMENT PRIMARY KEY,
     room_type VARCHAR(32),
     room_type_Desc TEXT,
     room_type_status ENUM ("Y","N")
 );
-CREATE TABLE IF NOT EXISTS tbl_amenities_master (
+CREATE TABLE IF NOT EXISTS tbl_amenities_master (  /**/
     amenity_id int AUTO_INCREMENT PRIMARY KEY,
     amenity_name VARCHAR(32),
     amenity_desc TEXT
 );
 
-CREATE TABLE IF NOT EXISTS tbl_hotel_room_detail (
+CREATE TABLE IF NOT EXISTS tbl_hotel_room_detail ( /**/
     hotel_room_master_id INT AUTO_INCREMENT PRIMARY KEY,
     hotel_id INT,
     hotel_room_type INT,
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS tbl_hotel_room_detail (
     hotel_room_amenities VARCHAR(255)
 );
 
-CREATE TABLE IF NOT EXISTS hotel_item_master (
+CREATE TABLE IF NOT EXISTS hotel_item_master ( /**/
     item_id INT AUTO_INCREMENT PRIMARY KEY,
     hotel_id INT 4,
     item_cat VARCHAR(128),
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS hotel_item_master (
     item_desc TEXT
 );
 
-CREATE TABLE IF NOT EXISTS hotel_room_item (
+CREATE TABLE IF NOT EXISTS hotel_room_item (  /**/
     hotel_room_item_id int AUTO_INCREMENT PRIMARY KEY,
     hotel_room_item_brand VARCHAR(64),
     hotel_room_item_size VARCHAR(32),
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS tbl_super_admin (
     admin_status ENUM ("Y","N")
 );
 
-CREATE TABLE IF NOT EXISTS hotel_restaurant_master(
+CREATE TABLE IF NOT EXISTS hotel_restaurant_master( /**/
     menu_id  INT AUTO_INCREMENT PRIMARY KEY,
     hotel_id INT,
     menu_session ENUM ("Lunch","Dinner","Breakfast"),
@@ -123,7 +123,7 @@ resturant_service_id int,
     isPaid ENUM("Yes","No")
 );
 
-CREATE TABLE IF NOT EXISTS customer_master(
+CREATE TABLE IF NOT EXISTS customer_master( /**/
     cust_id INT AUTO_INCREMENT PRIMARY KEY,
     hotel_id int,
     cust_name VARCHAR(128),
@@ -143,7 +143,7 @@ CREATE TABLE IF NOT EXISTS customer_doc_master(
     doc_number VARCHAR(32)
 );
 
-CREATE TABLE IF NOT EXISTS hotel_membership_master(
+CREATE TABLE IF NOT EXISTS hotel_membership_master( /**/
     membership_id INT AUTO_INCREMENT PRIMARY KEY,
     hotel_id int,
     membership_card VARCHAR(32),
@@ -157,7 +157,6 @@ CREATE TABLE IF NOT EXISTS hotel_admin_master(
     hotel_id int,
     hotel_userid VARCHAR(32),
     hotel_passwd VARCHAR(32),
-    hotel_access_module VARCHAR(128), /*1,2,4,6,7*/
     hotel_module_permission TEXT,/*{2:{all},3:{add,del}} */
     hotel_access_activation varchar(16),
     hotel_access_duration SMALLINT(2),
@@ -168,7 +167,8 @@ CREATE TABLE IF NOT EXISTS hotel_admin_master(
 
 CREATE TABLE IF NOT EXISTS tbl_module_master(
     module_id INT AUTO_INCREMENT PRIMARY KEY,
-    module_name VARCHAR(32),
-    module_desc  TEXT,
     module_status ENUM ("Active", "Inactive")
+    module_name VARCHAR(32),
+    module_desc  TEXT
+   
 );
