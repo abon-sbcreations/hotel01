@@ -151,3 +151,24 @@ CREATE TABLE IF NOT EXISTS hotel_membership_master(
     membership_validity tinyint(2),
     membership_amenity VARCHAR(255)
 );
+
+CREATE TABLE IF NOT EXISTS hotel_admin_master(
+    hotel_admin_id INT AUTO_INCREMENT PRIMARY KEY,
+    hotel_id int,
+    hotel_userid VARCHAR(32),
+    hotel_passwd VARCHAR(32),
+    hotel_access_module VARCHAR(128), /*1,2,4,6,7*/
+    hotel_module_permission TEXT,/*{2:{all},3:{add,del}} */
+    hotel_access_activation varchar(16),
+    hotel_access_duration SMALLINT(2),
+    hotel_access_rent DECIMAL(8,2),
+    is_rent_paid ENUM ("Y","N"),
+    hotel_admin_status ENUM ("Active","Inactive")
+);
+
+CREATE TABLE IF NOT EXISTS tbl_module_master(
+    module_id INT AUTO_INCREMENT PRIMARY KEY,
+    module_name VARCHAR(32),
+    module_desc  TEXT,
+    module_status ENUM ("Active", "Inactive")
+);

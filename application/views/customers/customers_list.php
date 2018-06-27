@@ -8,9 +8,10 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <link rel="icon" href="<?= site_url("library/images/hotel-flat-icon-vector.jpg") ?>">
-        <title>Companies</title>
+        <title>Customers</title>
         <link href="<?= site_url("library/css/bootstrap.min.css") ?>" rel="stylesheet" type="text/css"/>
         <link href="<?= site_url("library/css/datatables.min.css") ?>" rel="stylesheet" type="text/css"/>
+        <link href="<?= site_url("library/css/bootstrap-datepicker3.min.css") ?>" rel="stylesheet" type="text/css"/>
         <link href="<?= site_url("assets/css/custom02.css") ?>" rel="stylesheet">
 
         <style>
@@ -89,14 +90,34 @@
                                     <select class="custom-select d-block w-100" id="cust_status" name="cust_status"></select>
                                 </div>
                             </div>
+                            <div id="memberBlock" class="row">
+                                <div class="form-group col-md-4 mb-3">
+                                    <label for="membership_type">Membership</label>                                    
+                                    <select class="custom-select d-block w-100" id="membership_type" name="membership_type"></select>
+                                </div>
+                                <div class="form-group col-md-4 mb-3">
+                                    <label for="membership_num">Mem. Number</label>
+                                    <input type="text" name="membership_num" id="membership_num" class="form-control">
+                                </div>
+                                <div class="form-group col-md-4 mb-3">
+                                    <label for="membership_issue_date">Mem. Issue Date</label>
+                                    <input type="text" name="membership_issue_date" id="membership_issue_date" class="form-control">
+                                </div>
+                            </div>
                             <div class="row">
-                                 <div class="form-group col-md-4 mb-3">
+                                <div class="form-group col-md-4 mb-3">
                                     <label for="cust_phone">Phone</label>
                                     <input type="text" name="cust_phone" id="cust_phone" class="form-control">
                                 </div>
                                 <div class="form-group col-md-4 mb-3">
                                     <label for="cust_email">Email</label>
                                     <input type="text" name="cust_email" id="cust_email" class="form-control">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-8">
+                                    <label for="cust_address">Address</label>
+                                    <textarea name="cust_address" class="form-control" rows="5" cols="" id="cust_address"></textarea>
                                 </div>
                             </div>
                             <div class="row">
@@ -113,16 +134,18 @@
             </div>
         </div>
         <script src="<?= site_url("library/js/jquery.min.js") ?>" type="text/javascript"></script>
-        <script src="<?= site_url("library/js/bootstrap.min.js") ?>" type="text/javascript"></script>
+        <script src="<?= site_url("library/js/bootstrap.min.js") ?>" type="text/javascript"></script>        
         <script src="<?= site_url("library/js/jquery.validate.min.js") ?>" type="text/javascript"></script>
         <script src="<?= site_url("library/js/datatables.min.js") ?>" type="text/javascript"></script>
+        <script src="<?= site_url("library/js/bootstrap-datepicker.min.js") ?>" type="text/javascript"></script>
         <script type="text/javascript">
                         var dataTableCustomer = "<?= site_url("index.php/customers/ajaxAllCustomersMasterDataTable") ?>";
                         var customerDetails = $("#customerDetails");
-                        var hotelList;var custStatus;
+                        var hotelList;         var custStatus;              var membershipType;
                         $(document).ready(function () {
-                            hotelList = "<?= addslashes(json_encode($hotelOptions))?>";
-                            custStatus = "<?= addslashes(json_encode(['Guest'=>'guest','Member'=>'member']))?>";
+                            hotelList = "<?= addslashes(json_encode($hotelOptions)) ?>";
+                            membershipType = "<?= addslashes(json_encode($membershipOptions)) ?>";
+                            custStatus = "<?= addslashes(json_encode([ 'Guest' => 'Guest', 'Member' => 'Member']))?>";
                             var table1 = $('#customer_list').DataTable({
                                 "ajax": {
                                     url: dataTableCustomer,
@@ -131,7 +154,7 @@
                                 "aoColumns": [
                                     {mData: 'cust_name'},
                                     {mData: 'hotel_name'},
-                                    {mData: 'cust_status'},    
+                                    {mData: 'cust_status'},
                                     {mData: "cust_id", bSortable: false, sWidth: "80px",
                                         mRender: function (data, type, full) {
                                             var editBtn = "<button class=\"btn btn-info btn-xs\" onclick=\"editCustomer(" + data + ")\">Edit</button>";
@@ -142,21 +165,25 @@
                                 ]
                             });
                         });
-                        function popOptions(options,dom_id,sel_id=""){
+                        function popOptions(options, dom_id, sel_id = "") {
                             var optionsList = $.parseJSON(options);
                             var option = "<option value=\"\">Choose...</option>";
-                            $.each(optionsList,function(key,row){
-                                var select = sel_id==key ? "selected='selected'" : "";
-                               option = option + "<option "+select+" value=\""+key+"\">"+row+"</option>"; 
+                            $.each(optionsList, function (key, row) {
+                                var select = sel_id == key ? "selected='selected'" : "";
+                                option = option + "<option " + select + " value=\"" + key + "\">" + row + "</option>";
                             });
                             $(dom_id).html(option);
                         }
                         function addCustomer() {
                             $("#customerDetails .modal-title").html("");
                             $("#customerDetailEdit")[0].reset();
-                            popOptions(hotelList,"#hotel_id");
-                            popOptions(custStatus,"#cust_status");
-                            
+                            $("#customerDetailEdit option").removeAttr("selected");
+                            $("#customerDetailEdit input:not(#submitBtn)").val("");
+                            $("#customerDetailEdit textarea").html("");
+                            popOptions(hotelList, "#hotel_id");
+                            popOptions(hotelList, "#hotel_id");
+                            popOptions(custStatus, "#cust_status");
+                            hotelToMembership();
                             customerDetails.modal("show");
                         }
                         function editCustomer(customer_id) {
@@ -166,15 +193,19 @@
                                 data: {cust_id: customer_id},
                                 success: function (result) {
                                     var data = $.parseJSON(result);
-                                    popOptions(hotelList,"#hotel_id",data['hotel_id']);
-                                     popOptions(custStatus,"#cust_status",data['cust_status']);
+                                    popOptions(hotelList, "#hotel_id", data['hotel_id']);
+                                    popOptions(custStatus, "#cust_status", data['cust_status']);
                                     $("input[name*='cust_name']").val(data['cust_name']);
                                     $("input[name*='cust_email']").val(data['cust_email']);
                                     $("input[name*='cust_phone']").val(data['cust_phone']);
                                     $("input[name*='cust_id']").val(data['cust_id']);
-                                    $("input[name*='comp_reg_no']").val(data['comp_reg_no']);
-                                    $("#comp_address").html(data['comp_address']);
-                                    $("input[name*='comp_id']").val(data['comp_id']);
+                                    $("input[name*='membership_issue_date']").val(data['membership_issue_date']);
+                                    $("input[name*='membership_num']").val(data['membership_num']);
+                                    $("#cust_address").html(data['cust_address']);
+                                    $("input[name*='cust_id']").val(data['cust_id']);
+                                    $("#cust_status").val(data['cust_status']);
+                                    isMemberStatus($("#cust_status").val());
+                                    hotelToMembership(data['hotel_id'],data['membership_type']);
                                     customerDetails.modal("show");
                                 }
                             });
@@ -197,7 +228,7 @@
                                 $.ajax({
                                     type: "POST",
                                     url: "<?= site_url('index.php/Customers/ajaxCustomerMasterDelete') ?>",
-                                    data: {cust_id : customer_id},
+                                    data: {cust_id: customer_id},
                                     success: function (result) {
                                         customerDetails.modal("hide");
                                         refreshTable();
@@ -211,17 +242,6 @@
                             $("#customerDetailEdit").submit();
                         });
                         $("#customerDetailEdit").submit(function (e) {
-                            var common_alert = "";
-                            var comp_name = $.trim($("input[name*='comp_name']").val());
-                            var comp_id = $.trim($("input[name*='comp_id']").val());
-                            if (comp_name == '') {
-                                common_alert = '\n Please enter Company name';
-                            }
-                            if ($.trim(common_alert) != '') {
-                                alert(common_alert);
-                                $("#customerDetailEdit")[0].reset();
-                                customerDetails.modal("hide");
-                            } else {
                                 $.ajax({
                                     type: "POST",
                                     url: "<?= site_url('index.php/customers/ajaxCustomersMasterSubmit') ?>",
@@ -232,8 +252,45 @@
                                         refreshTable();
                                     }
                                 });
-                            }
                             e.preventDefault();
+                        });
+                        function hotelToMembership(id = "",opt=""){
+                            var hotelMembershipType = $.parseJSON(membershipType);
+                            var option = "<option value=\"\">Choose...</option>";
+                            if(id !== "" && $("#cust_status").val()=='Member'){                                
+                                $.each(hotelMembershipType[id],function(key,row){
+                                   var select = opt==key ? "selected='selected'" : "";
+                                   option = option + "<option "+select+" value=\""+key+"\">"+row+"</option>"; 
+                                });                                
+                            }
+                            $("#membership_type").html(option);
+                        }
+                        function isMemberStatus(status,hotel_id=0){
+                            if(status=="Guest"){
+                                $("#membership_type").html(
+                                        "<option value=\"\">Choose...</option>"
+                                        +"<option value=\"0\" selected='selected'>None</option>");
+                                $("#membership_num").val(0);
+                                $("#membership_issue_date").val(0);
+                                $("#memberBlock").hide();
+                            }else{
+                                $("#memberBlock").show();
+                                hotelToMembership($("#hotel_id").val());
+                            }
+                        }
+                        $("#cust_status").on("change",function(){
+                            var valueSelected = this.value;
+                            isMemberStatus(valueSelected);
+                        });                        
+                        $("#hotel_id").on("change",function(){
+                             var valueSelected = this.value;
+                             hotelToMembership(valueSelected);
+                        });
+                        $("#membership_issue_date").datepicker({
+                            format: "dd-mm-yyyy",
+                            weekStart: 1,
+                            daysOfWeekHighlighted: "0,6",
+                            autoclose: true
                         });
         </script>
     </body>

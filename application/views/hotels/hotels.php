@@ -195,7 +195,7 @@
                         });
                         function addHotel() {
                             $("#hotelDetails .modal-title").html("");
-                             $("#hotelDetailEdit")[0].reset();      
+                            $("#hotelDetailEdit")[0].reset();      
                             $("#hotelDetailEdit option").removeAttr("selected");
                             $("#hotelDetailEdit input:not(#submitBtn)").val("");
                             $("#hotelDetailEdit textarea").html("");

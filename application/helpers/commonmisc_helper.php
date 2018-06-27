@@ -105,7 +105,6 @@ function membershipOptions() {
             $memberList[$member['hotel_id']][$member['membership_id']] = $member['membership_card'];
         }
     }
-    print_r($memberList);
     return $memberList;
 }
 

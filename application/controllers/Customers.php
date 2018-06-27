@@ -64,7 +64,7 @@ class Customers extends CI_Controller {
         return json_encode(['true']);
     }
 
-    public function ajaxCompaniesMasterSubmit() {
+    public function ajaxCustomersMasterSubmit() {
         $post = $this->input->post();
         if (isset($post['cust_id']) && !empty($post['cust_id'])) {
             $this->Customer->putCustomer($post);
