@@ -137,7 +137,6 @@
                             companyDetails.modal("show");
                         }
                         function editCompany(company_id) {
-                            console.log(company_id);
                             $.ajax({
                                 type: "POST",
                                 url: "<?= site_url('index.php/companies/ajaxCompanyMasterDetails') ?>",

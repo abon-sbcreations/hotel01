@@ -169,15 +169,11 @@
                             $("#restaurantDetailEdit")[0].reset();
                             $("#restaurantDetailEdit input:not(#submitBtn)").val("");
                             $("#restaurantDetailEdit textarea").html("");
-                            popOptions(hotelList, "#hotel_id");
-                            popOptions(sessionList, "#menu_session");
-                            popOptions(typeList, "#menu_type");
-                            popOptions(typeList, "#menu_type");
-                            popOptions(isAvailable, "#item_available");                            
-                            restaurantDetails.modal("show");
+                            popOptions(hotelList, "#hotel_id");              popOptions(sessionList, "#menu_session");
+                            popOptions(typeList, "#menu_type");              popOptions(typeList, "#menu_type");
+                            popOptions(isAvailable, "#item_available");      restaurantDetails.modal("show");
                         }
                         function editRestaurant(menu_id) {
-                            console.log(menu_id);
                             $.ajax({
                                 type: "POST",
                                 url: "<?= site_url('index.php/restaurants/ajaxRestaurantMasterDetails') ?>",

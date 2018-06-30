@@ -7,19 +7,10 @@ function timeSlotOptions() {
     $list = "<option value=\"00:00\">00:00 hrs</option>";
     for ($i = 0; $i < 24 * 4 - 1; $i++) {
         $count++;   //15 min difference
-        if ($count % 4 == 1) {
-            $m = 15;
-        }
-        if ($count % 2 == 0) {
-            $m = 30;
-        }
-        if ($count % 4 == 3) {
-            $m = 45;
-        }
-        if ($count % 4 == 0) {
-            $m = "00";
-            $h++;
-        }
+        if ($count % 4 == 1) {            $m = 15;        }
+        if ($count % 2 == 0) {            $m = 30;        }
+        if ($count % 4 == 3) {            $m = 45;        }
+        if ($count % 4 == 0) {            $m = "00";            $h++;        }
         if ($h != 24) {
             $time = str_pad($h, 2, "0", STR_PAD_LEFT) . ":" . $m;
             $list .= "<option value=\"{$time}\">{$time} hrs</option>";
@@ -30,8 +21,7 @@ function timeSlotOptions() {
 
 function hotelTypeSlotOptions() {
     $list = "<option value=\"\">Choose...</option>";
-    $types = [
-        "1*" => "1 star", "2*" => "2 star",
+    $types = [        "1*" => "1 star", "2*" => "2 star",
         "3*" => "3 star", "4*" => "4 star",
         "5*" => "5 star", "6*" => "6 star",
         "7*" => "7 star"];
@@ -92,7 +82,6 @@ function amenityOptions() {
     return $amenities;
 }
 function membershipOptions() {
-    $list = "<option value=\"\">Choose...</option>";
     $ci = & get_instance();
     $ci->load->database();
     $ci->db->from("hotel_membership_master");
@@ -107,7 +96,21 @@ function membershipOptions() {
     }
     return $memberList;
 }
-
+ function getModuleOptions(){
+     $ci = & get_instance();
+    $ci->load->database();
+    $ci->db->from("tbl_module_master");
+    $ci->db->select("module_id,module_name");
+    $query = $ci->db->get();
+    $result = $query->result_array();
+    $moduleMaster = [];
+    if (!empty($result)){
+        foreach ($result as $key => $member) {
+            $moduleMaster[$member['module_id']] = $member['module_name'];
+        }
+    }
+    return $moduleMaster;
+ }
 function roomItemCategories() {
     $types = [
         "c1" => "category 1", "c2" => "category 2",
@@ -153,3 +156,4 @@ function getStatus(){
             'Inactive' => 'Inactive'
         ];
     }
+   

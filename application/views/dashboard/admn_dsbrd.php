@@ -59,6 +59,7 @@
             <li><a href="<?=site_url('index.php/customers')?>">Customers</a></li>
             <li><a href="<?=site_url('index.php/membership_masters/master')?>">Memberships</a></li>
             <li><a href="<?=site_url('index.php/module_masters')?>">Module List</a></li>
+            <li><a href="<?=site_url('index.php/hotel_admins/admins')?>">Hotel Admins</a></li>
           </ul>
           <ul class="nav nav-sidebar"></ul>
           <ul class="nav nav-sidebar">

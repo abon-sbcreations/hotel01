@@ -157,7 +157,6 @@
                             membershipDetails.modal("show");
                         }
                         function editMembership(membership_id) {
-                            console.log(membership_id);
                             $.ajax({
                                 type: "POST",
                                 url: "<?= site_url('index.php/membership_masters/ajaxMembershipDetails') ?>",
@@ -207,17 +206,6 @@
                         });
                         $("#membershipDetailEdit").submit(function (e) {
                             var common_alert = "";
-                           // var comp_name = $.trim($("input[name*='hotel_id']").val());
-                           // var comp_name = $.trim($("input[name*='hotel_room_type']").val());
-                           // var comp_id = $.trim($("input[name*='hotel_room_rent']").val());
-                           // if (comp_name == '') {
-                           //     common_alert = '\n Please enter Company name';
-                          //  }
-                          //  if ($.trim(common_alert) != '') {
-                           //     alert(common_alert);
-                           //     $("#roomTypeDetailEdit")[0].reset();
-                           //     companyDetails.modal("hide");
-                            //} else {
                                 $.ajax({
                                     type: "POST",
                                     url: "<?= site_url('index.php/membership_masters/ajaxMembershipMasterSubmit') ?>",
@@ -228,7 +216,6 @@
                                         refreshTable();
                                     }
                                 });
-                           // }
                             e.preventDefault();
                         });
                          function popOptions(options,dom_id,sel_id=""){

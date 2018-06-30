@@ -131,7 +131,6 @@
                             roomDetails.modal("show");
                         }
                         function editRoom(room_master_id) {
-                            console.log(room_master_id);
                             $.ajax({
                                 type: "POST",
                                 url: "<?= site_url('index.php/rooms/ajaxRoomMasterDetails') ?>",

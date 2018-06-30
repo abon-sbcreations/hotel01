@@ -140,7 +140,6 @@
                             moduleDetails.modal("show");
                         }
                         function editModule(module_id) {
-                            console.log(module_id);
                             $.ajax({
                                 type: "POST",
                                 url: "<?= site_url('index.php/module_masters/ajaxModulesMasterDetails') ?>",

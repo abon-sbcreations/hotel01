@@ -16,7 +16,6 @@ class Hotel_rooms extends CI_Controller {
             redirect('/index.php/admins', 'refresh');
         }
     }
-
     public function master() {
         $loggedId = $this->session->userdata('logged_id');
         $loggedDisplay = $this->session->userdata('logged_display');
@@ -27,7 +26,6 @@ class Hotel_rooms extends CI_Controller {
             'amenityOptions' => amenityOptions()
         ]);
     }
-
     public function ajaxAllHotelRoomTypeDataTable() {
         // Datatables Variables
         $draw = intval($this->input->get("draw"));
@@ -63,7 +61,6 @@ class Hotel_rooms extends CI_Controller {
             "data" => $rows
         ]);
     }
-
     public function ajaxHotelRoomDetails() {
         $params = [
             'where' => ['hotel_room_master_id' => $this->input->post('hotel_room_master_id')]
@@ -71,13 +68,11 @@ class Hotel_rooms extends CI_Controller {
         $room = $this->Hotel_room->getHotelRooms($params);
         echo json_encode($room[0]);
     }
-
     public function ajaxHotelRoomMasterDelete() {
         $where = ['hotel_room_master_id' => $this->input->post('hotel_room_master_id')];
         $comp = $this->Hotel_room->deleteHotelRoom($where);
         return json_encode(['true']);
     }
-
     public function ajaxHotelRoomMasterSubmit() {
         $post = $this->input->post();
         if (isset($post['hotel_room_master_id']) && !empty($post['hotel_room_master_id'])) {
@@ -86,5 +81,4 @@ class Hotel_rooms extends CI_Controller {
             $this->Hotel_room->postHotelRoom($post);
         }
     }
-
 }

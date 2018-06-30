@@ -131,7 +131,6 @@
                             amenityDetails.modal("show");
                         }
                         function editAmenity(amenity_id) {
-                            console.log(amenity_id);
                             $.ajax({
                                 type: "POST",
                                 url: "<?= site_url('index.php/amenities/ajaxAmenityMasterDetails') ?>",

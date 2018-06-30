@@ -158,9 +158,9 @@ CREATE TABLE IF NOT EXISTS hotel_admin_master(
     hotel_userid VARCHAR(32),
     hotel_passwd VARCHAR(32),
     hotel_module_permission TEXT,/*{2:{all},3:{add,del}} */
-    hotel_access_activation varchar(16),
-    hotel_access_duration SMALLINT(2),
-    hotel_access_rent DECIMAL(8,2),
+    hotel_access_activation varchar(16), /*date*/
+    hotel_access_duration SMALLINT(2),/*month*/
+    hotel_access_rent DECIMAL(8,2), 
     is_rent_paid ENUM ("Y","N"),
     hotel_admin_status ENUM ("Active","Inactive")
 );

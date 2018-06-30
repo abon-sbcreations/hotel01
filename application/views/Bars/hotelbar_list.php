@@ -131,7 +131,6 @@
                         }
                      
 					 function editHotelbar(hotelbar_id) {
-                            console.log(hotelbar_id);
                             $.ajax({
                                 type: "POST",
                                 url: "<?= site_url('index.php/hotelbars/ajaxHotelbarMasterDetails') ?>",

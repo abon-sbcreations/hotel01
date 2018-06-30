@@ -157,7 +157,6 @@
                             roomTypeDetails.modal("show");
                         }
                         function editHotelRoomType(hotel_room_master_id) {
-                            console.log(hotel_room_master_id);
                             $.ajax({
                                 type: "POST",
                                 url: "<?= site_url('index.php/hotel_rooms/ajaxHotelRoomDetails') ?>",
