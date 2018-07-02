@@ -145,3 +145,7 @@ body {
     border-color: #85c5e5;
     border-radius: 0;
 }
+.errorlabel{
+    color: #E13300;
+    font-size: 20px;
+}

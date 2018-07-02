@@ -3,11 +3,12 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Companies extends CI_Controller {
-
+    private $_company_master = "tbl_company_master";
     public function __construct() {
         parent::__construct();
         $this->load->helper('form', 'security');
         $this->load->helper('commonmisc_helper');
+        $this->load->helper('validationmisc_helper');
         $this->load->library('form_validation', 'session');
         $this->load->model('Company');
         $u1 = $this->session->userdata('logged_id');
@@ -69,6 +70,27 @@ class Companies extends CI_Controller {
         } else {
             $this->Company->postCompany($post);
         }
+    }
+    public function ajaxUniqueCompanyAttr(){
+        $post = $this->input->post();
+        if (isset($post['comp_id']) && !empty($post['comp_id'])) {
+            echo checkTableUnique([
+                'table' => $this->_company_master,
+                'primary_id' => "comp_id",
+                'primaryVal' => $post['comp_id'],
+                'attr' => $post['attr'],
+                'attrVal' => $post['attrVal']
+                    ]);
+        } else {
+            echo checkTableUnique([
+                'table' => $this->_company_master,
+                'primary_id' => "comp_id",
+                'primaryVal' => 0,
+                'attr' => $post['attr'],
+                'attrVal' => $post['attrVal']
+                    ]);
+        }
+        
     }
 
 }

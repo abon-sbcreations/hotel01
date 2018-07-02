@@ -10,11 +10,9 @@ class Hotel_room extends CI_Model {
     public function getHotelRooms($params) {
         $this->db->from($this->_hotel_room_detail." as hrd");
         $this->db->join($this->_hotel_master." as hm","hm.hotel_id = hrd.hotel_id","left");
-        //$this->db->join($this->_amenities_master." as am","am.amenity_id = hrd.hotel_room_type","left");
         $this->db->join($this->_room_master." as rm","rm.room_master_id = hrd.hotel_room_type","left");
        $this->db->select("hrd.hotel_room_master_id,hrd.hotel_id,hm.hotel_name,hrd.hotel_room_type,rm.room_type_Desc,"
                ."hrd.hotel_room_rent,hrd.hotel_room_desc,hrd.hotel_room_amenities");
-       //$this->db->select("hrd.hotel_room_master_id,hrd.hotel_id,hrd.hotel_room_type,hrd.hotel_room_rent,hrd.hotel_room_desc,hrd.hotel_room_amenities"); 
         if (isset($params['where']) && !empty($params['where'])) {
             $this->db->where($params['where']);
         }

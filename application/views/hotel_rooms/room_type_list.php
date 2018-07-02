@@ -79,10 +79,12 @@
                                     <label for="hotel_id">Name</label>
                                     <input type="hidden" name="hotel_room_master_id" id="hotel_room_master_id" value="0" class="form-control">
                                     <select class="custom-select d-block w-100" id="hotel_id" name="hotel_id"></select>
+                                    <div id="errHotelId" class="errorlabel"></div>
                                 </div>
                                 <div class="form-group col-md-4 mb-3">
                                     <label for="hotel_room_type">Room Type</label>
                                     <select class="custom-select d-block w-100" id="hotel_room_type" name="hotel_room_type"></select>
+                                    <div id="errRoomType" class="errorlabel"></div>
                                 </div>
                                 <div class="form-group col-md-2 mb-2">
                                     <label for="hotel_room_rent">Room Rent</label>
@@ -203,21 +205,21 @@
                             }
                         }
                         $("#submitBtn").on("click", function () {
+                         $(".errorlabel").html("");
+                         var errorNo = 0;
+                         if($("#hotel_id").val().length <= 0){
+                                $("#errHotelId").html("Hotel Type is required");
+                                errorNo++;
+                         }
+                         if($("#hotel_room_type").val().length <= 0){
+                                $("#errRoomType").html("Hotel Type is required");
+                                errorNo++;
+                         }                       
+                         if(errorNo <= 0){
                             $("#roomTypeDetailEdit").submit();
+                         }
                         });
                         $("#roomTypeDetailEdit").submit(function (e) {
-                            var common_alert = "";
-                           // var comp_name = $.trim($("input[name*='hotel_id']").val());
-                           // var comp_name = $.trim($("input[name*='hotel_room_type']").val());
-                           // var comp_id = $.trim($("input[name*='hotel_room_rent']").val());
-                           // if (comp_name == '') {
-                           //     common_alert = '\n Please enter Company name';
-                          //  }
-                          //  if ($.trim(common_alert) != '') {
-                           //     alert(common_alert);
-                           //     $("#roomTypeDetailEdit")[0].reset();
-                           //     companyDetails.modal("hide");
-                            //} else {
                                 $.ajax({
                                     type: "POST",
                                     url: "<?= site_url('index.php/hotel_rooms/ajaxHotelRoomMasterSubmit') ?>",
@@ -228,7 +230,6 @@
                                         refreshTable();
                                     }
                                 });
-                           // }
                             e.preventDefault();
                         });
                          function popOptions(options,dom_id,sel_id=""){

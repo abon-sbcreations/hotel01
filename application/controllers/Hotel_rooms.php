@@ -81,4 +81,24 @@ class Hotel_rooms extends CI_Controller {
             $this->Hotel_room->postHotelRoom($post);
         }
     }
+    public function ajaxUniqueHotelRoomAttr(){
+        $post = $this->input->post();
+        if (isset($post['hotel_room_master_id']) && !empty($post['hotel_room_master_id'])) {
+            echo checkTableUnique([
+                'table' => $this->_hotel_master,
+                'primary_id' => "hotel_room_master_id",
+                'primaryVal' => $post['hotel_room_master_id'],
+                'attr' => $post['attr'],
+                'attrVal' => $post['attrVal']
+                    ]);
+        } else {
+            echo checkTableUnique([
+                'table' => $this->_hotel_master,
+                'primary_id' => "hotel_room_master_id",
+                'primaryVal' => 0,
+                'attr' => $post['attr'],
+                'attrVal' => $post['attrVal']
+                    ]);
+        }
+    }
 }

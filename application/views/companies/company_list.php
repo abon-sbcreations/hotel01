@@ -78,16 +78,19 @@
                                     <label for="comp_name">Name</label>
                                     <input type="hidden" name="comp_id" id="comp_id" value="0" class="form-control">
                                     <input type="text" name="comp_name" id="comp_name" class="form-control">
+                                    <div id="errCompName" class="errorlabel"></div>
                                 </div>
                                 <div class="form-group col-md-4 mb-3">
                                     <label for="comp_reg_no">Registration No</label>
                                     <input type="text" name="comp_reg_no" id="comp_reg_no" class="form-control">
+                                    <div id="errCompRegNo" class="errorlabel"></div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group  col-md-8">
-                                    <label for="comp_address"></label>
+                                    <label for="comp_address">Company Address</label>
                                     <textarea name="comp_address" class="form-control" rows="5" cols="" id="comp_address"></textarea>
+                                    <div id="errCompaddress" class="errorlabel"></div>
                                 </div>
                             </div>
                             <div class="row">
@@ -180,20 +183,52 @@
                             }
                         }
                         $("#submitBtn").on("click", function () {
-                            $("#companyDetailEdit").submit();
-                        });
-                        $("#companyDetailEdit").submit(function (e) {
-                            var common_alert = "";
-                            var comp_name = $.trim($("input[name*='comp_name']").val());
-                            var comp_id = $.trim($("input[name*='comp_id']").val());
-                            if (comp_name == '') {
-                                common_alert = '\n Please enter Company name';
+                            $(".errorlabel").html("");
+                            var errorNo = 0;
+                            if($("#comp_name").val().length <= 0){
+                                $("#errCompName").html("Company name is required");
+                                errorNo++;
+                            }else if($("#comp_name").val().length > 0){
+                                 $.ajax({
+                                    type: "POST",
+                                    async: false,
+                                    url: "<?= site_url('index.php/companies/ajaxUniqueCompanyAttr') ?>",
+                                    data: {primaryVal:$("#comp_id").val(),attr:"comp_name",attrVal:$("#comp_name").val()},
+                                    success: function (result) {
+                                        if(result > 0){                                         
+                                            $("#errCompName").html("Company name is not unique");
+                                            errorNo++;
+                                            console.log("unique <= "+errorNo);
+                                        }
+                                    }
+                                });
                             }
-                            if ($.trim(common_alert) != '') {
-                                alert(common_alert);
-                                $("#companyyDetailEdit")[0].reset();
-                                companyDetails.modal("hide");
-                            } else {
+                            if($("#comp_reg_no").val().length <= 0){
+                                $("#errCompRegNo").html("Company Registration No is required");
+                                errorNo++;
+                            }else if($("#comp_reg_no").val().length > 0){
+                                 $.ajax({
+                                    type: "POST",
+                                    async: false,
+                                    url: "<?= site_url('index.php/companies/ajaxUniqueCompanyAttr') ?>",
+                                    data: {primaryVal:$("#comp_id").val(),attr:"comp_reg_no",attrVal:$("#comp_reg_no").val()},
+                                    success: function (result) {
+                                        if(result > 0){                                         
+                                            $("#errCompRegNo").html("Company Registration No is not unique");
+                                            errorNo++;
+                                            console.log("unique <= "+errorNo);
+                                        }
+                                    }
+                                });
+                            }
+                            if(errorNo <= 0){
+                                $("#companyDetailEdit").submit();
+                            }                            
+                        });
+                        $(".close").on('click',function(){
+                            $(".errorlabel").html("");
+                        });
+                        $("#companyDetailEdit").submit(function (e) {                            
                                 $.ajax({
                                     type: "POST",
                                     url: "<?= site_url('index.php/companies/ajaxCompaniesMasterSubmit') ?>",
@@ -204,7 +239,6 @@
                                         refreshTable();
                                     }
                                 });
-                            }
                             e.preventDefault();
                         });
         </script>
