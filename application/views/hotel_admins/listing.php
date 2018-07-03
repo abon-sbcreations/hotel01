@@ -77,7 +77,7 @@
                             <div class="row">
                                 <div class="form-group col-md-3 mb-1">
                                     <label for="oldHotel_passwd">Old Password</label>
-                                    <input type="text" name="oldHotel_passwd" id="oldHotel_passwd" class="form-control">
+                                    <input type="password" name="oldHotel_passwd" id="oldHotel_passwd" class="form-control">
                                 </div> 
 
                             </div>
@@ -85,11 +85,11 @@
                                 <div class="form-group col-md-3 mb-1">
                                     <label for="hotel_passwd">New Password</label>
                                     <input type="hidden" name="hotel_admin_id" id="passHotel_admin_id" value="0" class="form-control">
-                                    <input type="text" name="hotel_passwd" id="hotel_passwd" class="form-control">
+                                    <input type="password" name="hotel_passwd" id="hotel_passwd" class="form-control">
                                 </div>
                                 <div class="form-group col-md-3 mb-1">
                                     <label for="rehotel_passwd">Confirm Password</label>
-                                    <input type="text" name="rehotel_passwd" id="rehotel_passwd" class="form-control">
+                                    <input type="password" name="rehotel_passwd" id="rehotel_passwd" class="form-control">
                                 </div>                                
                             </div>
                             <div class="row">
