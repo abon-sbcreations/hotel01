@@ -2,78 +2,82 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Hotelbars extends CI_Controller {
+class Bars extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
         $this->load->helper('url');
         $this->load->helper('commonmisc_helper');
-        $this->load->model('Hotelbar');
-        $u1 = $this->session->userdata('logged_id');
-        if (!isset($u1)) {
-            redirect('/index.php/admins', 'refresh');
+        $this->load->model('Bar');
+        $u1 = $this->session->userdata('hotel_userid');
+         if(!isset($u1)){
+            redirect('/index.php/hoteladmins', 'refresh');
         }
     }
 
-    public function hotelbar_list() {
-        $loggedId = $this->session->userdata('logged_id');
-        $loggedDisplay = $this->session->userdata('logged_display'); //users full name.
-        $this->load->view('hotelbars/hotelbar_list', [
-            'loggedDisplay' => $loggedDisplay,
-            'timeSlotOptions' => timeSlotOptions()
+    public function bar_list() {
+        $loggedHotelAdmin = $this->session->all_userdata();
+        $head02Temp = $this->load->view('templates/head02',['loggedHotelAdmin'=>$loggedHotelAdmin],TRUE);
+        $leftmenu02Temp = $this->load->view('templates/leftmenu02',['activeMenu'=>'bars/bar_list'],TRUE);
+        $this->load->view('bars/bar_list', [
+            'head02Temp'=>$head02Temp,
+            'leftmenu02Temp'=>$leftmenu02Temp,
+            'hotelOptions' =>hotelOptions(),
+            'timeSlotOptions' => timeSlotOptions(),
+            'menuTypeOption' => getMenuType(),
+            'availableOption' => getItemAvailable()            
         ]);
     }
 
-    public function ajaxAllHotelbarMasterDataTable() {
+    public function ajaxAllBarMasterDataTable() {
         // Datatables Variables
         $draw = intval($this->input->get("draw"));
         $start = intval($this->input->get("start"));
         $length = intval($this->input->get("length"));
-        $hotelbars = $this->Hotelbar->getHotelbar([]);
+        $bars = $this->Bar->getBar([]);
         $rows = [];
-        foreach ($hotelbars as $k => $hotelbar) {
+        foreach ($bars as $k => $bar) {
             $rows[] = [
-                "DT_RowId" => "row_" . $hotelbar['menu_id'],
-                "menu_id" => $hotelbar['menu_id'],
-                "hotel_id" => $hotelbar['hotel_id'],
-                "menu_cart" => $hotelbar['menu_cart'],
-                "item_name" => $hotelbar['item_name'],
-                "menu_type" => $hotelbar['item_name'],
-                "item_img" => $hotelbar['item_img'],
-                "item_desc" => $hotelbar['item_desc'],
-                "item_price" => $hotelbar['item_price'],
-                "item_available" => $hotelbar['item_available']
+                "DT_RowId" => "row_" . $bar['menu_id'],
+                "menu_id" => $bar['menu_id'],
+                "hotel_id" => $bar['hotel_id'],
+                "menu_cat" => $bar['menu_cat'],
+                "item_name" => $bar['item_name'],
+                "menu_type" => $bar['item_name'],
+                "item_img" => $bar['item_img'],
+                "item_desc" => $bar['item_desc'],
+                "item_price" => $bar['item_price'],
+                "item_available" => $bar['item_available']
             ];
         }
         echo json_encode([
             "draw" => $draw,
-            "recordsTotal" => count($hotelbars),
-            "recordsFiltered" => count($hotelbars),
+            "recordsTotal" => count($bars),
+            "recordsFiltered" => count($bars),
             "data" => $rows
         ]);
     }
 
-    public function ajaxHotelbarMasterDetails() {
+    public function ajaxBarMasterDetails() {
         $params = [
             'where' => ['menu_id' => $this->input->post('menu_id')]
         ];
-        $hotelbars = $this->Hotelbar->getHotelbar($params);
-        echo json_encode($hotelbar[0]);
+        $bars = $this->Bar->getBar($params);
+        echo json_encode($bars[0]);
     }
 
-    public function ajaxHotelbarMasterDelete() {
+    public function ajaxBarMasterDelete() {
         $where = ['menu_id' => $this->input->post('menu_id')];
-        $hotelbar = $this->Hotelbar->deleteHotelbar($where);
-
+        $this->Bar->deleteBar($where);
         return json_encode(['true']);
     }
 
-    public function ajaxHotelbarMasterSubmit() {
+    public function ajaxBarMasterSubmit() {
         $post = $this->input->post();
         if (isset($post['menu_id']) && !empty($post['menu_id'])) {
-            $this->Hotelbar->putHotelbar($post);
+            $this->Hotelbar->putBar($post);
         } else {
-            $this->Hotelbar->postHotelbar($post);
+            $this->Hotelbar->postBar($post);
         }
     }
 

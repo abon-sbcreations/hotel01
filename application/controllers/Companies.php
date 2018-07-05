@@ -18,10 +18,12 @@ class Companies extends CI_Controller {
     }
 
     public function index() {
-        $loggedId = $this->session->userdata('logged_id');
         $loggedDisplay = $this->session->userdata('logged_display');
+        $head01Temp = $this->load->view('templates/head01',['loggedDisplay'=>$loggedDisplay],TRUE);
+        $leftmenu01Temp = $this->load->view('templates/leftmenu01',['activeMenu'=>'companies'],TRUE); 
         $this->load->view('companies/company_list', [
-            'loggedDisplay' => $loggedDisplay,
+            'head01Temp'=>$head01Temp,
+            'leftmenu01Temp'=>$leftmenu01Temp,
             'timeSlotOptions' => timeSlotOptions()
         ]);
     }
@@ -38,7 +40,10 @@ class Companies extends CI_Controller {
                 "DT_RowId" => "row_" . $company['comp_id'],
                 "comp_id" => $company['comp_id'],
                 'comp_name' => $company['comp_name'],
-                'comp_reg_no' => $company['comp_reg_no']
+                'comp_reg_no' => $company['comp_reg_no'],
+                'comp_gst_no' => $company['comp_gst_no'],
+                'comp_pan_no' => $company['comp_pan_no'],
+                'comp_address' =>$company['comp_address']
             ];
         }
         echo json_encode([

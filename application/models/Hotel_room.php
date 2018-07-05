@@ -22,7 +22,7 @@ class Hotel_room extends CI_Model {
 
     public function postHotelRoom($hotel) {
             $this->db->insert($this->_hotel_room_detail, [
-            'hotel_id' => $hotel['hotel_id'],
+            'hotel_id' => $this->session->userdata('hotel_id'),
             'hotel_room_type' => $hotel['hotel_room_type'],
             'hotel_room_rent' => $hotel['hotel_room_rent'],
             'hotel_room_desc' => $hotel['hotel_room_desc'],
@@ -33,7 +33,6 @@ class Hotel_room extends CI_Model {
     public function putHotelRoom($hotel) {
         echo $this->amenitiesList($hotel['amenity']);
         $this->db->update($this->_hotel_room_detail, [
-            'hotel_id' => $hotel['hotel_id'],
             'hotel_room_type' => $hotel['hotel_room_type'],
             'hotel_room_rent' => $hotel['hotel_room_rent'],
             'hotel_room_desc' => $hotel['hotel_room_desc'],

@@ -15,40 +15,17 @@
 
         <style>
             #modalDialog{
-                width:90%;
-            }
-            body{
-                background-color:#ccc;
+                width:60%;
             }
         </style>
     </head>
     <body>
-
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">Hotel Software</a>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="<?= site_url('index.php/Dashboards/admin_area') ?>">Dashboard</a></li>
-                        <li><a href="#">Settings</a></li>
-                        <li><a href="<?= site_url('index.php/admins/logout') ?>">(<?= $loggedDisplay ?>)</a></li>
-                        <li><a href="#">Help</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+<?=$head02Temp?>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-11">
-                    <div class="h1">Membership Type<button onclick="addMembership()" class="btn btn-warning">Add Membership Type</button></div>
+                <?=$leftmenu02Temp?>
+                <div class="col-md-10 col-lg-offset-2">
+                    <div class="h3"><span>Membership Card</span><span class="addbttn"><button onclick="addMembership()" class="btn btn-info">Add Membership Card</button></span></div>
                     <table id="membership_list" class="table table-bordered table-striped table-hover">
                         <thead>
                             <tr>
@@ -71,46 +48,36 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title"></h4>
+                        <h4 class="modal-title">Membership Card</h4>
                     </div>
                     <div class="modal-body">
                         <form method="post" name="membershipDetailEdit" id="membershipDetailEdit" >
                             <div class="row">
-                                <div class="form-group col-md-4 mb-3">
+                                <div class="form-group col-md-6 mb-6">
                                     <label for="hotel_id">Hotel Name</label>
                                     <input type="hidden" name="membership_id" id="membership_id" value="0" class="form-control">
-                                    <select class="custom-select d-block w-100" id="hotel_id" name="hotel_id"></select>
-                                </div>
-                                <div class="form-group col-md-4 mb-3">
-                                    <label for="membership_card">Membership Card</label>
+                                    <select class="custom-select d-block w-100 form-control" id="hotel_id" name="hotel_id"></select>
+                                    <label for="membership_card">Card Type</label>
                                     <input type="text" name="membership_card" id="membership_card" class="form-control">
-                                </div>
-                                <div class="form-group col-md-2 mb-2">
                                     <label for="membership_card_value">Card Value</label>
                                     <input type="text" name="membership_card_value" id="membership_card_value" class="form-control">
+                                    <label for="membership_validity">Card Validity&nbsp;(months)</label>
+                                    <input type="text" maxlength="2" name="membership_validity" id="membership_validity" class="form-control">
                                 </div>
-                                <div class="form-group col-md-2 mb-2">
-                                    <label for="membership_validity">Card Validity</label>
-                                    <input type="text" name="membership_validity" id="membership_validity" class="form-control">
-                                </div>
-                            </div>
-                            <div class="row">
-                                
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-6 mb-6">
                                     <label for="membership_amenity">Card Facilities</label>
                                     <div id="membershipAmenity"></div>
                                 </div>
                             </div>
+                            
                             <div class="row">
-                                <div class="form-group col-md-4 mb-3">
+                                <div class="form-group col-md-6 mb-6">
                                     <input id="submitBtn" type="button" class="btn btn-info" value="submit" >
                                 </div>
                             </div>                            
                         </form>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -147,9 +114,7 @@
                             });
                         });
                         function addMembership() {
-                            $("#membershipDetails .modal-title").html("");
                             $("#membershipDetailEdit")[0].reset();
-                            $("#membershipDetails .modal-title").html("");
                             $("#membershipDetailEdit input:not(#submitBtn)").val("");
                             $("#membershipDetailEdit option").removeAttr("selected");
                             popOptions(hotelList,"#hotel_id");
@@ -167,7 +132,7 @@
                                     $("input[name*='membership_id']").val(data['membership_id']);
                                     $("input[name*='membership_card']").val(data['membership_card']);
                                     $("input[name*='membership_card_value']").val(data['membership_card_value']);
-                                    $("input[name*='membership_card_validity']").val(data['membership_card_validity']);
+                                    $("input[name*='membership_validity']").val(data['membership_validity']);
                                     popAmenities(data['membership_amenity']);
                                     membershipDetails.modal("show");
                                 }
@@ -233,7 +198,7 @@
                             var amenitiyArr = membershipAmenities.split(",");
                             $.each(amenitiesList,function(id,name){
                                 var check = jQuery.inArray(id, amenitiyArr) !== -1 ? "checked='checked'":"";
-                                $("#membershipAmenity").append("<span><input "+check+" type=\"checkbox\" name=\"amenity["+id+"]\" value=\"1\" >"+name+"</span><br/>");
+                                $("#membershipAmenity").append("<span><input "+check+" type=\"checkbox\" name=\"amenity["+id+"]\" value=\"1\" >&nbsp;&nbsp;"+name+"</span><br/>");
                             });
                         }
         </script>

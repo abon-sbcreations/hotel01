@@ -9,16 +9,18 @@ class Membership_masters extends CI_Controller {
         $this->load->library('form_validation', 'session');
         $this->load->model('Membership_master');
         $this->load->model('Amenity');
-        $u1 = $this->session->userdata('logged_id');
-        if (!isset($u1)) {
-            redirect('/index.php/admins', 'refresh');
+        $u1 = $this->session->userdata('hotel_userid');
+         if(!isset($u1)){
+            redirect('/index.php/hoteladmins', 'refresh');
         }
     }
     public function master() {
-        $loggedId = $this->session->userdata('logged_id');
-        $loggedDisplay = $this->session->userdata('logged_display');
+        $loggedHotelAdmin = $this->session->all_userdata();
+        $head02Temp = $this->load->view('templates/head02',['loggedHotelAdmin'=>$loggedHotelAdmin],TRUE);
+        $leftmenu02Temp = $this->load->view('templates/leftmenu02',['activeMenu'=>'membership_masters/master'],TRUE);
         $this->load->view('membership_masters/membership_type_master', [
-            'loggedDisplay' => $loggedDisplay,
+            'head02Temp'=>$head02Temp,
+            'leftmenu02Temp'=>$leftmenu02Temp,
             'hotelOptions' =>hotelOptions(),
             'amenityOptions' => amenityOptions()
         ]);

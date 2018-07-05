@@ -9,17 +9,19 @@ class Hotel_items extends CI_Controller {
         $this->load->helper('url');
         $this->load->helper('commonmisc_helper');
         $this->load->model('RoomItemMaster');
-        $u1 = $this->session->userdata('logged_id');
-        if (!isset($u1)) {
-            redirect('/index.php/admins', 'refresh');
+        $u1 = $this->session->userdata('hotel_userid');
+         if(!isset($u1)){
+            redirect('/index.php/hoteladmins', 'refresh');
         }
     }
 
     public function master() {
-        $loggedId = $this->session->userdata('logged_id');
-        $loggedDisplay = $this->session->userdata('logged_display'); //users full name.
+        $loggedHotelAdmin = $this->session->all_userdata();
+        $head02Temp = $this->load->view('templates/head02',['loggedHotelAdmin'=>$loggedHotelAdmin],TRUE);
+        $leftmenu02Temp = $this->load->view('templates/leftmenu02',['activeMenu'=>'hotel_items/master'],TRUE);
         $this->load->view('hotel_items/master', [
-            'loggedDisplay' => $loggedDisplay,
+            'head02Temp'=>$head02Temp,
+            'leftmenu02Temp'=>$leftmenu02Temp,
             'timeSlotOptions' => timeSlotOptions(),
             'itemCategory'=>roomItemCategories()
         ]);

@@ -15,40 +15,17 @@
 
         <style>
             #modalDialog{
-                width:90%;
-            }
-            body{
-                background-color:#ccc;
+                width:50%;
             }
         </style>
     </head>
     <body>
-
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">Hotel Software</a>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="<?= site_url('index.php/Dashboards/admin_area') ?>">Dashboard</a></li>
-                        <li><a href="#">Settings</a></li>
-                        <li><a href="<?= site_url('index.php/admins/logout') ?>">(<?= $loggedDisplay ?>)</a></li>
-                        <li><a href="#">Help</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <?=$head01Temp?> 
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-11">
-                    <div class="h1">Amenities List<button onclick="addAmenity()" class="btn btn-warning">Add Amenity</button></div>
+               <?=$leftmenu01Temp?>
+                <div class="col-md-10 col-lg-offset-2">
+                    <div class="h2"><span>Amenity Management</span><span class="addbttn"><button onclick="addAmenity()" class="btn btn-info">Add Amenity</button></span></div>
                     <table id="room_list" class="table table-bordered table-striped table-hover">
                         <thead>
                             <tr>
@@ -63,38 +40,36 @@
             </div>
         </div>
         <div id="amenityDetails" class="modal  fade" role="dialog">
-            <div id="modalDialog" class="modal-dialog  modal-lg">
+            <div id="modalDialog" class="modal-dialog  modal-sm">
                 <!-- Modal content-->
                 <div class="modal-content ">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title"></h4>
+                        <h4 class="modal-title">Amenity Management</h4>
                     </div>
                     <div class="modal-body">
                         <form method="post" name="amenityDetailEdit" id="amenityDetailEdit" >
                             <div class="row">
-                                <div class="form-group col-md-4 mb-3">
-                                    <label for="amenity_name">Name</label>
+                                <div class="form-group col-md-10">
+                                    <label for="amenity_name">Amenity Name</label>
                                     <input type="hidden" name="amenity_id" id="amenity_id" value="0" class="form-control">
                                     <input type="text" name="amenity_name" id="amenity_name" class="form-control">
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group  col-md-8">
-                                    <label for="amenity_desc">Amenity Desc:</label>
+                                <div class="form-group  col-md-10">
+                                    <label for="amenity_desc">Amenity Description</label>
                                     <textarea name="amenity_desc" class="form-control" rows="5" cols="" id="amenity_desc"></textarea>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-md-4 mb-3">
+                                <div class="form-group col-md-10">
                                     <input id="submitBtn" type="button" class="btn btn-info" value="submit" >
                                 </div>
                             </div>
                         </form>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -124,7 +99,6 @@
                             });
                         });
                         function addAmenity() {
-                            $("#amenityDetails .modal-title").html("");
                             $("#amenityDetailEdit input:not(#submitBtn)").val("");
                             $("#amenityDetailEdit textarea").html("");
                             $("#amenityDetailEdit")[0].reset();

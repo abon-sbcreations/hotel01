@@ -15,51 +15,25 @@
 
         <style>
             #modalDialog{
-                width:90%;
-            }
-            body{
-                background-color:#ccc;
-
+                width:60%;
             }
         </style>
     </head>
 
     <body>
-
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">Hotel Software</a>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="<?= site_url('index.php/Dashboards/admin_area') ?>">Dashboard</a></li>
-                        <li><a href="#">Settings</a></li>
-                        <li><a href="<?= site_url('index.php/admins/logout') ?>">(<?= $loggedDisplay ?>)</a></li>
-                        <li><a href="#">Help</a></li>
-                    </ul>
-
-                </div>
-            </div>
-        </nav>
-
+        <?=$head01Temp?>    
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-11">
-                    <div class="h1">Hotels List<button onclick="addHotel()" class="btn btn-warning">Add Hotel</button></div>
+                <?=$leftmenu01Temp?>
+                <div class="col-md-10 col-lg-offset-2">
+                    <div class="h2"><span>Hotel Management</span><span class="addbttn"><button onclick="addHotel()" class="btn btn-info">Add Hotel</button></span></div>
                     <table id="hotels_list" class="table table-bordered table-striped table-hover">
                         <thead>
                             <tr>
                                 <th>Hotel Name</th>
                                 <th>Type</th>
                                 <th>Reg. Number</th>
-                                <th>Has Restourant</th>
+                                <th>Has Restaurant</th>
                                 <th>Has Bar</th>
                                 <th>Actions</th>
                             </tr>
@@ -71,100 +45,82 @@
             </div>
         </div>
         <div id="hotelDetails" class="modal  fade" role="dialog">
-            <div id="modalDialog" class="modal-dialog  modal-lg">
+            <div id="modalDialog" class="modal-dialog  modal-sm">
 
                 <!-- Modal content-->
                 <div class="modal-content ">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title"></h4>
+                        <h4 class="modal-title">Hotel Management</h4>
                     </div>
                     <div class="modal-body">
                         <form method="post" name="hotelDetailEdit" id="hotelDetailEdit" >
                             <div class="row">
-                                <div class="form-group col-md-4 mb-3">
+                                <div class="form-group col-md-6 mb-6">
+                                    <label for="hotel_type">Hotel Type</label>
+                                    <select class="custom-select d-block w-100 form-control" id="hotel_type" name="hotel_type">
+                                        <?= $hotelTypeSlotOptions ?>
+                                    </select>
+                                    <div id="errHotelType" class="errorlabel"></div>
                                     <label for="hotel_name">Name</label>
                                     <input type="hidden" name="hotel_id" id="hotel_id" value="0" class="form-control">
                                     <input type="text" name="hotel_name" id="hotel_name" class="form-control">
                                     <div id="errHotelName" class="errorlabel"></div>
-                                </div>
-                                <div class="form-group col-md-4 mb-3">
-                                    <label for="hotel_reg_number">Reg. No</label>
+                                    <label for="hotel_reg_number">Registration No.</label>
                                     <input type="text" name="hotel_reg_number" id="hotel_reg_number" class="form-control">
                                     <div id="errHotelReg_number" class="errorlabel"></div>
-                                </div>
-                                <div class="form-group col-md-4 mb-3">
-                                    <label for="hotel_gst_number">GST No</label>
+                                    <label for="hotel_gst_number">GST No.</label>
                                     <input type="text" name="hotel_gst_number" id="hotel_gst_number" class="form-control">
                                     <div id="errHotelGst_number" class="errorlabel"></div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-4 mb-3">
-                                    <label for="hotel_type">Hotel Type</label>
-                                    <select class="custom-select d-block w-100" id="hotel_type" name="hotel_type">
-                                        <?= $hotelTypeSlotOptions ?>
-                                    </select>
-                                    <div id="errHotelType" class="errorlabel"></div>
-                                </div>
-                                <div class="form-group col-md-4 mb-3">
+                                <div class="form-group col-md-6 mb-6">
                                     <label for="hotel_check_in_time">Check-in Time</label>
-                                    <select class="custom-select d-block w-100" id="hotel_check_in_time" name="hotel_check_in_time">
+                                    <select class="custom-select d-block w-100 form-control" id="hotel_check_in_time" name="hotel_check_in_time">
                                         <?= $timeSlotOptions ?>
                                     </select>
-                                </div>
-                                <div class="form-group col-md-4 mb-3">
                                     <label for="hotel_type">Check-out Time</label>
-                                    <select class="custom-select d-block w-100" id="hotel_check_out_time" name="hotel_check_out_time">
+                                    <select class="custom-select d-block w-100 form-control" id="hotel_check_out_time" name="hotel_check_out_time">
                                         <?= $timeSlotOptions ?>
                                     </select>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-4 mb-3">
-                                    <label for="hotel_has_resturant">Resturant</label>
+                                    <label for="hotel_has_resturant">Restaurant</label>
                                     <div class="d-block my-3">
-                                        <div class="custom-control custom-radio">
+                                        <div class="custom-control custom-radio form-control">
                                             <input id="yesResturant" name="hotel_has_restaurant" value="Y" type="radio" class="custom-control-input" checked="">
                                             <label class="custom-control-label" for="yesResturant">Yes</label>
                                         </div>
-                                        <div class="custom-control custom-radio">
+                                        <div class="custom-control custom-radio form-control">
                                             <input id="noResturant" name="hotel_has_restaurant" value="N" type="radio" class="custom-control-input" >
                                             <label class="custom-control-label" for="noResturant">No</label>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group col-md-4 mb-3">
                                     <label for="hotel_has_bar">Bar</label>
                                     <div class="d-block my-3">
-                                        <div class="custom-control custom-radio">
+                                        <div class="custom-control custom-radio form-control">
                                             <input id="yesBar" name="hotel_has_bar" value="Y" type="radio" class="custom-control-input" checked="" >
                                             <label class="custom-control-label" for="yesBar">Yes</label>
                                         </div>
-                                        <div class="custom-control custom-radio">
+                                        <div class="custom-control custom-radio form-control">
                                             <input id="noBar" name="hotel_has_bar" value="N" type="radio" class="custom-control-input" >
                                             <label class="custom-control-label" for="noBar">No</label>
                                         </div>
                                     </div>
-                                </div>                                
+                                </div>
                             </div>
                             <div class="row">
-                                <div class="form-group  col-md-8">
-                                    <label for="hotel_address">Hotel Address:</label>
+                                <div class="form-group col-md-12">
+                                    <label for="hotel_address">Hotel Address</label>
                                     <textarea name="hotel_address" class="form-control" rows="5" cols="" id="hotel_address"></textarea>
                                     <div id="errHotelAddress" class="errorlabel"></div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-md-4 mb-3">
+                                <div class="form-group col-md-6 mb-6">
                                     <input id="submitBtn" type="button" class="btn btn-info" value="submit" >
                                 </div>
                             </div>
                         </form>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
+                  
                 </div>
 
             </div>
@@ -185,9 +141,9 @@
                                 "aoColumns": [
                                     {mData: 'hotel_name'},
                                     {mData: 'hotel_type'},
-                                    {mData: 'hotel_reg_number'},
-                                    {mData: 'hotel_has_restaurant', sWidth: "40px"},
-                                    {mData: 'hotel_has_bar', sWidth: "40px"},
+                                    {mData: 'hotel_reg_number', sWidth: "100px"},
+                                    {mData: 'hotel_has_restaurant', sWidth: "100px"},
+                                    {mData: 'hotel_has_bar', sWidth: "80px"},
                                     {mData: "hotel_id", bSortable: false, sWidth: "80px",
                                         mRender: function (data, type, full) {
                                             var editBtn = "<button class=\"btn btn-info btn-xs\" onclick=\"editHotel(" + data + ")\">Edit</button>";
@@ -199,7 +155,6 @@
                             });
                         });
                         function addHotel() {
-                            $("#hotelDetails .modal-title").html("");
                             $("#hotelDetailEdit")[0].reset();      
                             $("#hotelDetailEdit option").removeAttr("selected");
                             $("#hotelDetailEdit input:not(#submitBtn)").val("");
@@ -219,7 +174,6 @@
                                 data: {hotel_id: hotel_id},
                                 success: function (result) {
                                     var data = $.parseJSON(result);
-                                    $("#hotelDetails .modal-title").html("<span>" + data['hotel_name'] + "</span>");
                                     $("input[name*='hotel_name']").val(data['hotel_name']);
                                     $("input[name*='hotel_id']").val(data['hotel_id']);
                                     $("input[name*='hotel_reg_number']").val(data['hotel_reg_number']);
@@ -273,19 +227,6 @@
                             if($("#hotel_name").val().length <= 0){
                                 $("#errHotelName").html("Hotel name is required");
                                 errorNo++;
-                            }else if($("#hotel_name").val().length > 0){
-                                 $.ajax({
-                                    type: "POST",
-                                    async: false,
-                                    url: "<?= site_url('index.php/hotels/ajaxUniqueHotelAttr') ?>",
-                                    data: {primaryVal:$("#hotel_id").val(),attr:"hotel_name",attrVal:$("#hotel_name").val()},
-                                    success: function (result) {
-                                        if(result > 0){                                         
-                                            $("#errHotelName").html("Hotel name is not unique");
-                                            errorNo++;
-                                        }
-                                    }
-                                });
                             }
                             if($("#hotel_reg_number").val().length <= 0){
                                 $("#errHotelReg_number").html("Hotel Registration No is required");
@@ -297,7 +238,7 @@
                                     url: "<?= site_url('index.php/hotels/ajaxUniqueHotelAttr') ?>",
                                     data: {primaryVal:$("#hotel_id").val(),attr:"hotel_reg_number",attrVal:$("#hotel_reg_number").val()},
                                     success: function (result) {
-                                        if(result > 0){                                         
+                                         if(result > 0){                                         
                                             $("#errHotelReg_number").html("Hotel Registration No is not unique");
                                             errorNo++;
                                         }

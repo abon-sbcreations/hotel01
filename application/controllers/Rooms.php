@@ -12,15 +12,16 @@ class Rooms extends CI_Controller{
         }
     }
     public function master() {
-         $loggedId = $this->session->userdata('logged_id');
-        $loggedDisplay = $this->session->userdata('logged_display'); //users full name.
+        $loggedDisplay = $this->session->userdata('logged_display');
+        $head01Temp = $this->load->view('templates/head01',['loggedDisplay'=>$loggedDisplay],TRUE);
+        $leftmenu01Temp = $this->load->view('templates/leftmenu01',['activeMenu'=>'rooms/master'],TRUE);
         $this->load->view('rooms/master',[
-            'loggedDisplay' => $loggedDisplay,
+            'head01Temp'=>$head01Temp,
+            'leftmenu01Temp'=>$leftmenu01Temp,
             'timeSlotOptions' => timeSlotOptions()
             ]);
     }
     public function ajaxAllRoomMasterDataTable() {
-        // Datatables Variables
           $draw = intval($this->input->get("draw"));
           $start = intval($this->input->get("start"));
           $length = intval($this->input->get("length"));

@@ -2,24 +2,26 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Room_items extends CI_Controller {
+class Item_masters extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
         $this->load->helper('url');
         $this->load->helper('commonmisc_helper');
-        $this->load->model('RoomItemMaster');
-        $u1 = $this->session->userdata('logged_id');
-        if (!isset($u1)) {
-            redirect('/index.php/admins', 'refresh');
+        $this->load->model('Item_master');
+        $u1 = $this->session->userdata('hotel_userid');
+         if(!isset($u1)){
+            redirect('/index.php/hoteladmins', 'refresh');
         }
     }
 
     public function master() {
-        $loggedId = $this->session->userdata('logged_id');
-        $loggedDisplay = $this->session->userdata('logged_display'); //users full name.
-        $this->load->view('room_items/master', [
-            'loggedDisplay' => $loggedDisplay,
+        $loggedHotelAdmin = $this->session->all_userdata();
+        $head02Temp = $this->load->view('templates/head02',['loggedHotelAdmin'=>$loggedHotelAdmin],TRUE);
+        $leftmenu02Temp = $this->load->view('templates/leftmenu02',['activeMenu'=>'item_masters/master'],TRUE);
+        $this->load->view('items_master/master', [
+           'head02Temp'=>$head02Temp,
+            'leftmenu02Temp'=>$leftmenu02Temp,
             'timeSlotOptions' => timeSlotOptions(),
             'itemCategory'=>roomItemCategories()
         ]);
@@ -29,7 +31,7 @@ class Room_items extends CI_Controller {
         $draw = intval($this->input->get("draw"));
         $start = intval($this->input->get("start"));
         $length = intval($this->input->get("length"));
-        $roomItems = $this->RoomItemMaster->getItemMaster([]);
+        $roomItems = $this->Item_master->getItemMaster([]);
         $rows = [];
         foreach ($roomItems as $k => $items) {
             $rows[] = [

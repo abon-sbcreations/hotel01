@@ -5,8 +5,50 @@
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
     padding-top: 50px;
+    font-size: 12px;
+    font-family: 'Arial';
+    background-color: #edf1f5;
 }
 
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #D2EDFF;
+
+}
+
+.table-striped>tbody>tr:nth-of-type(even) {
+    background-color: #B4CFEC;
+}
+
+.table-bordered>thead>tr>th {
+    border: 1px solid #837E7C;
+    background-color: #5CB3FF;
+    color: #fff;
+    font-size: 13px;
+    font-family: 'Arial';
+}
+
+.table-bordered>tbody>tr>td {
+    border: 1px solid #56A5EC;
+}
+
+.nav-sidebar > li > a {
+    padding-right: 20px;
+    padding-left: 20px;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+    color: #fff;
+}
+
+.nav>li>a {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+}
+
+a {
+    color: #3090C7;
+    text-decoration: none;
+}
 
 /*
  * Global add-ons
@@ -23,6 +65,16 @@ body {
  */
 .navbar-fixed-top {
     border: 0;
+}
+
+.modal-header{
+    background-color: #7BCCB5; 
+    color: #f0ffff; 
+}
+
+.modal-body {
+    background-color: #ECE5B6;
+    color: #333;
 }
 
 /*
@@ -44,8 +96,8 @@ body {
         padding: 20px;
         overflow-x: hidden;
         overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-        background-color: #f5f5f5;
-        border-right: 1px solid #eee;
+        background-color: #87AFC7;
+        border-right: 1px solid #f0ffff;
     }
 }
 
@@ -54,6 +106,7 @@ body {
     margin-right: -21px; /* 20px padding + 1px border */
     margin-bottom: 20px;
     margin-left: -20px;
+    /*background-color: #428bca; */
 }
 .nav-sidebar > li > a {
     padding-right: 20px;
@@ -65,7 +118,11 @@ body {
     color: #fff;
     background-color: #428bca;
 }
-
+.nav>li>a:focus, .nav>li>a:hover {
+    text-decoration: none;
+    background-color: #eee;
+    color: #333;
+}
 
 /*
  * Main content
@@ -147,5 +204,25 @@ body {
 }
 .errorlabel{
     color: #E13300;
-    font-size: 20px;
+    font-size: 12px;
+}
+.addbttn{
+    float: right;
+}
+.dashBoardTitle{
+    margin: 50px 0px;
+    font-size: 54px;
+    font-family: "Malgun Gothic";
+    color: #428bca;
+}
+
+.dashBoardTitle span{
+    font-size: 65px;
+    font-family: "Malgun Gothic";
+    color: #428bca;
+    text-shadow : 3px 3px #8fa0b5;
+}
+.dataTables_empty{
+    /*color:red;*/
+    
 }

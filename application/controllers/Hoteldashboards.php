@@ -6,14 +6,19 @@ class Hoteldashboards extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->library('session');
-        $u1 = $this->session->userdata('hotel_admin_id');
+        $u1 = $this->session->userdata('hotel_userid');
          if(!isset($u1)){
             redirect('/index.php/hoteladmins', 'refresh');
         }
     }
     public function admin_area(){
-        $loggedId = $this->session->userdata('logged_id');
         $loggedHotelAdmin = $this->session->all_userdata();
-        $this->load->view('hoteldashboard/hotel_dsbrd',['loggedHotelAdmin'=>$loggedHotelAdmin]);
+        $head02Temp = $this->load->view('templates/head02',['loggedHotelAdmin'=>$loggedHotelAdmin],TRUE);
+        $leftmenu02Temp = $this->load->view('templates/leftmenu02',['activeMenu'=>''],TRUE); 
+        $this->load->view('hoteldashboard/hotel_dsbrd',[
+            'head02Temp'=>$head02Temp,
+            'leftmenu02Temp'=>$leftmenu02Temp,
+            'loggedHotelAdmin'=>$loggedHotelAdmin
+                ]);
     }
 }

@@ -15,47 +15,24 @@
 
         <style>
             #modalDialog{
-                width:90%;
-            }
-            body{
-                background-color:#ccc;
+                width:60%;
             }
         </style>
     </head>
     <body>
-
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">Hotel Software</a>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="<?= site_url('index.php/Dashboards/admin_area') ?>">Dashboard</a></li>
-                        <li><a href="#">Settings</a></li>
-                        <li><a href="<?= site_url('index.php/admins/logout') ?>">(<?= $loggedDisplay ?>)</a></li>
-                        <li><a href="#">Help</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <?= $head02Temp ?>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-11">
-                    <div class="h1">Hotel's Item Master List<button onclick="addHotelItem()" class="btn btn-warning">Add Room Item</button></div>
+                <?= $leftmenu02Temp ?>
+                <div class="col-md-10 col-lg-offset-2">
+                    <div class="h3"><span>Hotel's Item Master List</span><span class="addbttn"><button onclick="addHotelItem()" class="btn btn-info">Add Room Item</button></span></div>
                     <table id="roomItem_list" class="table table-bordered table-striped table-hover">
                         <thead>
                             <tr>
                                 <th>Hotel</th>   
-                                 <th>Item Name</th> 
-                                 <th>Category</th> 
-                                 <th>Sub - Category</th> 
+                                <th>Item Name</th> 
+                                <th>Category</th> 
+                                <th>Sub - Category</th> 
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -71,7 +48,7 @@
                 <div class="modal-content ">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title"></h4>
+                        <h4 class="modal-title">Hotel's Item Master List</h4>
                     </div>
                     <div class="modal-body">
                         <form method="post" name="hotelItemEdit" id="hotelItemEdit" >
@@ -103,9 +80,7 @@
                             </div>
                         </form>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -116,14 +91,18 @@
         <script type="text/javascript">
                         var dataItemTable = "<?= site_url("index.php/hotel_items/ajaxAllHotelItemMasterDataTable") ?>";
                         var hotelItemDetails = $("#hotelItemDetails");
-                        var itemCategory;   var itemSubCategory;
-                        $(document).ready(function () {                           
-                             itemCategory = "<?= addslashes(json_encode($itemCategory['category']))?>";
-                             itemSubCategory = "<?= addslashes(json_encode($itemCategory['sub_category']))?>";
+                        var itemCategory;
+                        var itemSubCategory;
+                        $(document).ready(function () {
+                            itemCategory = "<?= addslashes(json_encode($itemCategory['category'])) ?>";
+                            itemSubCategory = "<?= addslashes(json_encode($itemCategory['sub_category'])) ?>";
                             var table1 = $('#hotelItem_list').DataTable({
                                 "ajax": {
-                                    url : dataItemTable,
-                                    type : 'GET'
+                                    url: dataItemTable,
+                                    type: 'GET'
+                                },
+                                "oLanguage": {
+                                    "sEmptyTable": "My Custom Message On Empty Table"
                                 },
                                 "aoColumns": [
                                     {mData: 'hotel_name'},
@@ -141,7 +120,6 @@
                             });
                         });
                         function addHotelItem() {
-                            $("#roomItemDetails .modal-title").html("");
                             $("#roomItemEdit input:not(#submitBtn)").val("");
                             $("#roomItemEdit option").removeAttr("selected");
                             $("#roomItemEdit")[0].reset();
@@ -155,13 +133,13 @@
                                 url: "<?= site_url('index.php/room_items/ajaxRoomItemMasterDetails') ?>",
                                 data: {room_item_id: room_item_id},
                                 success: function (result) {
-                                    var data = $.parseJSON(result); 
+                                    var data = $.parseJSON(result);
                                     $("input[name*='room_item_name']").val(data['room_item_name']);
                                     $("input[name*='room_item_id']").val(data['room_item_id']);
                                     popCategory(data['room_item_cat']);
-                                    popSubCategory(data['room_item_cat'],data['room_item_subcat']);
+                                    popSubCategory(data['room_item_cat'], data['room_item_subcat']);
                                     roomItemDetails.modal("show");
-                                    
+
                                 }
                             });
                         }
@@ -177,13 +155,13 @@
                                 table.fnDraw();
                             });
                         }
-                        function deleteHotelItem (room_item_id) {
+                        function deleteHotelItem(room_item_id) {
                             var r = confirm("You Sure to delete the Room Type?");
                             if (r == true) {
                                 $.ajax({
                                     type: "POST",
                                     url: "<?= site_url('index.php/room_items/ajaxRoomItemMasterDelete') ?>",
-                                    data: { room_item_id : room_item_id },
+                                    data: {room_item_id: room_item_id},
                                     success: function (result) {
                                         roomItemDetails.modal("hide");
                                         refreshTable();
@@ -199,7 +177,7 @@
                         $("#roomItemEdit").submit(function (e) {
                             var common_alert = "";
                             var item_name = $.trim($("input[name*='room_item_name']").val());
-                           if (item_name == '') {
+                            if (item_name == '') {
                                 common_alert = '\n Please enter item name';
                             }
                             if ($.trim(common_alert) != '') {
@@ -220,29 +198,29 @@
                             }
                             e.preventDefault();
                         });
-                        function popCategory(id=""){
+                        function popCategory(id = "") {
                             var category = $.parseJSON(itemCategory);
                             var option = "<option value=\"\">Choose...</option>";
-                            $.each(category,function(key,row){
-                                var select = id==key ? "selected='selected'" : "";
-                               option = option + "<option "+select+" value=\""+key+"\">"+row+"</option>"; 
+                            $.each(category, function (key, row) {
+                                var select = id == key ? "selected='selected'" : "";
+                                option = option + "<option " + select + " value=\"" + key + "\">" + row + "</option>";
                             });
                             $("#room_item_cat").html(option);
                         }
-                        function popSubCategory(id = "",opt=""){
+                        function popSubCategory(id = "", opt = "") {
                             var subCategory = $.parseJSON(itemSubCategory);
                             var option = "<option value=\"\">Choose...</option>";
-                            if(id !== ""){                                
-                                $.each(subCategory[id],function(key,row){
-                                   var select = opt==key ? "selected='selected'" : "";
-                                   option = option + "<option "+select+" value=\""+key+"\">"+row+"</option>"; 
-                                });                                
+                            if (id !== "") {
+                                $.each(subCategory[id], function (key, row) {
+                                    var select = opt == key ? "selected='selected'" : "";
+                                    option = option + "<option " + select + " value=\"" + key + "\">" + row + "</option>";
+                                });
                             }
                             $("#room_item_subcat").html(option);
                         }
-                        $("#room_item_cat").on("change",function(){
-                             var valueSelected = this.value;
-                             popSubCategory(valueSelected);
+                        $("#room_item_cat").on("change", function () {
+                            var valueSelected = this.value;
+                            popSubCategory(valueSelected);
                         });
         </script>
     </body>

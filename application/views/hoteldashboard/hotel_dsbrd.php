@@ -14,52 +14,16 @@
         <link href="<?= site_url("assets/css/custom02.css") ?>" rel="stylesheet">
         <style>
             body{
-                background-image: url("<?= site_url("library/images/hotel_background06.jpg") ?>"); 
+                background-size:cover;
             }
         </style>
   </head>
   <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#"><?=$loggedHotelAdmin['hotel_name']?></a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Dashboard</a></li>
-            <li><a href="#">Settings</a></li>
-            <li><a href="<?= site_url('index.php/hoteladmins/logout')?>">(<?=$loggedHotelAdmin['hotel_userid']?>)</a></li>
-            <li><a href="#">Help</a></li>
-          </ul>
-          <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form>
-        </div>
-      </div>
-    </nav>
-
+    <?=$head02Temp?>
     <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar">
-            <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
-            <!--li><a href="<?=site_url('index.php/companies')?>">Companies List</a></li-->
-            
-          </ul>
-          <ul class="nav nav-sidebar"></ul>
-          <ul class="nav nav-sidebar">
-            <li><a href="">Nav item again</a></li>
-            <li><a href="">One more nav</a></li>
-            <li><a href="">Another nav item</a></li>
-          </ul>
-        </div>
-        
+              <div class="col-md-3"><?=$leftmenu02Temp?></div>
+              <div class="col-md-9"><div class="dashBoardTitle"><span>Welcome to</span><br><?=$loggedHotelAdmin['hotel_name']?></div></div>
       </div>
     </div>
       

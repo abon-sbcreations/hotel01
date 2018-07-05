@@ -8,21 +8,21 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <link rel="icon" href="<?= site_url("library/images/hotel-flat-icon-vector.jpg") ?>">
-        <title>Signin Template for Bootstrap</title>
+        <title>Hotel Admin Login</title>
         <link href="<?= site_url("library/css/bootstrap.min.css") ?>" rel="stylesheet" type="text/css"/>
         <link href="<?= site_url("assets/css/custom01.css") ?>" rel="stylesheet">
         <style>
             body{
-                background-image: url("<?= site_url("library/images/hotel_background01.jpg") ?>");
                 background-repeat : no-repeat;
                 background-size: 100% ;
+                background-color: #a2a2a2;
             }
         </style>
     </head>
     <body>
-        <div class="container">
+        <div class="container loginFormCls">
             <?= form_open('index.php/admins', ['name' => 'loginForm', 'method' => 'post', 'class' => 'form-signin', 'id' => 'loginForm']); ?>
-            <h2 class="form-signin-heading">Please sign in</h2>
+            <h2 class="form-signin-heading"><span class="glyphicon glyphicon-lock"></span>&nbsp;Administrator Login</h2>
             <div class="form-group">
                 <?= form_label('User Name', 'uname', ['class' => 'sr-only', 'id' => '']); ?>
                 <?= form_input(['name' => 'uname', 'placeholder' => "User Name", 'class' => 'form-control', 'id' => 'uname']); ?>

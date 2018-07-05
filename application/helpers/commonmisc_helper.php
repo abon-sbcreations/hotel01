@@ -113,18 +113,16 @@ function membershipOptions() {
  }
 function roomItemCategories() {
     $types = [
-        "c1" => "category 1", "c2" => "category 2",
-        "c3" => "category 3"];
+        "c1" => "room item", "c2" => "Food Item",
+        "c3" => "Kitchen item"];
     $itemCategory['category'] = $types;
     $types = ['c1' => [
-            "c11" => "sub cat 11", "c12" => "sub cat 12",
-            "c13" => "sub cat 13", "c14" => "sub cat 14"
+            "c11" => "re-usable item", "c12" => "Use & Throw"
         ], 'c2' => [
-            "c21" => "sub cat 21", "c22" => "sub cat 22",
-            "c23" => "sub cat 23", "c24" => "sub cat 24"
+            "c21" => "Cooked", "c22" => "Packed"
         ], 'c3' => [
-            "c31" => "sub cat 31", "c32" => "sub cat 32",
-            "c33" => "sub cat 13", "c34" => "sub cat 34"
+            "c31" => "plates", "c32" => "Knives",
+            "c33" => "spoons"
         ]
     ];
     $itemCategory['sub_category'] = $types;

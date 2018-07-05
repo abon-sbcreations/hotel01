@@ -16,40 +16,17 @@
 
         <style>
             #modalDialog{
-                width:90%;
-            }
-            body{
-                background-color:#ccc;
+                width:50%;
             }
         </style>
     </head>
     <body>
-
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">Hotel Software</a>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="<?= site_url('index.php/Dashboards/admin_area') ?>">Dashboard</a></li>
-                        <li><a href="#">Settings</a></li>
-                        <li><a href="<?= site_url('index.php/admins/logout') ?>">(<?= $loggedDisplay ?>)</a></li>
-                        <li><a href="#">Help</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <?= $head02Temp ?>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-11">
-                    <div class="h1">Customers<button onclick="addCustomer()" class="btn btn-warning">Add Customer</button></div>
+                <?= $leftmenu02Temp ?>
+                <div class="col-md-10 col-lg-offset-2">
+                    <div class="h3"><span>Customers</span><span class="addbttn"><button onclick="addCustomer()" class="btn btn-info">Add Customer</button></span></div>
                     <table id="customer_list" class="table table-bordered table-striped table-hover">
                         <thead>
                             <tr>
@@ -71,65 +48,55 @@
                 <div class="modal-content ">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title"></h4>
+                        <h4 class="modal-title">Customers</h4>
                     </div>
                     <div class="modal-body">
                         <form method="post" name="customerDetailEdit" id="customerDetailEdit" >
                             <div class="row">
-                                <div class="form-group col-md-4 mb-3">
+                                <div class="form-group col-md-6 mb-6">
                                     <label for="cust_name">Name</label>
                                     <input type="hidden" name="cust_id" id="cust_id" value="0" class="form-control">
                                     <input type="text" name="cust_name" id="cust_name" class="form-control">
-                                </div>
-                                <div class="form-group col-md-4 mb-3">
-                                    <label for="hotel_id">Hotel</label>
-                                    <select class="custom-select d-block w-100" id="hotel_id" name="hotel_id"></select>
-                                </div>
-                                <div class="form-group col-md-4 mb-3">
-                                    <label for="cust_status">Status</label>
-                                    <select class="custom-select d-block w-100" id="cust_status" name="cust_status"></select>
-                                </div>
-                            </div>
-                            <div id="memberBlock" class="row">
-                                <div class="form-group col-md-4 mb-3">
-                                    <label for="membership_type">Membership</label>                                    
-                                    <select class="custom-select d-block w-100" id="membership_type" name="membership_type"></select>
-                                </div>
-                                <div class="form-group col-md-4 mb-3">
-                                    <label for="membership_num">Mem. Number</label>
-                                    <input type="text" name="membership_num" id="membership_num" class="form-control">
-                                </div>
-                                <div class="form-group col-md-4 mb-3">
-                                    <label for="membership_issue_date">Mem. Issue Date</label>
-                                    <input type="text" name="membership_issue_date" id="membership_issue_date" class="form-control">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-4 mb-3">
+                                    <span id='cust_nameError'></span>
                                     <label for="cust_phone">Phone</label>
                                     <input type="text" name="cust_phone" id="cust_phone" class="form-control">
-                                </div>
-                                <div class="form-group col-md-4 mb-3">
+                                    <span id='cust_phoneError'></span>
                                     <label for="cust_email">Email</label>
-                                    <input type="text" name="cust_email" id="cust_email" class="form-control">
+                                    <input type="text" name="cust_email" id="cust_email" class="form-control">                                    
+                                    <label for="cust_status">Status</label>
+                                    <select class="custom-select d-block w-100 form-control" id="cust_status" name="cust_status"></select>
+                                    <label class='memberCond' for="membership_type">Membership</label>                                    
+                                    <select class="custom-select d-block w-100 form-control memberCond" id="membership_type" name="membership_type"></select>
+                                    <label class='memberCond' for="membership_num">Mem. Number</label>
+                                    <input type="text" name="membership_num" id="membership_num" class="form-control memberCond">
+                                    <label class='memberCond' for="membership_issue_date">Mem. Issue Date</label>
+                                    <input type="text" name="membership_issue_date" id="membership_issue_date" class="form-control memberCond">
                                 </div>
+                                <div class="form-group col-md-6 mb-6">
+                                    <label for="pan_card">Pan Card</label><input type="text" name="pan_card_value" id="pan_card_value" class="form-control">
+                                    <label for="electoral_card">Electoral Card</label><input type="text" name="electoral_card_value" id="electoral_card_value" class="form-control">
+                                    <label for="aadhar_card">Aadhar Card</label><input type="text" name="aadhar_card_value" id="aadhar_card_value" class="form-control">
+                                    <label for="driving_lic">Driving License</label><input type="text" name="driving_lic_value" id="driving_lic_value" class="form-control">
+                                    <label for="passport">Passport</label><input type="text" name="passport_value" id="passport_value" class="form-control">
+                                    <label id='errorDocument' ></label>
+                                </div><!--checked="checked"-->
+
                             </div>
                             <div class="row">
-                                <div class="form-group col-md-8">
+                                <div class="form-group col-md-12">
                                     <label for="cust_address">Address</label>
                                     <textarea name="cust_address" class="form-control" rows="5" cols="" id="cust_address"></textarea>
+                                    <span id='cust_addressError'></span>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-md-4 mb-3">
+                                <div class="form-group col-md-6 mb-6">
                                     <input id="submitBtn" type="button" class="btn btn-info" value="submit" >
                                 </div>
                             </div>
                         </form>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -141,11 +108,13 @@
         <script type="text/javascript">
                         var dataTableCustomer = "<?= site_url("index.php/customers/ajaxAllCustomersMasterDataTable") ?>";
                         var customerDetails = $("#customerDetails");
-                        var hotelList;         var custStatus;              var membershipType;
+                        var hotelList;
+                        var custStatus;
+                        var membershipType;
                         $(document).ready(function () {
                             hotelList = "<?= addslashes(json_encode($hotelOptions)) ?>";
                             membershipType = "<?= addslashes(json_encode($membershipOptions)) ?>";
-                            custStatus = "<?= addslashes(json_encode([ 'Guest' => 'Guest', 'Member' => 'Member']))?>";
+                            custStatus = "<?= addslashes(json_encode(['Guest' => 'Guest', 'Member' => 'Member'])) ?>";
                             var table1 = $('#customer_list').DataTable({
                                 "ajax": {
                                     url: dataTableCustomer,
@@ -175,14 +144,14 @@
                             $(dom_id).html(option);
                         }
                         function addCustomer() {
-                            $("#customerDetails .modal-title").html("");
                             $("#customerDetailEdit")[0].reset();
                             $("#customerDetailEdit option").removeAttr("selected");
                             $("#customerDetailEdit input:not(#submitBtn)").val("");
                             $("#customerDetailEdit textarea").html("");
-                            popOptions(hotelList, "#hotel_id");
-                            popOptions(hotelList, "#hotel_id");
+                            $(".memberCond").hide();
                             popOptions(custStatus, "#cust_status");
+                            $("#cust_status").val("Guest");
+                            $("#cust_status").attr("disabled", "disabled");
                             hotelToMembership();
                             customerDetails.modal("show");
                         }
@@ -205,7 +174,7 @@
                                     $("input[name*='cust_id']").val(data['cust_id']);
                                     $("#cust_status").val(data['cust_status']);
                                     isMemberStatus($("#cust_status").val());
-                                    hotelToMembership(data['hotel_id'],data['membership_type']);
+                                    hotelToMembership(data['hotel_id'], data['membership_type']);
                                     customerDetails.modal("show");
                                 }
                             });
@@ -239,52 +208,78 @@
                             }
                         }
                         $("#submitBtn").on("click", function () {
-                            $("#customerDetailEdit").submit();
+                            var flag = 0;
+                            if(checkDocuments()===1){
+                                flag++;
+                            }
+                            if($("input[name*='cust_name']").val().length < 1){
+                                console.log($("input[name*='cust_name']").html());
+                                flag++;
+                                $("#cust_nameError").html("<span class='errorlabel'>Required</span><br>");
+                            }else{
+                                 $("#cust_nameError").html("");
+                            }
+                            if($("input[name*='cust_phone']").val().length < 1){
+                                $("#cust_phoneError").html("<span class='errorlabel'>Required</span><br>");
+                                flag++;
+                            }else{
+                                $("#cust_phoneError").html("");
+                            }
+                            /*if($("#cust_adddress").val().length < 1){
+                                $("#cust_addressError").html("<span class='errorlabel'>Required</span>");
+                                flag++;
+                            }else{
+                                $("#cust_addressError").html("");
+                            }*/
+                            if(flag==0){
+                                $("#customerDetailEdit").submit();
+                            }
                         });
+                        
                         $("#customerDetailEdit").submit(function (e) {
-                                $.ajax({
-                                    type: "POST",
-                                    url: "<?= site_url('index.php/customers/ajaxCustomersMasterSubmit') ?>",
-                                    data: $("#customerDetailEdit").serialize(),
-                                    success: function (result) {
-                                        $("#customerDetailEdit")[0].reset();
-                                        customerDetails.modal("hide");
-                                        refreshTable();
-                                    }
-                                });
+                            $.ajax({
+                                type: "POST",
+                                url: "<?= site_url('index.php/customers/ajaxCustomersMasterSubmit') ?>",
+                                data: $("#customerDetailEdit").serialize(),
+                                success: function (result) {
+                                    $("#customerDetailEdit")[0].reset();
+                                    customerDetails.modal("hide");
+                                    refreshTable();
+                                }
+                            });
                             e.preventDefault();
                         });
-                        function hotelToMembership(id = "",opt=""){
+                        function hotelToMembership(id = "", opt = "") {
                             var hotelMembershipType = $.parseJSON(membershipType);
                             var option = "<option value=\"\">Choose...</option>";
-                            if(id !== "" && $("#cust_status").val()=='Member'){                                
-                                $.each(hotelMembershipType[id],function(key,row){
-                                   var select = opt==key ? "selected='selected'" : "";
-                                   option = option + "<option "+select+" value=\""+key+"\">"+row+"</option>"; 
-                                });                                
+                            if (id !== "" && $("#cust_status").val() == 'Member') {
+                                $.each(hotelMembershipType[id], function (key, row) {
+                                    var select = opt == key ? "selected='selected'" : "";
+                                    option = option + "<option " + select + " value=\"" + key + "\">" + row + "</option>";
+                                });
                             }
                             $("#membership_type").html(option);
                         }
-                        function isMemberStatus(status,hotel_id=0){
-                            if(status=="Guest"){
+                        function isMemberStatus(status, hotel_id = 0) {
+                            if (status == "Guest") {
                                 $("#membership_type").html(
                                         "<option value=\"\">Choose...</option>"
-                                        +"<option value=\"0\" selected='selected'>None</option>");
+                                        + "<option value=\"0\" selected='selected'>None</option>");
                                 $("#membership_num").val(0);
                                 $("#membership_issue_date").val(0);
                                 $("#memberBlock").hide();
-                            }else{
+                            } else {
                                 $("#memberBlock").show();
                                 hotelToMembership($("#hotel_id").val());
-                            }
                         }
-                        $("#cust_status").on("change",function(){
+                        }
+                        $("#cust_status").on("change", function () {
                             var valueSelected = this.value;
                             isMemberStatus(valueSelected);
-                        });                        
-                        $("#hotel_id").on("change",function(){
-                             var valueSelected = this.value;
-                             hotelToMembership(valueSelected);
+                        });
+                        $("#hotel_id").on("change", function () {
+                            var valueSelected = this.value;
+                            hotelToMembership(valueSelected);
                         });
                         $("#membership_issue_date").datepicker({
                             format: "dd-mm-yyyy",
@@ -292,6 +287,23 @@
                             daysOfWeekHighlighted: "0,6",
                             autoclose: true
                         });
+                        function checkDocuments(){
+                            var  pan_card_value =  $.trim($("input[name*='pan_card_value']").val());
+                            var  electoral_card_value =  $.trim($("input[name*='electoral_card_value']").val());
+                            var  aadhar_card_value =  $.trim($("input[name*='aadhar_card_value']").val());
+                            var  driving_lic_value =  $.trim($("input[name*='driving_lic_value']").val());
+                            var  passport_value =  $.trim($("input[name*='passport_value']").val());
+                            if(pan_card_value.length > 0 || electoral_card_value.length >0 
+                            || aadhar_card_value.length > 0 || driving_lic_value.length > 0 
+                            || passport_value.length > 0 ){
+                                $("#errorDocument").html("");
+                                return 1;
+                            }else{
+                                $("#errorDocument").html("<p class='errorlabel'>Atleast one document need to be provided</p>");
+                                return 0;
+                            }                            
+                        }
+
         </script>
     </body>
 </html>

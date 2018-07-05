@@ -18,7 +18,7 @@ class Restaurant extends CI_Model {
     }
 
     public function postRestaurant($restaurant) {
-        $this->db->insert($this->_hotel_restaurant, ['hotel_id' => $restaurant['hotel_id'],
+        $this->db->insert($this->_hotel_restaurant, ['hotel_id' => $this->session->userdata('hotel_id'),
             'menu_session' => $restaurant['menu_session'],
             'menu_type' => $restaurant['menu_type'],
             'item_name' => $restaurant['item_name'],
@@ -29,7 +29,7 @@ class Restaurant extends CI_Model {
     }
 
     public function putRestaurant($restaurant) {
-        $this->db->update($this->_hotel_restaurant, ['hotel_id' => $restaurant['hotel_id'],
+        $this->db->update($this->_hotel_restaurant, [
             'menu_session' => $restaurant['menu_session'],
             'menu_type' => $restaurant['menu_type'],
             'item_name' => $restaurant['item_name'],

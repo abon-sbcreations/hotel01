@@ -16,10 +16,12 @@ class Hotel_admins extends CI_Controller {
         }
     }
     public function admins() {
-        $loggedId = $this->session->userdata('logged_id');
         $loggedDisplay = $this->session->userdata('logged_display');
+        $head01Temp = $this->load->view('templates/head01',['loggedDisplay'=>$loggedDisplay],TRUE);
+        $leftmenu01Temp = $this->load->view('templates/leftmenu01',['activeMenu'=>'hotel_admins/admins'],TRUE);  
         $this->load->view('hotel_admins/listing', [
-            'loggedDisplay' => $loggedDisplay,
+            'head01Temp'=>$head01Temp,
+            'leftmenu01Temp'=>$leftmenu01Temp,
             'hotelOptions' =>hotelOptions(),
             'moduleOptions' =>getModuleOptions(),
             'isActive' => getStatus(),
@@ -35,10 +37,10 @@ class Hotel_admins extends CI_Controller {
         $rows = [];
         foreach ($hotelAdmins as $k => $room){
             $rows[] = [
-                "DT_RowId" => "row_" . $room['hotel_admin_id'],
-                "hotel_admin_id" => $room['hotel_admin_id'],
+                "DT_RowId" => "row_" . $room['admin_user_id'],
+                "admin_user_id" => $room['admin_user_id'],
                 'hotel_name' => $room['hotel_name'],
-                'hotel_userid' => $room['hotel_userid'],
+                'admin_username' => $room['admin_username'],
                 'hotel_access_activation' => $room['hotel_access_activation'],
                 'hotel_access_duration' => $room['hotel_access_duration']
             ];
@@ -52,19 +54,19 @@ class Hotel_admins extends CI_Controller {
     }
     public function ajaxHotelAdminDetails() {
         $params = [
-            'where' => ['hotel_admin_id' => $this->input->post('hotel_admin_id')]
+            'where' => ['admin_user_id' => $this->input->post('admin_user_id')]
         ];
         $admin = $this->Hotel_admin->getHotelAdmin($params);
         echo json_encode($admin[0]);
     }
     public function ajaxHotelAdminDelete() {
-        $where = ['hotel_admin_id' => $this->input->post('hotel_admin_id')];
+        $where = ['admin_user_id' => $this->input->post('admin_user_id')];
         $comp = $this->Hotel_admin->deleteHotelAdmin($where);
         return json_encode(['true']);
     }
     public function ajaxHotelAdminSubmit() {
         $post = $this->input->post();
-        if (isset($post['hotel_admin_id']) && !empty($post['hotel_admin_id'])) {
+        if (isset($post['admin_user_id']) && !empty($post['admin_user_id'])) {
             $this->Hotel_admin->putHotelAdmin($post);
         } else {
             $this->Hotel_admin->postHotelAdmin($post);
@@ -72,7 +74,7 @@ class Hotel_admins extends CI_Controller {
     }
     public function ajaxHotelAdminPasswordsSubmit(){
         $post = $this->input->post();
-        if (isset($post['hotel_admin_id']) && !empty($post['hotel_admin_id'])) {
+        if (isset($post['admin_user_id']) && !empty($post['admin_user_id'])) {
            echo $this->Hotel_admin->putHotelAdminPassword($post);
         }else{
             echo json_encode(['status'=>-1,'message'=>"invalid form submission"]);

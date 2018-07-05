@@ -9,17 +9,19 @@ class Restaurants extends CI_Controller {
         $this->load->helper('url');
         $this->load->helper('commonmisc_helper');
         $this->load->model('Restaurant');
-        $u1 = $this->session->userdata('logged_id');
-        if (!isset($u1)) {
-            redirect('/index.php/admins', 'refresh');
+        $u1 = $this->session->userdata('hotel_userid');
+         if(!isset($u1)){
+            redirect('/index.php/hoteladmins', 'refresh');
         }
     }
 
     public function restaurant_list() {
-        $loggedId = $this->session->userdata('logged_id');
-        $loggedDisplay = $this->session->userdata('logged_display'); //users full name.
+        $loggedHotelAdmin = $this->session->all_userdata();
+        $head02Temp = $this->load->view('templates/head02',['loggedHotelAdmin'=>$loggedHotelAdmin],TRUE);
+        $leftmenu02Temp = $this->load->view('templates/leftmenu02',['activeMenu'=>'restaurants/restaurant_list'],TRUE);
         $this->load->view('restaurants/restaurant_list', [
-            'loggedDisplay' => $loggedDisplay,
+            'head02Temp'=>$head02Temp,
+            'leftmenu02Temp'=>$leftmenu02Temp,
             'timeSlotOptions' => timeSlotOptions(),
             'hotelOptions' =>hotelOptions(),
             'sessionOption' => getSession(),
@@ -33,7 +35,7 @@ class Restaurants extends CI_Controller {
         $draw = intval($this->input->get("draw"));
         $start = intval($this->input->get("start"));
         $length = intval($this->input->get("length"));
-        $restaurants = $this->Restaurant->getRestaurant([]);
+        $restaurants = $this->Restaurant->getRestaurant(['where'=>['hr.hotel_id'=>$this->session->userdata('hotel_id')]]);
         $rows = [];
         foreach ($restaurants as $k => $restaurant) {
             $rows[] = [

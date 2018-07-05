@@ -16,10 +16,12 @@ class Hotels extends CI_Controller {
         }
     }
     public function hotels() {
-        $loggedId = $this->session->userdata('logged_id');
-        $loggedDisplay = $this->session->userdata('logged_display'); //users full name.
+        $loggedDisplay = $this->session->userdata('logged_display');
+        $head01Temp = $this->load->view('templates/head01',['loggedDisplay'=>$loggedDisplay],TRUE);
+        $leftmenu01Temp = $this->load->view('templates/leftmenu01',['activeMenu'=>'hotels/hotels'],TRUE);  
         $this->load->view('hotels/hotels', [
-            'loggedDisplay' => $loggedDisplay,
+            'head01Temp'=>$head01Temp,
+            'leftmenu01Temp'=>$leftmenu01Temp,
             'timeSlotOptions' => timeSlotOptions(),
             'hotelTypeSlotOptions' => hotelTypeSlotOptions()
         ]);
@@ -75,11 +77,11 @@ class Hotels extends CI_Controller {
     }
     public function ajaxUniqueHotelAttr(){
         $post = $this->input->post();
-        if (isset($post['hotel_id']) && !empty($post['hotel_id'])) {
+        if (isset($post['primaryVal']) && !empty($post['primaryVal'])) {
             echo checkTableUnique([
                 'table' => $this->_hotel_master,
                 'primary_id' => "hotel_id",
-                'primaryVal' => $post['hotel_id'],
+                'primaryVal' => $post['primaryVal'],
                 'attr' => $post['attr'],
                 'attrVal' => $post['attrVal']
                     ]);
@@ -90,7 +92,7 @@ class Hotels extends CI_Controller {
                 'primaryVal' => 0,
                 'attr' => $post['attr'],
                 'attrVal' => $post['attrVal']
-                    ]);
+              ]);
         }
     }
 }

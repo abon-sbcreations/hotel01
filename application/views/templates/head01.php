@@ -1,17 +1,24 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="<?= site_url("library/img/hotel-flat-icon-vector.jpg")?>">
-    <title><?=$pageTitle?></title>
-    <link href="<?= site_url("library/css/bootstrap.min.css")?>" rel="stylesheet">
-    <link href="<?= site_url("library/css/bootstrap.min.css")?>" rel="stylesheet">
-    <link href="<?= site_url("library/css/datatables.min.css")?>" rel="stylesheet">
-   
-    
-  </head>
-
-  <body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+            <a class="navbar-brand" href="<?= site_url('index.php/dashboards/admin_area')?>"><?=ucwords($loggedDisplay)?></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">&nbsp;</a></li>
+            <li><a href="#">&nbsp;</a></li>
+            <li><a href="<?= site_url('index.php/admins/logout')?>"><span class="glyphicon glyphicon-off"></span>&nbsp;Logout</a></li>
+            <li><a href="#">&nbsp;</a></li>
+          </ul>
+          <!--form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form-->
+        </div>
+      </div>
+    </nav>

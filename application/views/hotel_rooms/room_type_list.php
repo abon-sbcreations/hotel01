@@ -12,43 +12,19 @@
         <link href="<?= site_url("library/css/bootstrap.min.css") ?>" rel="stylesheet" type="text/css"/>
         <link href="<?= site_url("library/css/datatables.min.css") ?>" rel="stylesheet" type="text/css"/>
         <link href="<?= site_url("assets/css/custom02.css") ?>" rel="stylesheet">
-
         <style>
             #modalDialog{
-                width:90%;
-            }
-            body{
-                background-color:#ccc;
+                width:50%;
             }
         </style>
     </head>
     <body>
-
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">Hotel Software</a>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="<?= site_url('index.php/Dashboards/admin_area') ?>">Dashboard</a></li>
-                        <li><a href="#">Settings</a></li>
-                        <li><a href="<?= site_url('index.php/admins/logout') ?>">(<?= $loggedDisplay ?>)</a></li>
-                        <li><a href="#">Help</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <?=$head02Temp?>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-11">
-                    <div class="h1">Hotel Room Type<button onclick="addHotelRoomType()" class="btn btn-warning">Add Hotel Room Type</button></div>
+                <?=$leftmenu02Temp?>
+                <div class="col-md-10 col-lg-offset-2">
+                    <div class="h3"><span>Hotel Room Type</span><span class="addbttn"><button onclick="addHotelRoomType()" class="btn btn-info">Add Hotel Room Type</button></span></div>
                     <table id="roomType_list" class="table table-bordered table-striped table-hover">
                         <thead>
                             <tr>
@@ -70,49 +46,39 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title"></h4>
+                        <h4 class="modal-title">Hotel Room Type</h4>
                     </div>
                     <div class="modal-body">
                         <form method="post" name="roomTypeDetailEdit" id="roomTypeDetailEdit" >
                             <div class="row">
-                                <div class="form-group col-md-4 mb-3">
-                                    <label for="hotel_id">Name</label>
-                                    <input type="hidden" name="hotel_room_master_id" id="hotel_room_master_id" value="0" class="form-control">
-                                    <select class="custom-select d-block w-100" id="hotel_id" name="hotel_id"></select>
-                                    <div id="errHotelId" class="errorlabel"></div>
-                                </div>
-                                <div class="form-group col-md-4 mb-3">
+                                <div class="form-group col-md-6 mb-6">                                    
                                     <label for="hotel_room_type">Room Type</label>
-                                    <select class="custom-select d-block w-100" id="hotel_room_type" name="hotel_room_type"></select>
+                                    <input type="hidden" name="hotel_room_master_id" id="hotel_room_master_id" value="0" class="form-control">
+                                    <select class="custom-select d-block w-100 form-control" id="hotel_room_type" name="hotel_room_type"></select>
                                     <div id="errRoomType" class="errorlabel"></div>
-                                </div>
-                                <div class="form-group col-md-2 mb-2">
                                     <label for="hotel_room_rent">Room Rent</label>
                                     <input type="text" name="hotel_room_rent" id="hotel_room_rent" class="form-control">
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group  col-md-8">
+                                <div class="form-group col-md-6 mb-6">
                                     <label for="hotel_room_amenities">Room Facilities</label>
                                     <div id="roomAmenities"></div>
                                 </div>
-                            </div>                            
+                            </div>
+                                                        
                             <div class="row">
-                                <div class="form-group  col-md-8">
+                                <div class="form-group col-md-12">
                                     <label for="hotel_room_desc">Room Description</label>
                                     <textarea name="hotel_room_desc" class="form-control" rows="5" cols="" id="hotel_room_desc"></textarea>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-md-4 mb-3">
+                                <div class="form-group col-md-6 mb-6">
                                     <input id="submitBtn" type="button" class="btn btn-info" value="submit" >
                                 </div>
                             </div>                            
                         </form>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -149,7 +115,6 @@
                             });
                         });
                         function addHotelRoomType() {
-                            $("#roomTypeDetails .modal-title").html("");
                             $("#roomTypeDetailEdit input:not(#submitBtn)").val("");
                             $("#roomTypeDetailEdit textarea").html("");
                             $("#roomTypeDetailEdit")[0].reset();
@@ -207,10 +172,6 @@
                         $("#submitBtn").on("click", function () {
                          $(".errorlabel").html("");
                          var errorNo = 0;
-                         if($("#hotel_id").val().length <= 0){
-                                $("#errHotelId").html("Hotel Type is required");
-                                errorNo++;
-                         }
                          if($("#hotel_room_type").val().length <= 0){
                                 $("#errRoomType").html("Hotel Type is required");
                                 errorNo++;
@@ -247,7 +208,7 @@
                             var amenitiyArr = hotel_room_amenities.split(",");
                             $.each(amenitiesList,function(id,name){
                                 var check = jQuery.inArray(id, amenitiyArr) !== -1 ? "checked='checked'":"";
-                                $("#roomAmenities").append("<span><input "+check+" type=\"checkbox\" name=\"amenity["+id+"]\" value=\"1\" >"+name+"</span><br/>");
+                                $("#roomAmenities").append("<span><input "+check+" type=\"checkbox\" name=\"amenity["+id+"]\" value=\"1\" >&nbsp;&nbsp;"+name+"</span><br/>");
                             });
                         }
         </script>

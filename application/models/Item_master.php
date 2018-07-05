@@ -1,7 +1,7 @@
 <?php
 
-class RoomItemMaster extends CI_Model{
-    private $_room_item_master = "room_item_master";
+class Item_master extends CI_Model{
+    private $_room_item_master = "tbl_item_master";
     public function getItemMaster($params) {
         $this->db->select("room_item_id,room_item_cat,room_item_subcat,	room_item_name");
         $this->db->from($this->_room_item_master);

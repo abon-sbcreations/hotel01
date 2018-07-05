@@ -18,45 +18,26 @@
             #modalDialog{
                 width:90%;
             }
-            body{
-                background-color:#ccc;
+            #modalDialog2{
+                width:50%;
             }
         </style>
     </head>
     <body>
-
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">Hotel Software</a>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="<?= site_url('index.php/Dashboards/admin_area') ?>">Dashboard</a></li>
-                        <li><a href="#">Settings</a></li>
-                        <li><a href="<?= site_url('index.php/admins/logout') ?>">(<?= $loggedDisplay ?>)</a></li>
-                        <li><a href="#">Help</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+  <?=$head01Temp?>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-11">
-                    <div class="h1">Hotel Admin's <button onclick="addHotelAdmins()" class="btn btn-warning">Add Hotel Admin</button></div>
+                <?=$leftmenu01Temp?>
+                <div class="col-md-10 col-lg-offset-2">
+                    <div class="h2"><span>Hotel Admin Management</span><span class="addbttn"><button onclick="addHotelAdmins()" class="btn btn-info">Add Hotel Admin</button></span></div>
                     <table id="hotelAdmin_list" class="table table-bordered table-striped table-hover">
                         <thead>
                             <tr>
                                 <th>Hotel Name<br>&nbsp;</th>
                                 <th>User Name<br>&nbsp;</th>
                                 <th>Activation Date<br>&nbsp;</th>
-                                <th>Package Duration<br>(Months)</th>
+                                <th>Validity&nbsp;(Months)</th>
+                                <!--<th>Rent</th>-->
                                 <th>Actions<br>&nbsp;</th>
                             </tr>
                         </thead>
@@ -66,7 +47,7 @@
             </div>
         </div>
         <div id="hotelAdminPasswords" class="modal fade" role="dialog">
-            <div id="modalDialog" class="modal-dialog modal-sm">
+            <div id="modalDialog2" class="modal-dialog modal-sm">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -75,25 +56,25 @@
                     <div class="modal-body">
                         <form method="post" name="hotelAdminPasswordForm" id="hotelAdminPasswordForm" >
                             <div class="row">
-                                <div class="form-group col-md-3 mb-1">
+                                <div class="form-group col-md-10">
                                     <label for="oldHotel_passwd">Old Password</label>
                                     <input type="password" name="oldHotel_passwd" id="oldHotel_passwd" class="form-control">
                                 </div> 
 
                             </div>
                             <div class="row">
-                                <div class="form-group col-md-3 mb-1">
+                                <div class="form-group col-md-10">
                                     <label for="hotel_passwd">New Password</label>
-                                    <input type="hidden" name="hotel_admin_id" id="passHotel_admin_id" value="0" class="form-control">
+                                    <input type="hidden" name="admin_user_id" id="passAdmin_user_id" value="0" class="form-control">
                                     <input type="password" name="hotel_passwd" id="hotel_passwd" class="form-control">
                                 </div>
-                                <div class="form-group col-md-3 mb-1">
+                                <div class="form-group col-md-10">
                                     <label for="rehotel_passwd">Confirm Password</label>
                                     <input type="password" name="rehotel_passwd" id="rehotel_passwd" class="form-control">
                                 </div>                                
                             </div>
                             <div class="row">
-                                <div class="form-group col-md-3 mb-1">
+                                <div class="form-group col-md-10">
                                     <input id="submitPassBtn" type="button" class="btn btn-info" value="submit" >
                                 </div>
                             </div> 
@@ -108,45 +89,29 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title"></h4>
+                        <h4 class="modal-title">Hotel Admin Management</h4>
                     </div>
                     <div class="modal-body">
                         <form method="post" name="hotelAdminEdit" id="hotelAdminEdit" >
                             <div class="row">
-                                <div class="form-group col-md-3 mb-2">
+                                <div class="form-group col-md-6 mb-6">
                                     <label for="hotel_id">Hotel</label>
-                                    <input type="hidden" name="hotel_admin_id" id="hotel_admin_id" value="0" class="form-control">
-                                    <br><select class="custom-select d-block w-100" id="hotel_id" name="hotel_id"></select>
-                                </div>
-                                <div class="form-group col-md-3 mb-2">
-                                    <label for="hotel_userid">User Id</label>
-                                    <input type="text" name="hotel_userid" id="hotel_userid" class="form-control">
-                                </div>
-                                <div class="form-group col-md-3 mb-2">
+                                    <input type="hidden" name="admin_user_id" id="admin_user_id" value="0" class="form-control">
+                                    <br><select class="custom-select d-block w-100 form-control" id="hotel_id" name="hotel_id"></select>
+                                    <label for="admin_username">User Id</label>
+                                    <input type="text" name="admin_username" id="admin_username" class="form-control">
                                     <label for="hotel_admin_status">Status</label>
-                                    <br><select class="custom-select d-block w-100" id="hotel_admin_status" name="hotel_admin_status"></select>
-                                </div>
-                                <div class="form-group col-md-3 mb-2">
+                                    <br><select class="custom-select d-block w-100 form-control" id="hotel_admin_status" name="hotel_admin_status"></select>
                                     <label for="is_rent_paid">Rent Paid</label>
-                                    <br><select class="custom-select d-block w-100" id="is_rent_paid" name="is_rent_paid"></select>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-4 mb-3">
+                                    <br><select class="custom-select d-block w-100 form-control" id="is_rent_paid" name="is_rent_paid"></select>
                                     <label for="hotel_access_duration">Access Duration</label>
                                     <input type="text" name="hotel_access_duration" id="hotel_access_duration" class="form-control">
-                                </div>
-                                <div class="form-group col-md-4 mb-3">
                                     <label for="hotel_access_activation">Activation Date</label>
                                     <input type="text" name="hotel_access_activation" id="hotel_access_activation" class="form-control">
-                                </div>
-                                <div class="form-group col-md-4 mb-3">
                                     <label for="hotel_access_rent">Rent Amount</label>
                                     <input type="text" name="hotel_access_rent" id="hotel_access_rent" class="form-control">
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group  col-md-6">
+                                <div class="form-group col-md-6 mb-6">
                                     <label for="hotel_module_permission">Module Permission</label>                                   
                                     <table id="modulePermission" class="table table-striped">
                                         <thead>
@@ -161,17 +126,16 @@
                                         <tbody></tbody>
                                     </table>
                                 </div>
-                            </div>                                                        
+                            </div>
+                                                                                   
                             <div class="row">                                
-                                <div class="form-group col-md-4 mb-3">
+                                <div class="form-group col-md-6 mb-6">
                                     <input id="submitBtn" type="button" class="btn btn-info" value="submit" >
                                 </div>
                             </div>                            
                         </form>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -197,10 +161,10 @@
                                 },
                                 "aoColumns": [
                                     {mData: 'hotel_name'},
-                                    {mData: 'hotel_userid'},
+                                    {mData: 'admin_username'},
                                     {mData: 'hotel_access_activation'},
                                     {mData: 'hotel_access_duration'},
-                                    {mData: "hotel_admin_id", bSortable: false, sWidth: "80px",
+                                    {mData: "admin_user_id", bSortable: false, sWidth: "80px",
                                         mRender: function (data, type, full) {
                                             var changeBtn = "<button class=\"btn btn-primary btn-xs\" onclick=\"changePassword(" + data + ")\">Change Password</button>";
                                             var editBtn = "<button class=\"btn btn-info btn-xs\" onclick=\"editHotelAdmin(" + data + ")\">Edit</button>";
@@ -212,7 +176,6 @@
                             });
                         });
                         function addHotelAdmins() {
-                            $("#hotelAdminDetails .modal-title").html("");
                             $("#hotelAdminEdit input:not(#submitBtn)").val("");
                             $("#hotelAdminEdit textarea").html("");
                             $("#hotelAdminEdit")[0].reset();
@@ -222,18 +185,18 @@
                             popModulePermissions();
                             hotelAdminDetails.modal("show");
                         }
-                        function editHotelAdmin(hotel_admin_id) {
+                        function editHotelAdmin(admin_user_id) {
                             $.ajax({
                                 type: "POST",
                                 url: "<?= site_url('index.php/hotel_admins/ajaxHotelAdminDetails') ?>",
-                                data: {hotel_admin_id: hotel_admin_id},
+                                data: {admin_user_id : admin_user_id},
                                 success: function (result) {
                                     var data = $.parseJSON(result);
                                     popOptions(hotelList, "#hotel_id", data['hotel_id']);
                                     popOptions(isActive, "#hotel_admin_status", data['hotel_admin_status']);
                                     popOptions(yesNo, "#is_rent_paid", data['is_rent_paid']);
-                                    $("input[name*='hotel_admin_id']").val(data['hotel_admin_id']);
-                                    $("input[name*='hotel_userid']").val(data['hotel_userid']);
+                                    $("input[name*='admin_username']").val(data['admin_username']);
+                                    $("input[name*='admin_user_id']").val(data['admin_user_id']);
                                     $("input[name*='hotel_access_duration']").val(data['hotel_access_duration']);
                                     $("input[name*='hotel_access_activation']").val(data['hotel_access_activation']);
                                     $("input[name*='hotel_access_rent']").val(data['hotel_access_rent']);
@@ -254,13 +217,13 @@
                                 table.fnDraw();
                             });
                         }
-                        function deleteHotelAdmin(hotel_admin_id) {
+                        function deleteHotelAdmin(admin_user_id) {
                             var r = confirm("You Sure to delete the Hotel admin?");
                             if (r == true) {
                                 $.ajax({
                                     type: "POST",
                                     url: "<?= site_url('index.php/hotel_admins/ajaxHotelAdminDelete') ?>",
-                                    data: {hotel_admin_id: hotel_admin_id},
+                                    data: {admin_user_id: admin_user_id},
                                     success: function (result) {
                                         hotelAdminDetails.modal("hide");
                                         refreshTable();
@@ -287,8 +250,8 @@
                             });
                             e.preventDefault();
                         });
-                        function changePassword(hotel_admin_id) {
-                            $("#passHotel_admin_id").val(hotel_admin_id);
+                        function changePassword(admin_user_id) {
+                            $("#passAdmin_user_id").val(admin_user_id);
                             $("#hotelAdminPasswords").modal("show");
                             
                         }                        

@@ -12,8 +12,12 @@ class Dashboards extends CI_Controller {
         }
     }
     public function admin_area(){
-        $loggedId = $this->session->userdata('logged_id');
         $loggedDisplay = $this->session->userdata('logged_display');
-        $this->load->view('dashboard/admn_dsbrd',['loggedDisplay'=>$loggedDisplay]);
+        $head01Temp = $this->load->view('templates/head01',['loggedDisplay'=>$loggedDisplay],TRUE);
+        $leftmenu01Temp = $this->load->view('templates/leftmenu01',[],TRUE);        
+        $this->load->view('dashboard/admn_dsbrd',[
+            'head01Temp'=>$head01Temp,
+            'leftmenu01Temp'=>$leftmenu01Temp
+            ]);
     }
 }

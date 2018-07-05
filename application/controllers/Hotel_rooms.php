@@ -11,16 +11,18 @@ class Hotel_rooms extends CI_Controller {
         $this->load->library('form_validation', 'session');
         $this->load->model('Hotel_room');
         $this->load->model('Amenity');
-        $u1 = $this->session->userdata('logged_id');
-        if (!isset($u1)) {
-            redirect('/index.php/admins', 'refresh');
+        $u1 = $this->session->userdata('hotel_userid');
+         if(!isset($u1)){
+            redirect('/index.php/hoteladmins', 'refresh');
         }
     }
     public function master() {
-        $loggedId = $this->session->userdata('logged_id');
-        $loggedDisplay = $this->session->userdata('logged_display');
+        $loggedHotelAdmin = $this->session->all_userdata();
+        $head02Temp = $this->load->view('templates/head02',['loggedHotelAdmin'=>$loggedHotelAdmin],TRUE);
+        $leftmenu02Temp = $this->load->view('templates/leftmenu02',['activeMenu'=>'hotel_rooms/master'],TRUE);
         $this->load->view('hotel_rooms/room_type_list', [
-            'loggedDisplay' => $loggedDisplay,
+            'head02Temp'=>$head02Temp,
+            'leftmenu02Temp'=>$leftmenu02Temp,
             'roomTypeOptions' => roomTypeOptions(),
             'hotelOptions' =>hotelOptions(),
             'amenityOptions' => amenityOptions()
@@ -31,7 +33,7 @@ class Hotel_rooms extends CI_Controller {
         $draw = intval($this->input->get("draw"));
         $start = intval($this->input->get("start"));
         $length = intval($this->input->get("length"));
-        $hotelRooms = $this->Hotel_room->getHotelRooms([]);        
+       $hotelRooms = $this->Hotel_room->getHotelRooms(['where'=>['hrd.hotel_id'=>$this->session->userdata('hotel_id')]]);   
         $rows = [];
         foreach ($hotelRooms as $k => $room) {
             $amenityList = explode(",",trim($room['hotel_room_amenities'],","));

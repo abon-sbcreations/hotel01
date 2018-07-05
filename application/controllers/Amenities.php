@@ -14,10 +14,12 @@ class Amenities extends CI_Controller {
         }
     }
     public function amenity_list() {
-        $loggedId = $this->session->userdata('logged_id');
-        $loggedDisplay = $this->session->userdata('logged_display'); //users full name.
+        $loggedDisplay = $this->session->userdata('logged_display');
+        $head01Temp = $this->load->view('templates/head01',['loggedDisplay'=>$loggedDisplay],TRUE);
+        $leftmenu01Temp = $this->load->view('templates/leftmenu01',['activeMenu'=>'amenities/amenity_list'],TRUE);   
         $this->load->view('amenities/amenity_list', [
-            'loggedDisplay' => $loggedDisplay,
+            'head01Temp'=>$head01Temp,
+            'leftmenu01Temp'=>$leftmenu01Temp,
             'timeSlotOptions' => timeSlotOptions()
         ]);
     }

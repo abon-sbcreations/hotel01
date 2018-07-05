@@ -17,43 +17,23 @@
             #modalDialog{
                 width:90%;
             }
-            body{
-                background-color:#ccc;
-            }
         </style>
     </head>
     <body>
-
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">Hotel Software</a>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="<?= site_url('index.php/Dashboards/admin_area') ?>">Dashboard</a></li>
-                        <li><a href="#">Settings</a></li>
-                        <li><a href="<?= site_url('index.php/admins/logout') ?>">(<?= $loggedDisplay ?>)</a></li>
-                        <li><a href="#">Help</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+         <?=$head01Temp?>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-11">
-                    <div class="h1">Companies<button onclick="addCompany()" class="btn btn-warning">Add Company</button></div>
+                <?=$leftmenu01Temp?>
+                <div class="col-md-10 col-lg-offset-2">
+                    <div class="h2"><span>Company Management</span><span class="addbttn"><button onclick="addCompany()" class="btn btn-info">Add Company</button></span></div>
                     <table id="company_list" class="table table-bordered table-striped table-hover">
                         <thead>
                             <tr>
                                 <th>Name</th>
                                 <th>Registration No.</th>
+                                <th>GST No.</th>
+                                <th>PAN No.</th>
+                                <th>Address</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -69,7 +49,7 @@
                 <div class="modal-content ">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title"></h4>
+                        <h4 class="modal-title">Company Management</h4>
                     </div>
                     <div class="modal-body">
                         <form method="post" name="companyDetailEdit" id="companyDetailEdit" >
@@ -87,6 +67,18 @@
                                 </div>
                             </div>
                             <div class="row">
+                                <div class="form-group col-md-4 mb-3">
+                                    <label for="comp_gst_no">GST No</label>
+                                    <input type="text" name="comp_gst_no" id="comp_gst_no" class="form-control">
+                                    <div id="errCompGstNo" class="errorlabel"></div>
+                                </div>
+                                <div class="form-group col-md-4 mb-3">
+                                    <label for="comp_pan_no">Pan No</label>
+                                    <input type="text" name="comp_pan_no" id="comp_pan_no" class="form-control">
+                                    <div id="errCompPanNo" class="errorlabel"></div>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="form-group  col-md-8">
                                     <label for="comp_address">Company Address</label>
                                     <textarea name="comp_address" class="form-control" rows="5" cols="" id="comp_address"></textarea>
@@ -100,9 +92,7 @@
                             </div>
                         </form>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -122,6 +112,9 @@
                                 "aoColumns": [
                                     {mData: 'comp_name'},
                                     {mData: 'comp_reg_no'},
+                                    {mData: 'comp_gst_no'},
+                                    {mData: 'comp_pan_no'},
+                                    {mData: 'comp_address'},
                                     {mData: "comp_id", bSortable: false, sWidth: "80px",
                                         mRender: function (data, type, full) {
                                             var editBtn = "<button class=\"btn btn-info btn-xs\" onclick=\"editCompany(" + data + ")\">Edit</button>";
@@ -133,7 +126,6 @@
                             });
                         });
                         function addCompany() {
-                            $("#companyDetails .modal-title").html("");
                             $("#companyDetailEdit input:not(#submitBtn)").val("");
                             $("#companyDetailEdit textarea").html("");
                             $("#companyDetailEdit")[0].reset();
@@ -148,6 +140,8 @@
                                     var data = $.parseJSON(result);
                                     $("input[name*='comp_name']").val(data['comp_name']);
                                     $("input[name*='comp_reg_no']").val(data['comp_reg_no']);
+                                    $("input[name*='comp_gst_no']").val(data['comp_gst_no']);
+                                    $("input[name*='comp_pan_no']").val(data['comp_pan_no']);
                                     $("#comp_address").html(data['comp_address']);
                                     $("input[name*='comp_id']").val(data['comp_id']);
                                     companyDetails.modal("show");
@@ -193,12 +187,15 @@
                                     type: "POST",
                                     async: false,
                                     url: "<?= site_url('index.php/companies/ajaxUniqueCompanyAttr') ?>",
-                                    data: {primaryVal:$("#comp_id").val(),attr:"comp_name",attrVal:$("#comp_name").val()},
+                                    data: {
+                                        primaryVal : $("#comp_id").val(),
+                                        attr : "comp_name",
+                                        attrVal : $("#comp_name").val()
+                                    },
                                     success: function (result) {
                                         if(result > 0){                                         
                                             $("#errCompName").html("Company name is not unique");
                                             errorNo++;
-                                            console.log("unique <= "+errorNo);
                                         }
                                     }
                                 });
@@ -211,12 +208,15 @@
                                     type: "POST",
                                     async: false,
                                     url: "<?= site_url('index.php/companies/ajaxUniqueCompanyAttr') ?>",
-                                    data: {primaryVal:$("#comp_id").val(),attr:"comp_reg_no",attrVal:$("#comp_reg_no").val()},
+                                    data: {
+                                        primaryVal : $("#comp_id").val(),
+                                        attr : "comp_reg_no",
+                                        attrVal : $("#comp_reg_no").val()
+                                    },
                                     success: function (result) {
                                         if(result > 0){                                         
                                             $("#errCompRegNo").html("Company Registration No is not unique");
                                             errorNo++;
-                                            console.log("unique <= "+errorNo);
                                         }
                                     }
                                 });

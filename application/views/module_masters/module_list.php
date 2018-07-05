@@ -15,44 +15,22 @@
 
         <style>
             #modalDialog{
-                width:90%;
-            }
-            body{
-                background-color:#ccc;
+                width:50%;
             }
         </style>
     </head>
     <body>
-
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">Hotel Software</a>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="<?= site_url('index.php/Dashboards/admin_area') ?>">Dashboard</a></li>
-                        <li><a href="#">Settings</a></li>
-                        <li><a href="<?= site_url('index.php/admins/logout') ?>">(<?= $loggedDisplay ?>)</a></li>
-                        <li><a href="#">Help</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <?=$head01Temp?>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-11">
-                    <div class="h1">Modules List<button onclick="addModule()" class="btn btn-warning">Add Module</button></div>
+                <?=$leftmenu01Temp?>
+                <div class="col-md-10 col-lg-offset-2">
+                    <div class="h2"><span>Module Management</span><span class="addbttn"><button onclick="addModule()" class="btn btn-info">Add Module</button></span></div>
                     <table id="module_list" class="table table-bordered table-striped table-hover">
                         <thead>
                             <tr>
                                 <th>Module Name</th>
+                                <th>Description</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -64,42 +42,40 @@
             </div>
         </div>
         <div id="moduleDetails" class="modal  fade" role="dialog">
-            <div id="modalDialog" class="modal-dialog  modal-lg">
+            <div id="modalDialog" class="modal-dialog  modal-sm">
                 <!-- Modal content-->
                 <div class="modal-content ">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title"></h4>
+                        <h4 class="modal-title">Module Management</h4>
                     </div>
                     <div class="modal-body">
                         <form method="post" name="moduleDetailEdit" id="moduleDetailEdit" >
                             <div class="row">
-                                <div class="form-group col-md-4 mb-3">
+                                <div class="form-group col-md-10">
                                     <label for="module_name">Name</label>
                                     <input type="hidden" name="module_id" id="module_id" value="0" class="form-control">
                                     <input type="text" name="module_name" id="module_name" class="form-control">
                                 </div>
-                                <div class="form-group col-md-4 mb-3">
+                                <div class="form-group col-md-10">
                                     <label for="module_status">Status</label>
-                                    <br><select class="custom-select d-block w-100" id="module_status" name="module_status"></select>
+                                    <br><select class="custom-select d-block w-100 form-control" id="module_status" name="module_status"></select>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group  col-md-8">
-                                    <label for="module_desc">Amenity Desc:</label>
+                                <div class="form-group  col-md-10">
+                                    <label for="module_desc">Amenity Description:</label>
                                     <textarea name="module_desc" class="form-control" rows="5" cols="" id="module_desc"></textarea>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-md-4 mb-3">
+                                <div class="form-group col-md-10">
                                     <input id="submitBtn" type="button" class="btn btn-info" value="submit" >
                                 </div>
                             </div>
                         </form>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -119,8 +95,17 @@
                                     type: 'GET'
                                 },
                                 "aoColumns": [
-                                    {mData: 'module_name'},
-                                    {mData: 'module_status'},
+                                    {mData: "module_name",  sWidth: "150px",
+                                        mRender: function (data, type, full) {
+                                            return data;
+                                        }
+                                    },
+                                    {mData: 'module_desc'},
+                                    {mData: "module_status",  sWidth: "40px",
+                                        mRender: function (data, type, full) {
+                                            return data;
+                                        }
+                                    },
                                     {mData: "module_id", bSortable: false, sWidth: "80px",
                                         mRender: function (data, type, full) {
                                             var editBtn = "<button class=\"btn btn-info btn-xs\" onclick=\"editModule(" + data + ")\">Edit</button>";
@@ -132,7 +117,6 @@
                             });
                         });
                         function addModule() {
-                            $("#moduleDetails .modal-title").html("");
                             $("#moduleDetailEdit input:not(#submitBtn)").val("");
                             $("#moduleDetailEdit textarea").html("");
                             popOptions(statusOption, "#module_status");

@@ -17,7 +17,7 @@ class Customer extends CI_Model {
     }
     public function postCustomer($customer) {
         $this->db->insert($this->_customer_master, [
-            'cust_id'=>$customer['cust_id'],'hotel_id'=>$customer['hotel_id'],
+            'cust_id'=>$customer['cust_id'],'hotel_id'=>$this->session->userdata('hotel_id'),
             'cust_name'=>$customer['cust_name'],'cust_phone'=>$customer['cust_phone'],
             'cust_email'=>$customer['cust_email'],'cust_status'=>$customer['cust_status'],
             'membership_type'=>$customer['membership_type'],'membership_num'=>$customer['membership_num'],
@@ -25,7 +25,7 @@ class Customer extends CI_Model {
             ]);
     }
     public function putCustomer($customer) {
-        $this->db->update($this->_customer_master, ['hotel_id'=>$customer['hotel_id'],
+        $this->db->update($this->_customer_master, [
             'cust_name'=>$customer['cust_name'],'cust_phone'=>$customer['cust_phone'],
             'cust_email'=>$customer['cust_email'],'cust_status'=>$customer['cust_status'],
             'membership_type'=>$customer['membership_type'],'membership_num'=>$customer['membership_num'],

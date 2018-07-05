@@ -10,16 +10,18 @@ class Customers extends CI_Controller {
         $this->load->helper('commonmisc_helper');
         $this->load->library('form_validation', 'session');
         $this->load->model('Customer');
-        $u1 = $this->session->userdata('logged_id');
-        if (!isset($u1)) {
-            redirect('/index.php/admins', 'refresh');
+        $u1 = $this->session->userdata('hotel_userid');
+         if(!isset($u1)){
+            redirect('/index.php/hoteladmins', 'refresh');
         }
     }
     public function index() {
-        $loggedId = $this->session->userdata('logged_id');
-        $loggedDisplay = $this->session->userdata('logged_display');
+        $loggedHotelAdmin = $this->session->all_userdata();
+        $head02Temp = $this->load->view('templates/head02',['loggedHotelAdmin'=>$loggedHotelAdmin],TRUE);
+        $leftmenu02Temp = $this->load->view('templates/leftmenu02',['activeMenu'=>'customers'],TRUE);
         $this->load->view('customers/customers_list', [
-            'loggedDisplay' => $loggedDisplay,
+            'head02Temp'=>$head02Temp,
+            'leftmenu02Temp'=>$leftmenu02Temp,
             'hotelOptions' =>hotelOptions(),
             'membershipOptions' => membershipOptions()
         ]);
@@ -29,7 +31,7 @@ class Customers extends CI_Controller {
         $draw = intval($this->input->get("draw"));
         $start = intval($this->input->get("start"));
         $length = intval($this->input->get("length"));
-        $Customers = $this->Customer->getCustomer([]);
+        $Customers = $this->Customer->getCustomer(['where'=>['cm.hotel_id'=>$this->session->userdata('hotel_id')]]);
         $rows = [];
         foreach ($Customers as $k => $customer) {
             $rows[] = [
